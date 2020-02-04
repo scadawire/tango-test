@@ -119,6 +119,9 @@ public:
     Tango::DevLong      pi_long;
     Tango::DevShort     pi_short;
 
+	Tango::DevBoolean	generic_blob_rw_has_value = false;
+	Tango::DevicePipeBlob	generic_blob_rw_data;
+
 /*----- PROTECTED REGION END -----*/	//	TangoTest::Data Members
 
 //	Device property data members
