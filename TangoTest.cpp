@@ -3051,6 +3051,36 @@ void TangoTest::read_string_long_short_ro(Tango::Pipe &pipe)
 }
 //--------------------------------------------------------
 /**
+ *	Read pipe generic_blob_rw related method
+ *	Description: Pipe to write and read dynamic data structure
+ */
+//--------------------------------------------------------
+void TangoTest::read_generic_blob_rw(Tango::Pipe &pipe)
+{
+	DEBUG_STREAM << "TangoTest::read_generic_blob_rw(Tango::Pipe &pipe) entering... " << std::endl;
+	/*----- PROTECTED REGION ID(TangoTest::read_generic_blob_rw) ENABLED START -----*/
+	
+	//	Add your own code here
+	
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_generic_blob_rw
+}
+//--------------------------------------------------------
+/**
+ *	Write pipe generic_blob_rw related method
+ *	Description: Pipe to write and read dynamic data structure
+ */
+//--------------------------------------------------------
+void TangoTest::write_generic_blob_rw(Tango::WPipe &pipe)
+{
+	DEBUG_STREAM << "TangoTest::write_generic_blob_rw(Tango::WPipe &pipe) entering... " << std::endl;
+	/*----- PROTECTED REGION ID(TangoTest::write_generic_blob_rw) ENABLED START -----*/
+	
+	//	Add your own code here
+	
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_generic_blob_rw
+}
+//--------------------------------------------------------
+/**
  *	Command CrashFromDevelopperThread related method
  *	Description: Crashes the device!
  *
