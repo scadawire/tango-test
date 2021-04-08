@@ -686,7 +686,7 @@ void TangoTest::init_device()
         attr_ushort_scalar_write = 0;
 
         attr_enum_scalar_read = new enum_scalarEnum;
-        *attr_enum_scalar_read = enum_scalarEnum::_LABEL0;
+        *attr_enum_scalar_read = _LABEL0;
 
         //- Spectrum
         attr_short_spectrum_ro_read = new Tango::DevShort[kSpecLen];
