@@ -74,6 +74,41 @@ enum _enum_scalarEnum {
 } ;
 typedef _enum_scalarEnum enum_scalarEnum;
 
+enum _enum_scalar_roEnum {
+	_LABEL3,
+	_LABEL4,
+	_LABEL5,
+} ;
+typedef _enum_scalar_roEnum enum_scalar_roEnum;
+
+enum _enum_spectrumEnum {
+	_LABEL6,
+	_LABEL7,
+	_LABEL8,
+} ;
+typedef _enum_spectrumEnum enum_spectrumEnum;
+
+enum _enum_spectrum_roEnum {
+	_LABEL9,
+	_LABEL10,
+	_LABEL11,
+} ;
+typedef _enum_spectrum_roEnum enum_spectrum_roEnum;
+
+enum _enum_image_roEnum {
+	_LABEL12,
+	_LABEL13,
+	_LABEL14,
+} ;
+typedef _enum_image_roEnum enum_image_roEnum;
+
+enum _enum_imageEnum {
+	_LABEL15,
+	_LABEL16,
+	_LABEL17,
+} ;
+typedef _enum_imageEnum enum_imageEnum;
+
 /*----- PROTECTED REGION ID(TangoTest::Additional Class Declarations) ENABLED START -----*/
 
 //	Additional Class Declarations
@@ -154,6 +189,7 @@ public:
 	Tango::DevUShort	*attr_ushort_scalar_read;
 	Tango::DevULong	*attr_ulong_scalar_read;
 	enum_scalarEnum	*attr_enum_scalar_read;
+	enum_scalar_roEnum	*attr_enum_scalar_ro_read;
 	Tango::DevBoolean	*attr_boolean_spectrum_read;
 	Tango::DevBoolean	*attr_boolean_spectrum_ro_read;
 	Tango::DevDouble	*attr_double_spectrum_read;
@@ -174,6 +210,8 @@ public:
 	Tango::DevUShort	*attr_ushort_spectrum_read;
 	Tango::DevUShort	*attr_ushort_spectrum_ro_read;
 	Tango::DevDouble	*attr_wave_read;
+	enum_spectrumEnum	*attr_enum_spectrum_read;
+	enum_spectrum_roEnum	*attr_enum_spectrum_ro_read;
 	Tango::DevBoolean	*attr_boolean_image_read;
 	Tango::DevBoolean	*attr_boolean_image_ro_read;
 	Tango::DevDouble	*attr_double_image_read;
@@ -193,6 +231,8 @@ public:
 	Tango::DevULong	*attr_ulong_image_ro_read;
 	Tango::DevUShort	*attr_ushort_image_read;
 	Tango::DevUShort	*attr_ushort_image_ro_read;
+	enum_image_roEnum	*attr_enum_image_ro_read;
+	enum_imageEnum	*attr_enum_image_read;
 
 //	Constructors and destructors
 public:
@@ -484,6 +524,15 @@ public:
 	virtual void write_freq(Tango::WAttribute &attr);
 	virtual bool is_freq_allowed(Tango::AttReqType type);
 /**
+ *	Attribute enum_scalar_ro related methods
+ *	Description:
+ *
+ *	Data type:	Tango::DevEnum
+ *	Attr type:	Scalar
+ */
+	virtual void read_enum_scalar_ro(Tango::Attribute &attr);
+	virtual bool is_enum_scalar_ro_allowed(Tango::AttReqType type);
+/**
  *	Attribute boolean_spectrum related methods
  *	Description: 
  *
@@ -672,6 +721,25 @@ public:
 	virtual void read_wave(Tango::Attribute &attr);
 	virtual bool is_wave_allowed(Tango::AttReqType type);
 /**
+ *	Attribute enum_spectrum related methods
+ *	Description:
+ *
+ *	Data type:	Tango::DevEnum
+ *	Attr type:	Spectrum max = 4096
+ */
+	virtual void read_enum_spectrum(Tango::Attribute &attr);
+	virtual void write_enum_spectrum(Tango::WAttribute &attr);
+	virtual bool is_enum_spectrum_allowed(Tango::AttReqType type);
+/**
+ *	Attribute enum_spectrum_ro related methods
+ *	Description:
+ *
+ *	Data type:	Tango::DevEnum
+ *	Attr type:	Spectrum max = 4096
+ */
+	virtual void read_enum_spectrum_ro(Tango::Attribute &attr);
+	virtual bool is_enum_spectrum_ro_allowed(Tango::AttReqType type);
+/**
  *	Attribute boolean_image related methods
  *	Description: 
  *
@@ -850,6 +918,25 @@ public:
  */
 	virtual void read_ushort_image_ro(Tango::Attribute &attr);
 	virtual bool is_ushort_image_ro_allowed(Tango::AttReqType type);
+/**
+ *	Attribute enum_image_ro related methods
+ *	Description:
+ *
+ *	Data type:	Tango::DevEnum
+ *	Attr type:	Image max = 251 x 251
+ */
+	virtual void read_enum_image_ro(Tango::Attribute &attr);
+	virtual bool is_enum_image_ro_allowed(Tango::AttReqType type);
+/**
+ *	Attribute enum_image related methods
+ *	Description:
+ *
+ *	Data type:	Tango::DevEnum
+ *	Attr type:	Image max = 251 x 251
+ */
+	virtual void read_enum_image(Tango::Attribute &attr);
+	virtual void write_enum_image(Tango::WAttribute &attr);
+	virtual bool is_enum_image_allowed(Tango::AttReqType type);
 
 
 	//--------------------------------------------------------

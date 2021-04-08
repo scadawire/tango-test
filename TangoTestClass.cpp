@@ -1430,6 +1430,37 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	Not Memorized
 	att_list.push_back(freq);
 
+	//	Attribute : enum_scalar_ro
+	enum_scalar_roAttrib	*enum_scalar_ro = new enum_scalar_roAttrib();
+	Tango::UserDefaultAttrProp	enum_scalar_ro_prop;
+	//	description	not set for enum_scalar_ro
+	//	label	not set for enum_scalar_ro
+	//	unit	not set for enum_scalar_ro
+	//	standard_unit	not set for enum_scalar_ro
+	//	display_unit	not set for enum_scalar_ro
+	//	format	not set for enum_scalar_ro
+	//	max_value	not set for enum_scalar_ro
+	//	min_value	not set for enum_scalar_ro
+	//	max_alarm	not set for enum_scalar_ro
+	//	min_alarm	not set for enum_scalar_ro
+	//	max_warning	not set for enum_scalar_ro
+	//	min_warning	not set for enum_scalar_ro
+	//	delta_t	not set for enum_scalar_ro
+	//	delta_val	not set for enum_scalar_ro
+
+	{
+		std::vector<std::string> labels;
+		labels.push_back("LABEL3");
+		labels.push_back("LABEL4");
+		labels.push_back("LABEL5");
+		enum_scalar_ro_prop.set_enum_labels(labels);
+	}
+	enum_scalar_ro->set_default_properties(enum_scalar_ro_prop);
+	//	Not Polled
+	enum_scalar_ro->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(enum_scalar_ro);
+
 	//	Attribute : boolean_spectrum
 	boolean_spectrumAttrib	*boolean_spectrum = new boolean_spectrumAttrib();
 	Tango::UserDefaultAttrProp	boolean_spectrum_prop;
@@ -1910,6 +1941,68 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	Not Memorized
 	att_list.push_back(wave);
 
+	//	Attribute : enum_spectrum
+	enum_spectrumAttrib	*enum_spectrum = new enum_spectrumAttrib();
+	Tango::UserDefaultAttrProp	enum_spectrum_prop;
+	//	description	not set for enum_spectrum
+	//	label	not set for enum_spectrum
+	//	unit	not set for enum_spectrum
+	//	standard_unit	not set for enum_spectrum
+	//	display_unit	not set for enum_spectrum
+	//	format	not set for enum_spectrum
+	//	max_value	not set for enum_spectrum
+	//	min_value	not set for enum_spectrum
+	//	max_alarm	not set for enum_spectrum
+	//	min_alarm	not set for enum_spectrum
+	//	max_warning	not set for enum_spectrum
+	//	min_warning	not set for enum_spectrum
+	//	delta_t	not set for enum_spectrum
+	//	delta_val	not set for enum_spectrum
+
+	{
+		std::vector<std::string> labels;
+		labels.push_back("LABEL6");
+		labels.push_back("LABEL7");
+		labels.push_back("LABEL8");
+		enum_spectrum_prop.set_enum_labels(labels);
+	}
+	enum_spectrum->set_default_properties(enum_spectrum_prop);
+	//	Not Polled
+	enum_spectrum->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(enum_spectrum);
+
+	//	Attribute : enum_spectrum_ro
+	enum_spectrum_roAttrib	*enum_spectrum_ro = new enum_spectrum_roAttrib();
+	Tango::UserDefaultAttrProp	enum_spectrum_ro_prop;
+	//	description	not set for enum_spectrum_ro
+	//	label	not set for enum_spectrum_ro
+	//	unit	not set for enum_spectrum_ro
+	//	standard_unit	not set for enum_spectrum_ro
+	//	display_unit	not set for enum_spectrum_ro
+	//	format	not set for enum_spectrum_ro
+	//	max_value	not set for enum_spectrum_ro
+	//	min_value	not set for enum_spectrum_ro
+	//	max_alarm	not set for enum_spectrum_ro
+	//	min_alarm	not set for enum_spectrum_ro
+	//	max_warning	not set for enum_spectrum_ro
+	//	min_warning	not set for enum_spectrum_ro
+	//	delta_t	not set for enum_spectrum_ro
+	//	delta_val	not set for enum_spectrum_ro
+
+	{
+		std::vector<std::string> labels;
+		labels.push_back("LABEL9");
+		labels.push_back("LABEL10");
+		labels.push_back("LABEL11");
+		enum_spectrum_ro_prop.set_enum_labels(labels);
+	}
+	enum_spectrum_ro->set_default_properties(enum_spectrum_ro_prop);
+	//	Not Polled
+	enum_spectrum_ro->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(enum_spectrum_ro);
+
 	//	Attribute : boolean_image
 	boolean_imageAttrib	*boolean_image = new boolean_imageAttrib();
 	Tango::UserDefaultAttrProp	boolean_image_prop;
@@ -2365,6 +2458,68 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	ushort_image_ro->set_disp_level(Tango::OPERATOR);
 	//	Not Memorized
 	att_list.push_back(ushort_image_ro);
+
+	//	Attribute : enum_image_ro
+	enum_image_roAttrib	*enum_image_ro = new enum_image_roAttrib();
+	Tango::UserDefaultAttrProp	enum_image_ro_prop;
+	//	description	not set for enum_image_ro
+	//	label	not set for enum_image_ro
+	//	unit	not set for enum_image_ro
+	//	standard_unit	not set for enum_image_ro
+	//	display_unit	not set for enum_image_ro
+	//	format	not set for enum_image_ro
+	//	max_value	not set for enum_image_ro
+	//	min_value	not set for enum_image_ro
+	//	max_alarm	not set for enum_image_ro
+	//	min_alarm	not set for enum_image_ro
+	//	max_warning	not set for enum_image_ro
+	//	min_warning	not set for enum_image_ro
+	//	delta_t	not set for enum_image_ro
+	//	delta_val	not set for enum_image_ro
+
+	{
+		std::vector<std::string> labels;
+		labels.push_back("LABEL12");
+		labels.push_back("LABEL13");
+		labels.push_back("LABEL14");
+		enum_image_ro_prop.set_enum_labels(labels);
+	}
+	enum_image_ro->set_default_properties(enum_image_ro_prop);
+	//	Not Polled
+	enum_image_ro->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(enum_image_ro);
+
+	//	Attribute : enum_image
+	enum_imageAttrib	*enum_image = new enum_imageAttrib();
+	Tango::UserDefaultAttrProp	enum_image_prop;
+	//	description	not set for enum_image
+	//	label	not set for enum_image
+	//	unit	not set for enum_image
+	//	standard_unit	not set for enum_image
+	//	display_unit	not set for enum_image
+	//	format	not set for enum_image
+	//	max_value	not set for enum_image
+	//	min_value	not set for enum_image
+	//	max_alarm	not set for enum_image
+	//	min_alarm	not set for enum_image
+	//	max_warning	not set for enum_image
+	//	min_warning	not set for enum_image
+	//	delta_t	not set for enum_image
+	//	delta_val	not set for enum_image
+
+	{
+		std::vector<std::string> labels;
+		labels.push_back("LABEL15");
+		labels.push_back("LABEL16");
+		labels.push_back("LABEL17");
+		enum_image_prop.set_enum_labels(labels);
+	}
+	enum_image->set_default_properties(enum_image_prop);
+	//	Not Polled
+	enum_image->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(enum_image);
 
 
 	//	Create a list of static attributes
