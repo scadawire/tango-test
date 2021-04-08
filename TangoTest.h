@@ -130,26 +130,29 @@ public:
 
 	friend class DataGenerator;
 
-	Tango::DevShort		attr_short_scalar_w_write;
-	Tango::DevLong		attr_long_scalar_w_write;
-	Tango::DevDouble	attr_double_scalar_w_write;
-	Tango::DevShort		attr_short_scalar_write;
-	Tango::DevLong		attr_long_scalar_write;
-	Tango::DevDouble	attr_double_scalar_write;
-	Tango::DevFloat		attr_float_scalar_write;
-	Tango::DevULong		attr_ulong_scalar_write;
-	Tango::DevUShort	attr_ushort_scalar_write;
-	Tango::DevUChar		attr_uchar_scalar_write;
-	Tango::DevDouble	attr_ampli_write;
+	Tango::DevShort    attr_short_scalar_w_write;
+	Tango::DevLong     attr_long_scalar_w_write;
+	Tango::DevDouble   attr_double_scalar_w_write;
+	Tango::DevShort    attr_short_scalar_write;
+	Tango::DevLong     attr_long_scalar_write;
+	Tango::DevDouble   attr_double_scalar_write;
+	Tango::DevFloat    attr_float_scalar_write;
+	Tango::DevULong    attr_ulong_scalar_write;
+	Tango::DevUShort   attr_ushort_scalar_write;
+	Tango::DevUChar    attr_uchar_scalar_write;
+	enum_scalar_roEnum attr_enum_scalar_write;
+	Tango::DevDouble   attr_ampli_write;
     Tango::DevDouble	attr_freq_write;
-	Tango::DevLong64	attr_long64_scalar_write;
-	Tango::DevULong64	attr_ulong64_scalar_write;
-	Tango::DevString	attr_string_scalar_write;
-	Tango::DevBoolean	attr_boolean_scalar_write;
+	Tango::DevLong64   attr_long64_scalar_write;
+	Tango::DevULong64  attr_ulong64_scalar_write;
+	Tango::DevString   attr_string_scalar_write;
+	Tango::DevBoolean  attr_boolean_scalar_write;
 
 	Tango::DevString	attr_string_spectrum_write;
+	enum_spectrumEnum attr_enum_spectrum_write;
 
 	Tango::DevString	attr_string_image_write;
+	enum_imageEnum attr_enum_image_write;
 
     std::string         pi_str;
     Tango::DevLong      pi_long;
@@ -506,7 +509,7 @@ public:
 	virtual bool is_ulong_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute enum_scalar related methods
- *	Description: 
+ *	Description:
  *
  *	Data type:	Tango::DevEnum
  *	Attr type:	Scalar
@@ -1226,6 +1229,7 @@ protected :
   omni_mutex ulong64_image_lock;
   omni_mutex ulong_image_lock;
   omni_mutex ushort_image_lock;
+  omni_mutex enum_image_lock;
   // The data generator (thread)
   DataGenerator * data_gen;
 
@@ -1237,6 +1241,7 @@ protected :
   long dimFloatSpectrum;
   long dimBooleanSpectrum;
   long dimStringSpectrum;
+  long dimEnumSpectrum;
 
   long dimXShortImage;
   long dimXLongImage;
@@ -1246,6 +1251,7 @@ protected :
   long dimXDoubleImage;
   long dimXBooleanImage;
   long dimXStringImage;
+  long dimXenumImage;
 
   long dimYShortImage;
   long dimYLongImage;
@@ -1255,6 +1261,7 @@ protected :
   long dimYDoubleImage;
   long dimYBooleanImage;
   long dimYStringImage;
+  long dimYenumImage;
 
 /*----- PROTECTED REGION END -----*/	//	TangoTest::Additional Method prototypes
 };

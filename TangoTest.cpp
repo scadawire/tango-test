@@ -688,6 +688,9 @@ void TangoTest::init_device()
         attr_enum_scalar_read = new enum_scalarEnum;
         *attr_enum_scalar_read = _LABEL0;
 
+        attr_enum_scalar_ro_read = new enum_scalar_roEnum;
+        *attr_enum_scalar_ro_read = _LABEL3;
+
         //- Spectrum
         attr_short_spectrum_ro_read = new Tango::DevShort[kSpecLen];
         ::memset(attr_short_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevShort));
@@ -776,6 +779,14 @@ void TangoTest::init_device()
 
         dimFloatSpectrum = kSpecLen;
 
+        attr_enum_spectrum_ro_read = new enum_spectrum_roEnum[kSpecLen];
+        std::fill_n(attr_enum_spectrum_ro_read, kSpecLen, _LABEL9);
+
+        attr_enum_spectrum_read = new enum_spectrumEnum[kSpecLen];
+        std::fill_n(attr_enum_spectrum_read, kSpecLen, _LABEL6);
+
+        dimEnumSpectrum = kSpecLen;
+
         //- Images
         attr_short_image_read = new Tango::DevShort[kImagLen * kImagLen];
         ::memset(attr_short_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevShort));
@@ -819,6 +830,12 @@ void TangoTest::init_device()
         dimXBooleanImage = kImagLen;
         dimYBooleanImage = kImagLen;
 
+        attr_enum_image_read = new enum_imageEnum[kImagLen * kImagLen];
+        std::fill_n(attr_enum_image_read, kImagLen * kImagLen, _LABEL15);
+
+        dimXenumImage = kImagLen;
+        dimYenumImage = kImagLen;
+
         attr_short_image_ro_read = new Tango::DevShort[kImagLen * kImagLen];
         ::memset(attr_short_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevShort));
 
@@ -848,6 +865,9 @@ void TangoTest::init_device()
 
         attr_boolean_image_ro_read = new Tango::DevBoolean[kImagLen * kImagLen];
         ::memset(attr_boolean_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevBoolean));
+
+        attr_enum_image_ro_read = new enum_image_roEnum[kImagLen * kImagLen];
+        std::fill_n(attr_enum_image_ro_read, kImagLen * kImagLen, _LABEL12);
 
         attr_string_image_ro_read = new char *[kImagLen * kImagLen];
         for (s = 0; s < kImagLen * kImagLen; s++) {
@@ -2424,7 +2444,7 @@ void TangoTest::read_enum_spectrum(Tango::Attribute &attr)
 	DEBUG_STREAM << "TangoTest::read_enum_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_enum_spectrum) ENABLED START -----*/
 	//	Set the attribute value
-	attr.set_value(attr_enum_spectrum_read, 4096);
+	attr.set_value(attr_enum_spectrum_read, dimEnumSpectrum);
 
 	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_enum_spectrum
 }
@@ -2450,6 +2470,14 @@ void TangoTest::write_enum_spectrum(Tango::WAttribute &attr)
 	for (int i=0 ; i<w_length ; i++)  enum_val[i]=(enum_spectrumEnum) w_val[i];
 	/*----- PROTECTED REGION ID(TangoTest::write_enum_spectrum) ENABLED START -----*/
 
+	int len = (w_length <= dimEnumSpectrum) ? w_length : dimEnumSpectrum;
+
+	for (int i=0 ; i< len ; i++)
+	{
+		attr_enum_spectrum_read[i] =(enum_spectrumEnum) w_val[i];
+	}
+
+	dimEnumSpectrum = len;
 
 	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_enum_spectrum
 }
@@ -2467,7 +2495,7 @@ void TangoTest::read_enum_spectrum_ro(Tango::Attribute &attr)
 	DEBUG_STREAM << "TangoTest::read_enum_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_enum_spectrum_ro) ENABLED START -----*/
 	//	Set the attribute value
-	attr.set_value(attr_enum_spectrum_ro_read, 4096);
+	attr.set_value(attr_enum_spectrum_ro_read, dimEnumSpectrum);
 
 	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_enum_spectrum_ro
 }
@@ -3127,7 +3155,7 @@ void TangoTest::read_enum_image_ro(Tango::Attribute &attr)
 	DEBUG_STREAM << "TangoTest::read_enum_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_enum_image_ro) ENABLED START -----*/
 	//	Set the attribute value
-	attr.set_value(attr_enum_image_ro_read, 251, 251);
+	attr.set_value(attr_enum_image_ro_read, dimXenumImage, dimYenumImage);
 
 	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_enum_image_ro
 }
@@ -3145,7 +3173,7 @@ void TangoTest::read_enum_image(Tango::Attribute &attr)
 	DEBUG_STREAM << "TangoTest::read_enum_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_enum_image) ENABLED START -----*/
 	//	Set the attribute value
-	attr.set_value(attr_enum_image_read, 251, 251);
+	attr.set_value(attr_enum_image_read, dimXenumImage, dimYenumImage);
 
 	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_enum_image
 }
@@ -3170,7 +3198,21 @@ void TangoTest::write_enum_image(Tango::WAttribute &attr)
 	enum_imageEnum enum_val[w_length];
 	for (int i=0 ; i<w_length ; i++)  enum_val[i]=(enum_imageEnum) w_val[i];
 	/*----- PROTECTED REGION ID(TangoTest::write_enum_image) ENABLED START -----*/
+	(void) w_length;
 
+	dimXenumImage = attr.get_w_dim_x();
+	DEBUG_STREAM << "X :" << dimXenumImage << std::endl;
+
+	dimYenumImage = attr.get_w_dim_y();
+	DEBUG_STREAM << "Y :" << dimYenumImage << std::endl;
+
+	long len = dimXenumImage * dimYenumImage;
+	len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
+
+	for (long i=0; i < len; i++)
+	{
+		attr_enum_spectrum_read[i] =(enum_spectrumEnum) w_val[i];
+	}
 
 	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_enum_image
 }
@@ -4172,6 +4214,7 @@ void TangoTest::add_dynamic_commands()
         static const double kpi_deg = 3.14159 / 180.0;
         static const int boolean_generation_max_value = 2;
         static const int int_generation_max_value = 256;
+        static const int enum_generation_max_value = 2;
 
         *attr_short_scalar_rww_read =
                 randomize(attr_short_scalar_w_write);
@@ -4212,6 +4255,12 @@ void TangoTest::add_dynamic_commands()
         *attr_float_scalar_read =
                 randomize(attr_float_scalar_write);
 
+        *attr_enum_scalar_read =
+          static_cast<enum_scalarEnum>(randomize(enum_generation_max_value));
+
+        *attr_enum_scalar_ro_read =
+          static_cast<enum_scalar_roEnum>(randomize(enum_generation_max_value));
+
         int i, j;
 
         for (i = 0; i < kSpecLen; i++)
@@ -4248,6 +4297,18 @@ void TangoTest::add_dynamic_commands()
         for (i = 0; i < kSpecLen; i++)
             attr_float_spectrum_ro_read[i] = (float) randomize(int_generation_max_value);
 
+        for (i = 0; i < kSpecLen; i++)
+        {
+          attr_enum_spectrum_ro_read[i] =
+            static_cast<enum_spectrum_roEnum>(randomize(enum_generation_max_value));
+        }
+
+        for (i = 0; i < kSpecLen; i++)
+        {
+          attr_enum_spectrum_read[i] =
+            static_cast<enum_spectrumEnum>(randomize(enum_generation_max_value));
+        }
+
         generate_image(attr_short_image_ro_read, kImagLen, short_image_lock);
 
         generate_image(attr_long_image_ro_read, kImagLen, long_image_lock);
@@ -4280,6 +4341,10 @@ void TangoTest::add_dynamic_commands()
                           i,
                           j,
                           randomize(int_generation_max_value));
+
+        generate_full_image(attr_enum_image_read, kImagLen, enum_generation_max_value, enum_image_lock);
+
+        generate_full_image(attr_enum_image_ro_read, kImagLen, enum_generation_max_value, enum_image_lock);
 
         k++;
     }
