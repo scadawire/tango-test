@@ -3070,7 +3070,7 @@ void TangoTest::read_generic_blob_rw(Tango::Pipe &pipe)
             auto names = generic_blob_rw_data.get_data_elt_names();
             pipe.get_blob().set_data_elt_names(names);
             pipe.set_value_flag(true);
-            for (int i = 0; i < generic_blob_rw_data.get_data_elt_nb(); ++i) {
+            for (size_t i = 0; i < generic_blob_rw_data.get_data_elt_nb(); ++i) {
                 (*(pipe.get_blob().get_insert_data()))[i] = (*(generic_blob_rw_data.get_extract_data()))[i];
             }
         } else {
