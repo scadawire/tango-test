@@ -4116,7 +4116,7 @@ void TangoTest::add_dynamic_commands()
             for (long j = 0; j < max_xy; j++) {
                 int r = ::rand();
                 r = r < 0 ? -r : r;
-                buffer[i * max_xy + j] = (long) (r % (int) max_value);
+                buffer[i * max_xy + j] = (T)(r % (int)max_value);
             }
         }
         lock.unlock();
