@@ -4114,9 +4114,7 @@ void TangoTest::add_dynamic_commands()
         // For each pixel, we need to generate a random value between [0, max_value]
         for (long i = 0; i < max_xy; i++) {
             for (long j = 0; j < max_xy; j++) {
-                int r = ::rand();
-                r = r < 0 ? -r : r;
-                buffer[i * max_xy + j] = (T)(r % (int)max_value);
+			    buffer[i * max_xy + j] = (T) randomize(max_value);
             }
         }
         lock.unlock();
