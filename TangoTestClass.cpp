@@ -794,7 +794,6 @@ void TangoTestClass::write_class_property()
 	Tango::DbData	data;
 	std::string	classname = get_name();
 	std::string	header;
-	std::string::size_type	start, end;
 
 	//	Put title
 	Tango::DbDatum	title("ProjectTitle");
@@ -1418,6 +1417,30 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	enum_scalar->set_disp_level(Tango::OPERATOR);
 	//	Not Memorized
 	att_list.push_back(enum_scalar);
+
+	//	Attribute : freq
+	freqAttrib	*freq = new freqAttrib();
+	Tango::UserDefaultAttrProp	freq_prop;
+	//	description	not set for freq
+	//	label	not set for freq
+	//	unit	not set for freq
+	//	standard_unit	not set for freq
+	//	display_unit	not set for freq
+	//	format	not set for freq
+	//	max_value	not set for freq
+	//	min_value	not set for freq
+	//	max_alarm	not set for freq
+	//	min_alarm	not set for freq
+	//	max_warning	not set for freq
+	//	min_warning	not set for freq
+	//	delta_t	not set for freq
+	//	delta_val	not set for freq
+	
+	freq->set_default_properties(freq_prop);
+	//	Not Polled
+	freq->set_disp_level(Tango::OPERATOR);
+	//	Not Memorized
+	att_list.push_back(freq);
 
 	//	Attribute : boolean_spectrum
 	boolean_spectrumAttrib	*boolean_spectrum = new boolean_spectrumAttrib();
