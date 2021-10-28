@@ -4,7 +4,9 @@ project(TangoTest LANGUAGES CXX
         VERSION 3.0)
 include(FindPkgConfig)
 
-pkg_search_module(TANGO_PKG REQUIRED tango)
+if(NOT WIN32)
+  pkg_search_module(TANGO_PKG REQUIRED tango)
+ENDIF()
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
