@@ -3076,7 +3076,7 @@ void TangoTest::read_generic_blob_rw(Tango::Pipe &pipe)
         } else {
             std::vector<std::string> de_names{"NO BLOB"};
             pipe.get_blob().set_data_elt_names(de_names);
-            int generic_blob_rw_status = 0;
+            short generic_blob_rw_status = 0;
             pipe << generic_blob_rw_status;
         }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_generic_blob_rw
