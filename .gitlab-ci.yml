@@ -1,0 +1,77 @@
+---
+stages:
+  - build
+  - release
+
+variables:
+  TANGO_VERSION: 9.3.4
+  MSVC_VERSION: v140
+  GENERATOR_VERSION: Visual Studio 16 2019
+  DEPS_PATH: C:/dependencies
+  LIBTANGO: libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
+  TANGO_PATH: ${DEPS_PATH}/libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
+
+.build_tangotest:
+  stage: build
+  before_script:
+    - choco install cmake -y
+    - $env:Path += ";C:\Program Files\CMake\bin"
+    - $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
+    - msbuild /version
+    - if (Test-Path "${DEPS_PATH}") { Remove-Item "${DEPS_PATH}" -Recurse -Force; }
+    - New-Item "${DEPS_PATH}" -ItemType Directory
+    - wget.exe "https://github.com/tango-controls/cppTango/releases/download/${TANGO_VERSION}/${LIBTANGO}.zip" -P "${DEPS_PATH}"
+    - 7z x "${TANGO_PATH}.zip" -o"${DEPS_PATH}"
+  script:
+        # Dirty path on Windows. Comment out pipe call, to prevent compilation error described in issue #18. Remove after issue is solved
+    #- ((Get-Content -path TangoTest.cpp -Raw) -replace 'pipe << generic_blob_rw_status;','//pipe << generic_blob_rw_status;') | Set-Content -Path TangoTest.cpp
+    - New-Item artifacts -ItemType Directory
+    - set TANGO_ROOT=${TANGO_PATH}
+    - $env:TANGO_ROOT = ${TANGO_PATH}
+    - $env:Path = "C:/Program Files (x86)/CMake/bin/" + ";" + $env:Path
+    - cmake -G"${GENERATOR_VERSION}"
+    - cmake --build . --config Release 
+    # need to install nsis and add nsis to path
+    #- cmake --build . --target package   
+    - cmake --install . 
+    - if (Test-Path "C:/Program Files (x86)/TangoTest/bin") { Move-Item -Path "C:/Program Files (x86)/TangoTest/bin/TangoTest.exe" -Destination "artifacts\TangoTest-win64.exe"; }
+    - if (Test-Path "C:/Program Files (x86)/TangoTest/bin") { Move-Item -Path "C:/Program Files (x86)/TangoTest/bin/TangoTest_sta.exe" -Destination "artifacts\TangoTest_sta-win64.exe"; }
+  after_script:
+  artifacts:
+    paths:
+      - artifacts
+    expire_in: 1 day      
+  tags:
+    - shared-windows
+    
+build-tangotest-64bit:
+  extends: .build_tangotest
+  variables:
+    ARCH: x64
+    TARGET_ARCH: x64
+release-builds:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  before_script:
+    - apk update
+    - apk add curl
+    - apk --no-cache add findutils
+  script:
+    - cd artifacts
+    - >
+      find . -type f -printf "%f\n" -exec curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file {} "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/{}" \;
+  release:
+    name: 'Release $CI_COMMIT_TAG'
+    tag_name: '$CI_COMMIT_TAG'
+    description: 'Release $CI_COMMIT_TAG'
+    ref: '$CI_COMMIT_SHA'
+    assets:
+      links:
+        - name: 'Starter-x64.exe'
+          url: "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/Starter-x64.exe"
+        - name: 'Starter-x86.exe'
+          url: "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/Starter-x86.exe"
+  rules:
+    - if: '"$CI_COMMIT_TAG" && "$CI_COMMIT_BRANCH" == "main"'
+      when: on_success
