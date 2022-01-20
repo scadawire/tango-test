@@ -12,7 +12,7 @@ variables:
   TANGO_PATH: ${DEPS_PATH}/libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
 
-.build_starter:
+.build_tangotest:
   stage: build
   before_script:
     - choco install cmake -y
@@ -45,8 +45,8 @@ variables:
   tags:
     - shared-windows
     
-build-starter-64bit:
-  extends: .build_starter
+build-tangotest-64bit:
+  extends: .build_tangotest
   variables:
     ARCH: x64
     TARGET_ARCH: x64
