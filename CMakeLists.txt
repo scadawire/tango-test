@@ -1,32 +1,48 @@
-cmake_minimum_required(VERSION 3.1.3)
-set(CMP0048 NEW)
-project(TangoTest LANGUAGES CXX
-        VERSION 3.0)
-include(FindPkgConfig)
+# Generic main project
+project(Root)
+cmake_minimum_required (VERSION 3.15)
 
-if(NOT WIN32)
-  pkg_search_module(TANGO_PKG REQUIRED tango)
-ENDIF()
+###############################################################################
+# List of TANGO device servers to build (from defined classes/lib below)
+set(PROJECT_BIN
+    TangoTest
+)
+# External shared libraries needed on this project
+set(PROJECT_LIB_EXTERNAL
+)
+# Local shared libraries needed on this project
+set(PROJECT_LIB_INTERNAL
+    TangoTest
+)
+option(BUILD_SHARED_LIBS "True to build shared libraries." ON)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_STANDARD_REQUIRED YES)
+# Load base cmake macro
+include(./cmake/macro/default-macro.cmake)
+# Load user cmake macro
+include(./cmake/macro/user-macro.cmake)
 
-set(SOURCES
-        ClassFactory.cpp
-        TangoTest.cpp
-        TangoTestClass.cpp
-        TangoTestStateMachine.cpp
-        main.cpp)
+# Load base cmake configuration
+include(./cmake/config/default-config.cmake)
+# Load user cmake configuration
+include(./cmake/config/user-config.cmake)
 
-set(HEADERS
-        TangoTest.h
-        TangoTestClass.h)
+# Load external libraries
+include(./cmake/find-lib.cmake)
 
-link_directories(${TANGO_PKG_LIBRARY_DIRS})
+# Build internal libraries
+if(PROJECT_LIB_INTERNAL)
+    message("# BUILD INTERNAL LIB")
+    unset(CLASS CACHE)
+    foreach(CLASS IN ITEMS ${PROJECT_LIB_INTERNAL})
+        add_subdirectory(./classes/${CLASS})
+    endforeach()
+endif()
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${TANGO_PKG_INCLUDE_DIRS})
-target_compile_options(${PROJECT_NAME} PUBLIC ${TANGO_PKG_CFLAGS_OTHER})
-target_link_libraries(${PROJECT_NAME} PUBLIC ${TANGO_PKG_LIBRARIES})
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+# Build TANGO device servers
+if(PROJECT_BIN)
+    message("# BUILD TANGO DEVICE SERVERS")
+    unset(DEVICE_SERVER CACHE)
+    foreach(DEVICE_SERVER IN ITEMS ${PROJECT_BIN})
+        add_subdirectory(servers/${DEVICE_SERVER})
+    endforeach()
+endif()

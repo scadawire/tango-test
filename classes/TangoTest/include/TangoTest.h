@@ -106,7 +106,6 @@ public:
 	Tango::DevUShort	attr_ushort_scalar_write;
 	Tango::DevUChar		attr_uchar_scalar_write;
 	Tango::DevDouble	attr_ampli_write;
-    Tango::DevDouble	attr_freq_write;
 	Tango::DevLong64	attr_long64_scalar_write;
 	Tango::DevULong64	attr_ulong64_scalar_write;
 	Tango::DevString	attr_string_scalar_write;
@@ -474,15 +473,6 @@ public:
 	virtual void read_enum_scalar(Tango::Attribute &attr);
 	virtual void write_enum_scalar(Tango::WAttribute &attr);
 	virtual bool is_enum_scalar_allowed(Tango::AttReqType type);
-/**
- *	Attribute freq related methods
- *	Description: 
- *
- *	Data type:	Tango::DevDouble
- *	Attr type:	Scalar
- */
-	virtual void write_freq(Tango::WAttribute &attr);
-	virtual bool is_freq_allowed(Tango::AttReqType type);
 /**
  *	Attribute boolean_spectrum related methods
  *	Description: 

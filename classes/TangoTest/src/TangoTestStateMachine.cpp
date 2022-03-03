@@ -466,22 +466,6 @@ bool TangoTest::is_enum_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_freq_allowed()
- *	Description : Execution allowed for freq attribute
- */
-//--------------------------------------------------------
-bool TangoTest::is_freq_allowed(TANGO_UNUSED(Tango::AttReqType type))
-{
-	//	Not any excluded states for freq attribute in Write access.
-	/*----- PROTECTED REGION ID(TangoTest::freqStateAllowed_WRITE) ENABLED START -----*/
-	
-	/*----- PROTECTED REGION END -----*/	//	TangoTest::freqStateAllowed_WRITE
-
-	return true;
-}
-
-//--------------------------------------------------------
-/**
  *	Method      : TangoTest::is_boolean_spectrum_allowed()
  *	Description : Execution allowed for boolean_spectrum attribute
  */

@@ -376,19 +376,6 @@ public:
 	virtual std::string get_enum_type() {return std::string("enum_scalarEnum");}
 };
 
-//	Attribute freq class definition
-class freqAttrib: public Tango::Attr
-{
-public:
-	freqAttrib():Attr("freq",
-			Tango::DEV_DOUBLE, Tango::WRITE) {};
-	~freqAttrib() {};
-	virtual void write(Tango::DeviceImpl *dev,Tango::WAttribute &att)
-		{(static_cast<TangoTest *>(dev))->write_freq(att);}
-	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
-		{return (static_cast<TangoTest *>(dev))->is_freq_allowed(ty);}
-};
-
 //	Attribute boolean_spectrum class definition
 class boolean_spectrumAttrib: public Tango::SpectrumAttr
 {

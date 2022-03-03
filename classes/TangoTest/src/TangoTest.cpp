@@ -123,7 +123,6 @@ static const long kImagLen = 251;
 //  ushort_scalar        |  Tango::DevUShort	Scalar
 //  ulong_scalar         |  Tango::DevULong	Scalar
 //  enum_scalar          |  Tango::DevEnum	Scalar
-//  freq                 |  Tango::DevDouble	Scalar
 //  boolean_spectrum     |  Tango::DevBoolean	Spectrum  ( max = 4096)
 //  boolean_spectrum_ro  |  Tango::DevBoolean	Spectrum  ( max = 4096)
 //  double_spectrum      |  Tango::DevDouble	Spectrum  ( max = 4096)
@@ -174,63 +173,73 @@ namespace TangoTest_ns
 //=============================================================================
 // Class: DataGenerator (thread)
 //=============================================================================
-    class DataGenerator : public omni_thread, public Tango::LogAdapter {
-    public:
-        DataGenerator(TangoTest &dev, long sleep_time)
-                : omni_thread(),
-                  Tango::LogAdapter(&dev),
-                  go_on_(1),
-                  dev_(dev),
-                  sleep_time_(sleep_time),
-                  generate_crash_(false) {
-            // noop ctor
-        }
+class DataGenerator : public omni_thread, public Tango::LogAdapter
+{
+public:
+  DataGenerator (TangoTest& dev, long sleep_time)
+    : omni_thread(),
+      Tango::LogAdapter(&dev),
+      go_on_(1),
+      dev_(dev),
+      sleep_time_(sleep_time),
+      generate_crash_ (false)
+  {
+    // noop ctor
+  }
 
-        void go(void) {
-            DEBUG_STREAM << "DataGenerator::go" << std::endl;
-            start_undetached();
-        }
+  void go (void)
+  {
+    DEBUG_STREAM << "DataGenerator::go" << std::endl;
+    start_undetached();
+  }
 
-        void crash(void) {
-            WARN_STREAM << "DataGenerator::crash" << std::endl;
-            generate_crash_ = true;
-        }
+  void crash (void)
+  {
+    WARN_STREAM << "DataGenerator::crash" << std::endl;
+    generate_crash_ = true;
+  }
 
-        virtual void *run_undetached(void *) {
-            static int *__invalid_ptr__ = 0;
+  virtual void* run_undetached (void *)
+  {
+    static int * __invalid_ptr__ = 0;
 
-            DEBUG_STREAM << "DataGenerator::run_undetached" << std::endl;
-            do {
-                if (generate_crash_)
-                    *__invalid_ptr__ = 0;
+    DEBUG_STREAM << "DataGenerator::run_undetached" << std::endl;
+    do
+    {
+      if (generate_crash_)
+        *__invalid_ptr__ = 0;
 
-                { //- enter critical section
-                    omni_mutex_lock guard(dev_.lock);
-                    if (!go_on_) break;
-                    DEBUG_STREAM << "DataGenerator::generating data" << std::endl;
-                    dev_.gen_data();
-                } //- leave critical section
-                sleep(0, sleep_time_ * 1000000);
-            } while (go_on_);
-            return 0;
-        }
+      { //- enter critical section
+        omni_mutex_lock guard(dev_.lock);
+        if (! go_on_) break;
+        DEBUG_STREAM << "DataGenerator::generating data" << std::endl;
+        dev_.gen_data();
+      } //- leave critical section
+      sleep(0, sleep_time_ * 1000000);
+    }
+    while (go_on_);
+    return 0;
+  }
 
-        void abort(void) {
-            DEBUG_STREAM << "DataGenerator::abort" << std::endl;
-            go_on_ = 0;
-        }
+  void abort (void)
+  {
+    DEBUG_STREAM << "DataGenerator::abort" << std::endl;
+    go_on_ = 0;
+  }
 
-    protected:
-        virtual ~DataGenerator(void) {
-            // noop dtor
-        }
+protected:
+  virtual ~DataGenerator (void)
+  {
+    // noop dtor
+  }
 
-    private:
-        int go_on_;
-        TangoTest &dev_;
-        long sleep_time_;
-        bool generate_crash_;
-    };
+private:
+  int go_on_;
+  TangoTest& dev_;
+  long sleep_time_;
+  bool generate_crash_;
+}
+;
 
 /*----- PROTECTED REGION END -----*/	//	TangoTest::namespace_starting
 
@@ -245,27 +254,27 @@ TangoTest::TangoTest(Tango::DeviceClass *cl, std::string &s)
  : TANGO_BASE_CLASS(cl, s.c_str())
 {
 	/*----- PROTECTED REGION ID(TangoTest::constructor_1) ENABLED START -----*/
-        init_device();
+	init_device();
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::constructor_1
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::constructor_1
 }
 //--------------------------------------------------------
 TangoTest::TangoTest(Tango::DeviceClass *cl, const char *s)
  : TANGO_BASE_CLASS(cl, s)
 {
 	/*----- PROTECTED REGION ID(TangoTest::constructor_2) ENABLED START -----*/
-        init_device();
+	init_device();
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::constructor_2
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::constructor_2
 }
 //--------------------------------------------------------
 TangoTest::TangoTest(Tango::DeviceClass *cl, const char *s, const char *d)
  : TANGO_BASE_CLASS(cl, s, d)
 {
 	/*----- PROTECTED REGION ID(TangoTest::constructor_3) ENABLED START -----*/
-        init_device();
+	init_device();
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::constructor_3
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::constructor_3
 }
 
 //--------------------------------------------------------
@@ -279,314 +288,314 @@ void TangoTest::delete_device()
 	DEBUG_STREAM << "TangoTest::delete_device() " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::delete_device) ENABLED START -----*/
 
-        //	Delete device allocated objects
-        omni_mutex_lock guard(lock);
+	//	Delete device allocated objects
+	omni_mutex_lock guard(lock);
 
-        if (mthreaded_impl && data_gen) {
-            data_gen->abort();
-            data_gen->join(0);
-            data_gen = 0;
-        }
+  if (mthreaded_impl && data_gen) {
+    data_gen->abort();
+    data_gen->join(0);
+    data_gen = 0;
+  }
 
-        if (attr_short_scalar_ro_read) {
-            delete attr_short_scalar_ro_read;
-            attr_short_scalar_ro_read = 0;
-        }
+  if (attr_short_scalar_ro_read) {
+    delete attr_short_scalar_ro_read;
+    attr_short_scalar_ro_read = 0;
+  }
 
-        if (attr_short_scalar_read) {
-            delete attr_short_scalar_read;
-            attr_short_scalar_read = 0;
-        }
-
-
-        if (attr_short_scalar_rww_read) {
-            delete attr_short_scalar_rww_read;
-            attr_short_scalar_rww_read = 0;
-        }
-
-        if (attr_long_scalar_read) {
-            delete attr_long_scalar_read;
-            attr_long_scalar_read = 0;
-        }
-
-        if (attr_ulong_scalar_read) {
-            delete attr_ulong_scalar_read;
-            attr_ulong_scalar_read = 0;
-        }
-
-        if (attr_long64_scalar_read) {
-            delete attr_long64_scalar_read;
-            attr_long64_scalar_read = 0;
-        }
-
-        if (attr_ulong64_scalar_read) {
-            delete attr_ulong64_scalar_read;
-            attr_ulong64_scalar_read = 0;
-        }
-
-        if (attr_long_scalar_rww_read) {
-            delete attr_long_scalar_rww_read;
-            attr_long_scalar_rww_read = 0;
-        }
-
-        if (attr_double_scalar_read) {
-            delete attr_double_scalar_read;
-            attr_double_scalar_read = 0;
-        }
-
-        if (attr_double_scalar_rww_read) {
-            delete attr_double_scalar_rww_read;
-            attr_double_scalar_rww_read = 0;
-        }
-
-        if (*attr_string_scalar_read) {
-            delete *attr_string_scalar_read;
-        }
-
-        if (attr_string_scalar_read) {
-            delete[] attr_string_scalar_read;
-            attr_string_scalar_read = 0;
-        }
-
-        if (attr_boolean_scalar_read) {
-            delete attr_boolean_scalar_read;
-            attr_boolean_scalar_read = 0;
-        }
-
-        if (attr_float_scalar_read) {
-            delete attr_float_scalar_read;
-            attr_float_scalar_read = 0;
-        }
-
-        if (attr_uchar_scalar_read) {
-            delete attr_uchar_scalar_read;
-            attr_uchar_scalar_read = 0;
-        }
-
-        if (attr_ushort_scalar_read) {
-            delete attr_ushort_scalar_read;
-            attr_ushort_scalar_read = 0;
-        }
-
-        //- spectrum
-        if (attr_short_spectrum_read) {
-            delete[] attr_short_spectrum_read;
-            attr_short_spectrum_read = 0;
-        }
-
-        if (attr_short_spectrum_ro_read) {
-            delete[] attr_short_spectrum_ro_read;
-            attr_short_spectrum_ro_read = 0;
-        }
-
-        if (attr_long_spectrum_read) {
-            delete[] attr_long_spectrum_read;
-            attr_long_spectrum_read = 0;
-        }
-
-        if (attr_long_spectrum_ro_read) {
-            delete[] attr_long_spectrum_ro_read;
-            attr_long_spectrum_ro_read = 0;
-        }
-
-        if (attr_ulong_spectrum_ro_read) {
-            delete[] attr_ulong_spectrum_ro_read;
-            attr_ulong_spectrum_ro_read = 0;
-        }
-
-        if (attr_ulong_spectrum_ro_read) {
-            delete[] attr_ulong_spectrum_ro_read;
-            attr_ulong_spectrum_ro_read = 0;
-        }
-
-        if (attr_ulong64_spectrum_ro_read) {
-            delete[] attr_ulong64_spectrum_ro_read;
-            attr_ulong64_spectrum_ro_read = 0;
-        }
-
-        if (attr_double_spectrum_read) {
-            delete[] attr_double_spectrum_read;
-            attr_double_spectrum_read = 0;
-        }
-
-        if (attr_long64_spectrum_ro_read) {
-            delete[] attr_long64_spectrum_ro_read;
-            attr_long64_spectrum_ro_read = 0;
-        }
-
-        if (attr_double_spectrum_ro_read) {
-            delete[] attr_double_spectrum_ro_read;
-            attr_double_spectrum_ro_read = 0;
-        }
-
-        if (attr_boolean_spectrum_read) {
-            delete[] attr_boolean_spectrum_read;
-            attr_boolean_spectrum_read = 0;
-        }
-
-        if (attr_boolean_spectrum_ro_read) {
-            delete[] attr_boolean_spectrum_ro_read;
-            attr_boolean_spectrum_ro_read = 0;
-        }
-
-        if (attr_uchar_spectrum_read) {
-            delete[] attr_uchar_spectrum_read;
-            attr_uchar_spectrum_read = 0;
-        }
-
-        if (attr_uchar_spectrum_ro_read) {
-            delete[] attr_uchar_spectrum_ro_read;
-            attr_uchar_spectrum_ro_read = 0;
-        }
-
-        if (attr_ushort_spectrum_read) {
-            delete[] attr_ushort_spectrum_read;
-            attr_ushort_spectrum_read = 0;
-        }
-
-        if (attr_ushort_spectrum_ro_read) {
-            delete[] attr_ushort_spectrum_ro_read;
-            attr_ushort_spectrum_ro_read = 0;
-        }
-
-        if (attr_float_spectrum_read) {
-            delete[] attr_float_spectrum_read;
-            attr_float_spectrum_read = 0;
-        }
-
-        if (attr_float_spectrum_ro_read) {
-            delete[] attr_float_spectrum_ro_read;
-            attr_float_spectrum_ro_read = 0;
-        }
-
-        int s = 0;
-        if (attr_string_spectrum_ro_read) {
-            for (s = 0; s < kSpecLen; s++)
-                CORBA::string_free(attr_string_spectrum_ro_read[s]);
-            delete[] attr_string_spectrum_ro_read;
-            attr_string_spectrum_ro_read = 0;
-        }
-
-        if (attr_string_spectrum_read) {
-            for (s = 0; s < dimStringSpectrum; s++)
-                CORBA::string_free(attr_string_spectrum_read[s]);
-            delete[] attr_string_spectrum_read;
-            attr_string_spectrum_read = 0;
-        }
+  if (attr_short_scalar_read) {
+    delete attr_short_scalar_read;
+    attr_short_scalar_read = 0;
+  }
 
 
-        //- image
-        if (attr_short_image_read) {
-            delete[] attr_short_image_read;
-            attr_short_image_read = 0;
-        }
+  if (attr_short_scalar_rww_read) {
+	  delete attr_short_scalar_rww_read;
+    attr_short_scalar_rww_read = 0;
+  }
 
-        if (attr_long_image_read) {
-            delete[] attr_long_image_read;
-            attr_long_image_read = 0;
-        }
+  if (attr_long_scalar_read) {
+    delete attr_long_scalar_read;
+    attr_long_scalar_read = 0;
+  }
 
-        if (attr_double_image_read) {
-            delete[] attr_double_image_read;
-            attr_double_image_read = 0;
-        }
+  if (attr_ulong_scalar_read) {
+    delete attr_ulong_scalar_read;
+    attr_ulong_scalar_read = 0;
+  }
 
-        if (attr_boolean_image_read) {
-            delete[] attr_boolean_image_read;
-            attr_boolean_image_read = 0;
-        }
+  if (attr_long64_scalar_read) {
+    delete attr_long64_scalar_read;
+    attr_long64_scalar_read = 0;
+  }
 
-        if (attr_uchar_image_read) {
-            delete[] attr_uchar_image_read;
-            attr_uchar_image_read = 0;
-        }
+  if (attr_ulong64_scalar_read) {
+    delete attr_ulong64_scalar_read;
+    attr_ulong64_scalar_read = 0;
+  }
 
-        if (attr_ushort_image_read) {
-            delete[] attr_ushort_image_read;
-            attr_ushort_image_read = 0;
-        }
+  if (attr_long_scalar_rww_read) {
+	  delete attr_long_scalar_rww_read;
+    attr_long_scalar_rww_read = 0;
+  }
 
-        if (attr_float_image_read) {
-            delete[] attr_float_image_read;
-            attr_float_image_read = 0;
-        }
+  if (attr_double_scalar_read) {
+	  delete attr_double_scalar_read;
+    attr_double_scalar_read = 0;
+  }
 
-        //
+  if (attr_double_scalar_rww_read) {
+	  delete attr_double_scalar_rww_read;
+    attr_double_scalar_rww_read = 0;
+  }
 
-        if (attr_short_image_ro_read) {
-            delete[] attr_short_image_ro_read;
-            attr_short_image_ro_read = 0;
-        }
+  if (*attr_string_scalar_read) {
+    delete *attr_string_scalar_read;
+  }
 
-        if (attr_long_image_ro_read) {
-            delete[] attr_long_image_ro_read;
-            attr_long_image_ro_read = 0;
-        }
+  if (attr_string_scalar_read) {
+	  delete[] attr_string_scalar_read;
+    attr_string_scalar_read = 0;
+  }
 
-        if (attr_ulong_image_ro_read) {
-            delete[] attr_ulong_image_ro_read;
-            attr_ulong_image_ro_read = 0;
-        }
+  if (attr_boolean_scalar_read) {
+    delete attr_boolean_scalar_read;
+    attr_boolean_scalar_read = 0;
+  }
 
-        if (attr_long64_image_ro_read) {
-            delete[] attr_long64_image_ro_read;
-            attr_long64_image_ro_read = 0;
-        }
+  if (attr_float_scalar_read) {
+    delete attr_float_scalar_read;
+    attr_float_scalar_read = 0;
+  }
 
-        if (attr_ulong64_image_ro_read) {
-            delete[] attr_ulong64_image_ro_read;
-            attr_ulong64_image_ro_read = 0;
-        }
+  if (attr_uchar_scalar_read) {
+    delete attr_uchar_scalar_read;
+    attr_uchar_scalar_read = 0;
+  }
 
-        if (attr_double_image_ro_read) {
-            delete[] attr_double_image_ro_read;
-            attr_double_image_ro_read = 0;
-        }
+  if (attr_ushort_scalar_read) {
+    delete attr_ushort_scalar_read;
+    attr_ushort_scalar_read = 0;
+  }
 
-        if (attr_boolean_image_ro_read) {
-            delete[] attr_boolean_image_ro_read;
-            attr_boolean_image_ro_read = 0;
-        }
+  //- spectrum
+  if (attr_short_spectrum_read) {
+    delete[] attr_short_spectrum_read;
+    attr_short_spectrum_read = 0;
+  }
 
-        if (attr_uchar_image_ro_read) {
-            delete[] attr_uchar_image_ro_read;
-            attr_uchar_image_ro_read = 0;
-        }
+  if (attr_short_spectrum_ro_read) {
+    delete[] attr_short_spectrum_ro_read;
+    attr_short_spectrum_ro_read = 0;
+  }
 
-        if (attr_ushort_image_ro_read) {
-            delete[] attr_ushort_image_ro_read;
-            attr_ushort_image_ro_read = 0;
-        }
+  if (attr_long_spectrum_read) {
+    delete[] attr_long_spectrum_read;
+    attr_long_spectrum_read = 0;
+  }
 
-        if (attr_float_image_ro_read) {
-            delete[] attr_float_image_ro_read;
-            attr_float_image_ro_read = 0;
-        }
+  if (attr_long_spectrum_ro_read) {
+    delete[] attr_long_spectrum_ro_read;
+    attr_long_spectrum_ro_read = 0;
+  }
 
-        if (attr_string_image_ro_read) {
-            for (s = 0; s < kImagLen * kImagLen; s++)
-                CORBA::string_free(attr_string_image_ro_read[s]);
-            delete[] attr_string_image_ro_read;
-            attr_string_image_ro_read = 0;
-        }
+  if (attr_ulong_spectrum_ro_read) {
+    delete[] attr_ulong_spectrum_ro_read;
+    attr_ulong_spectrum_ro_read = 0;
+  }
 
-        if (attr_string_image_read) {
-            for (s = 0; s < kImagLen * kImagLen; s++)
-                CORBA::string_free(attr_string_image_read[s]);
-            delete[] attr_string_image_read;
-            attr_string_image_read = 0;
-        }
+  if (attr_ulong_spectrum_ro_read) {
+    delete[] attr_ulong_spectrum_ro_read;
+    attr_ulong_spectrum_ro_read = 0;
+  }
 
-        if (attr_wave_read) {
-            delete[] attr_wave_read;
-            attr_wave_read = 0;
-        }
+  if (attr_ulong64_spectrum_ro_read) {
+    delete[] attr_ulong64_spectrum_ro_read;
+    attr_ulong64_spectrum_ro_read = 0;
+  }
 
-        if (attr_enum_scalar_read) {
-            delete attr_enum_scalar_read;
-            attr_enum_scalar_read = 0;
-        }
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::delete_device
+  if (attr_double_spectrum_read) {
+    delete[] attr_double_spectrum_read;
+    attr_double_spectrum_read = 0;
+  }
+
+  if (attr_long64_spectrum_ro_read) {
+    delete[] attr_long64_spectrum_ro_read;
+    attr_long64_spectrum_ro_read = 0;
+  }
+
+  if (attr_double_spectrum_ro_read) {
+    delete[] attr_double_spectrum_ro_read;
+    attr_double_spectrum_ro_read = 0;
+  }
+
+  if (attr_boolean_spectrum_read) {
+    delete[] attr_boolean_spectrum_read;
+    attr_boolean_spectrum_read = 0;
+  }
+
+  if (attr_boolean_spectrum_ro_read) {
+    delete[] attr_boolean_spectrum_ro_read;
+    attr_boolean_spectrum_ro_read = 0;
+  }
+
+  if (attr_uchar_spectrum_read) {
+    delete[] attr_uchar_spectrum_read;
+    attr_uchar_spectrum_read = 0;
+  }
+
+  if (attr_uchar_spectrum_ro_read) {
+    delete[] attr_uchar_spectrum_ro_read;
+    attr_uchar_spectrum_ro_read = 0;
+  }
+
+  if (attr_ushort_spectrum_read) {
+    delete[] attr_ushort_spectrum_read;
+    attr_ushort_spectrum_read = 0;
+  }
+
+  if (attr_ushort_spectrum_ro_read) {
+    delete[] attr_ushort_spectrum_ro_read;
+    attr_ushort_spectrum_ro_read = 0;
+  }
+
+   if (attr_float_spectrum_read) {
+    delete[] attr_float_spectrum_read;
+    attr_float_spectrum_read = 0;
+  }
+
+  if (attr_float_spectrum_ro_read) {
+    delete[] attr_float_spectrum_ro_read;
+    attr_float_spectrum_ro_read = 0;
+  }
+
+  int s = 0;
+  if (attr_string_spectrum_ro_read) {
+    for (s = 0; s < kSpecLen; s++)
+      CORBA::string_free(attr_string_spectrum_ro_read[s]);
+    delete[] attr_string_spectrum_ro_read;
+    attr_string_spectrum_ro_read = 0;
+  }
+
+  if (attr_string_spectrum_read) {
+    for (s = 0; s < dimStringSpectrum; s++)
+      CORBA::string_free(attr_string_spectrum_read[s]);
+    delete[] attr_string_spectrum_read;
+    attr_string_spectrum_read = 0;
+  }
+
+
+  //- image
+  if (attr_short_image_read) {
+    delete[] attr_short_image_read;
+    attr_short_image_read = 0;
+  }
+
+  if (attr_long_image_read) {
+    delete[] attr_long_image_read;
+    attr_long_image_read = 0;
+  }
+
+  if (attr_double_image_read) {
+    delete[] attr_double_image_read;
+    attr_double_image_read = 0;
+  }
+
+  if (attr_boolean_image_read) {
+    delete[] attr_boolean_image_read;
+    attr_boolean_image_read = 0;
+  }
+
+  if (attr_uchar_image_read) {
+    delete[] attr_uchar_image_read;
+    attr_uchar_image_read = 0;
+  }
+
+  if (attr_ushort_image_read) {
+    delete[] attr_ushort_image_read;
+    attr_ushort_image_read = 0;
+  }
+
+  if (attr_float_image_read) {
+    delete[] attr_float_image_read;
+    attr_float_image_read = 0;
+  }
+
+  //
+
+  if (attr_short_image_ro_read) {
+    delete[] attr_short_image_ro_read;
+    attr_short_image_ro_read = 0;
+  }
+
+  if (attr_long_image_ro_read) {
+    delete[] attr_long_image_ro_read;
+    attr_long_image_ro_read = 0;
+  }
+
+  if (attr_ulong_image_ro_read) {
+    delete[] attr_ulong_image_ro_read;
+    attr_ulong_image_ro_read = 0;
+  }
+
+  if (attr_long64_image_ro_read) {
+    delete[] attr_long64_image_ro_read;
+    attr_long64_image_ro_read = 0;
+  }
+
+  if (attr_ulong64_image_ro_read) {
+    delete[] attr_ulong64_image_ro_read;
+    attr_ulong64_image_ro_read = 0;
+  }
+
+  if (attr_double_image_ro_read) {
+    delete[] attr_double_image_ro_read;
+    attr_double_image_ro_read = 0;
+  }
+
+  if (attr_boolean_image_ro_read) {
+    delete[] attr_boolean_image_ro_read;
+    attr_boolean_image_ro_read = 0;
+  }
+
+  if (attr_uchar_image_ro_read) {
+    delete[] attr_uchar_image_ro_read;
+    attr_uchar_image_ro_read = 0;
+  }
+
+  if (attr_ushort_image_ro_read) {
+    delete[] attr_ushort_image_ro_read;
+    attr_ushort_image_ro_read = 0;
+  }
+
+  if (attr_float_image_ro_read) {
+    delete[] attr_float_image_ro_read;
+    attr_float_image_ro_read = 0;
+  }
+
+  if (attr_string_image_ro_read) {
+    for (s = 0; s < kImagLen * kImagLen; s++)
+      CORBA::string_free(attr_string_image_ro_read[s]);
+    delete[] attr_string_image_ro_read;
+    attr_string_image_ro_read = 0;
+  }
+
+  if (attr_string_image_read) {
+    for (s = 0; s < kImagLen * kImagLen; s++)
+      CORBA::string_free(attr_string_image_read[s]);
+    delete[] attr_string_image_read;
+    attr_string_image_read = 0;
+  }
+
+  if (attr_wave_read) {
+    delete[] attr_wave_read;
+    attr_wave_read = 0;
+  }
+
+  if (attr_enum_scalar_read) {
+    delete attr_enum_scalar_read;
+    attr_enum_scalar_read = 0;
+  }
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::delete_device
 }
 
 //--------------------------------------------------------
@@ -600,22 +609,22 @@ void TangoTest::init_device()
 	DEBUG_STREAM << "TangoTest::init_device() create device " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::init_device_before) ENABLED START -----*/
 
-        //	Initialization before get_device_property() call
-        LOG_INFO(("TangoTest::init_device::init device %s", device_name.c_str()));
+	//	Initialization before get_device_property() call
+	LOG_INFO(("TangoTest::init_device::init device %s", device_name.c_str()));
 
-        // Two lines of code ONLY to make the Debian hardening_check command
-        // happy. Required for Debian packaging
+  // Two lines of code ONLY to make the Debian hardening_check command
+  // happy. Required for Debian packaging
 
-        char host[256];
-        gethostname(host, sizeof(host));
+  char host[256];
+  gethostname(host,sizeof(host));
 
-        omni_mutex_lock guard(lock);
-        //-------------------------------------------------------
+  omni_mutex_lock guard(lock);
+	//-------------------------------------------------------
 
-        // Get device property from database
+    // Get device property from database
 
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::init_device_before
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::init_device_before
 	
 
 	//	Get the device properties from database
@@ -623,301 +632,304 @@ void TangoTest::init_device()
 	
 	/*----- PROTECTED REGION ID(TangoTest::init_device) ENABLED START -----*/
 
-        //	Initialize device
-        // Allocate/initialize read part for each readable attribute
-        // Initialize write part for each writable attribute
+	//	Initialize device
+  // Allocate/initialize read part for each readable attribute
+  // Initialize write part for each writable attribute
 
-        //- Scalar
-        attr_short_scalar_ro_read = new Tango::DevShort;
-        *attr_short_scalar_ro_read = 0;
+  //- Scalar
+  	attr_short_scalar_ro_read = new Tango::DevShort;
+	*attr_short_scalar_ro_read = 0;
 
-        attr_short_scalar_read = new Tango::DevShort;
-        *attr_short_scalar_read = 0;
-        attr_short_scalar_write = 256;
+	attr_short_scalar_read = new Tango::DevShort;
+	*attr_short_scalar_read = 0;
+  	attr_short_scalar_write = 256;
 
-        attr_short_scalar_w_write = 256;
-        attr_short_scalar_rww_read = new Tango::DevShort;
-        *attr_short_scalar_rww_read = 0;
+  	attr_short_scalar_w_write = 256;
+  	attr_short_scalar_rww_read = new Tango::DevShort;
+  	*attr_short_scalar_rww_read = 0;
 
-        attr_long_scalar_read = new Tango::DevLong;
-        *attr_long_scalar_read = 0;
-        attr_long_scalar_write = 256;
+	attr_long_scalar_read = new Tango::DevLong;
+	*attr_long_scalar_read = 0;
+  	attr_long_scalar_write = 256;
 
-        attr_ulong_scalar_read = new Tango::DevULong;
-        *attr_ulong_scalar_read = 0;
-        attr_ulong_scalar_write = 256;
+	attr_ulong_scalar_read = new Tango::DevULong;
+	*attr_ulong_scalar_read = 0;
+	attr_ulong_scalar_write = 256;
 
-        attr_long64_scalar_read = new Tango::DevLong64;
-        *attr_long64_scalar_read = 0;
-        attr_long64_scalar_write = 256;
+	attr_long64_scalar_read = new Tango::DevLong64;
+	*attr_long64_scalar_read = 0;
+	attr_long64_scalar_write = 256;
 
-        attr_ulong64_scalar_read = new Tango::DevULong64;
-        *attr_ulong64_scalar_read = 0;
-        attr_ulong64_scalar_write = 256;
+	attr_ulong64_scalar_read = new Tango::DevULong64;
+	*attr_ulong64_scalar_read = 0;
+	attr_ulong64_scalar_write = 256;
 
-        attr_long_scalar_w_write = 256;
-        attr_long_scalar_rww_read = new Tango::DevLong;
-        *attr_long_scalar_rww_read = 0;
+	attr_long_scalar_w_write = 256;
+	attr_long_scalar_rww_read = new Tango::DevLong;
+	*attr_long_scalar_rww_read = 0;
 
-        attr_double_scalar_read = new Tango::DevDouble;
-        *attr_double_scalar_read = 0;
-        attr_double_scalar_write = 256;
+	attr_double_scalar_read = new Tango::DevDouble;
+	*attr_double_scalar_read = 0;
+ 	attr_double_scalar_write = 256;
 
-        attr_double_scalar_w_write = 256;
-        attr_double_scalar_rww_read = new Tango::DevDouble;
-        *attr_double_scalar_rww_read = 0;
+  	attr_double_scalar_w_write = 256;
+  	attr_double_scalar_rww_read = new Tango::DevDouble;
+  	*attr_double_scalar_rww_read = 0;
 
-        attr_string_scalar_read = new char *;
-        *attr_string_scalar_read = new char[256];
-        ::strcpy(*attr_string_scalar_read, "Default string");
-        attr_string_scalar_write = 0;
+	attr_string_scalar_read = new char*;
+	*attr_string_scalar_read = new char[256];
+  	::strcpy(*attr_string_scalar_read, "Default string");
+  	attr_string_scalar_write = 0;
 
-        attr_boolean_scalar_read = new Tango::DevBoolean;
-        *attr_boolean_scalar_read = true;
-        attr_boolean_scalar_write = false;
+  	attr_boolean_scalar_read = new Tango::DevBoolean;
+	*attr_boolean_scalar_read = true;
+	attr_boolean_scalar_write = false;
 
-        attr_float_scalar_read = new Tango::DevFloat;
-        *attr_float_scalar_read = 0;
-        attr_float_scalar_write = 0;
+  	attr_float_scalar_read = new Tango::DevFloat;
+	*attr_float_scalar_read = 0;
+	attr_float_scalar_write = 0;
 
-        attr_uchar_scalar_read = new Tango::DevUChar;
-        *attr_uchar_scalar_read = 0;
-        attr_uchar_scalar_write = 0;
+	attr_uchar_scalar_read = new Tango::DevUChar;
+	*attr_uchar_scalar_read = 0;
+	attr_uchar_scalar_write = 0;
 
-        attr_ushort_scalar_read = new Tango::DevUShort;
-        *attr_ushort_scalar_read = 0;
-        attr_ushort_scalar_write = 0;
+	attr_ushort_scalar_read = new Tango::DevUShort;
+	*attr_ushort_scalar_read = 0;
+	attr_ushort_scalar_write = 0;
 
-        attr_enum_scalar_read = new enum_scalarEnum;
-        *attr_enum_scalar_read = enum_scalarEnum::_LABEL0;
+  attr_enum_scalar_read = new enum_scalarEnum;
+  *attr_enum_scalar_read = enum_scalarEnum::_LABEL0;
 
-        //- Spectrum
-        attr_short_spectrum_ro_read = new Tango::DevShort[kSpecLen];
-        ::memset(attr_short_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevShort));
+  //- Spectrum
+	attr_short_spectrum_ro_read = new Tango::DevShort[kSpecLen];
+	::memset(attr_short_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevShort));
 
-        attr_short_spectrum_read = new Tango::DevShort[kSpecLen];
-        ::memset(attr_short_spectrum_read, 0, kSpecLen * sizeof(Tango::DevShort));
+  attr_short_spectrum_read = new Tango::DevShort[kSpecLen];
+	::memset(attr_short_spectrum_read, 0, kSpecLen * sizeof(Tango::DevShort));
 
-        dimShortSpectrum = kSpecLen;
+  dimShortSpectrum = kSpecLen;
 
-        attr_long_spectrum_ro_read = new Tango::DevLong[kSpecLen];
-        ::memset(attr_long_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevLong));
+  attr_long_spectrum_ro_read = new Tango::DevLong[kSpecLen];
+	::memset(attr_long_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevLong));
 
-        attr_ulong_spectrum_ro_read = new Tango::DevULong[kSpecLen];
-        ::memset(attr_ulong_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevULong));
+  attr_ulong_spectrum_ro_read = new Tango::DevULong[kSpecLen];
+  ::memset(attr_ulong_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevULong));
 
-        attr_long64_spectrum_ro_read = new Tango::DevLong64[kSpecLen];
-        ::memset(attr_long64_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevLong64));
+  attr_long64_spectrum_ro_read = new Tango::DevLong64[kSpecLen];
+  ::memset(attr_long64_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevLong64));
 
-        attr_ulong64_spectrum_ro_read = new Tango::DevULong64[kSpecLen];
-        ::memset(attr_ulong64_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevULong64));
+  attr_ulong64_spectrum_ro_read = new Tango::DevULong64[kSpecLen];
+  ::memset(attr_ulong64_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevULong64));
 
-        attr_long_spectrum_read = new Tango::DevLong[kSpecLen];
-        ::memset(attr_long_spectrum_read, 0, kSpecLen * sizeof(Tango::DevLong));
+	attr_long_spectrum_read = new Tango::DevLong[kSpecLen];
+	::memset(attr_long_spectrum_read, 0, kSpecLen * sizeof(Tango::DevLong));
 
-        dimLongSpectrum = kSpecLen;
+  dimLongSpectrum = kSpecLen;
 
-        attr_double_spectrum_ro_read = new Tango::DevDouble[kSpecLen];
-        ::memset(attr_double_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevDouble));
+  attr_double_spectrum_ro_read = new Tango::DevDouble[kSpecLen];
+	::memset(attr_double_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevDouble));
 
-        attr_double_spectrum_read = new Tango::DevDouble[kSpecLen];
-        ::memset(attr_double_spectrum_read, 0, kSpecLen * sizeof(Tango::DevDouble));
+	attr_double_spectrum_read = new Tango::DevDouble[kSpecLen];
+	::memset(attr_double_spectrum_read, 0, kSpecLen * sizeof(Tango::DevDouble));
 
-        dimDoubleSpectrum = kSpecLen;
+  dimDoubleSpectrum = kSpecLen;
 
-        attr_string_spectrum_ro_read = new Tango::DevString[kSpecLen];
+  attr_string_spectrum_ro_read = new Tango::DevString[kSpecLen];
 
-        int s;
-        for (s = 0; s < kSpecLen; s++) {
-            attr_string_spectrum_ro_read[s] = CORBA::string_alloc(kSpecLen);
-            ::memset(attr_string_spectrum_ro_read[s], 0, kSpecLen * sizeof(char));
-        }
+  int s;
+  for (s = 0; s < kSpecLen; s++)
+  {
+    attr_string_spectrum_ro_read[s] = CORBA::string_alloc(kSpecLen);
+    ::memset(attr_string_spectrum_ro_read[s], 0, kSpecLen * sizeof(char));
+  }
 
-        attr_string_spectrum_read = new Tango::DevString[kSpecLen];
-        for (s = 0; s < kSpecLen; s++) {
-            attr_string_spectrum_read[s] = CORBA::string_alloc(kSpecLen);
-            ::memset(attr_string_spectrum_read[s], 0, kSpecLen * sizeof(char));
-        }
-        attr_string_spectrum_write = 0;
+  attr_string_spectrum_read = new Tango::DevString[kSpecLen];
+  for (s = 0; s < kSpecLen; s++)
+  {
+    attr_string_spectrum_read[s] = CORBA::string_alloc(kSpecLen);
+    ::memset(attr_string_spectrum_read[s], 0, kSpecLen * sizeof(char));
+  }
+  attr_string_spectrum_write = 0;
 
-        dimStringSpectrum = kSpecLen;
+  dimStringSpectrum = kSpecLen;
 
-        attr_wave_read = new Tango::DevDouble[kSpecLen];
-        ::memset(attr_wave_read, 0, kSpecLen * sizeof(Tango::DevDouble));
-        attr_ampli_write = 1;
-        attr_freq_write = 10;
+	attr_wave_read = new Tango::DevDouble[kSpecLen];
+	::memset(attr_wave_read, 0, kSpecLen * sizeof(Tango::DevDouble));
+	attr_ampli_write= 1;
 
-        attr_boolean_spectrum_ro_read = new Tango::DevBoolean[kSpecLen];
-        ::memset(attr_boolean_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevBoolean));
+  attr_boolean_spectrum_ro_read = new Tango::DevBoolean[kSpecLen];
+	::memset(attr_boolean_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevBoolean));
 
-        attr_boolean_spectrum_read = new Tango::DevBoolean[kSpecLen];
-        ::memset(attr_boolean_spectrum_read, 0, kSpecLen * sizeof(Tango::DevBoolean));
+	attr_boolean_spectrum_read = new Tango::DevBoolean[kSpecLen];
+	::memset(attr_boolean_spectrum_read, 0, kSpecLen * sizeof(Tango::DevBoolean));
 
-        dimBooleanSpectrum = kSpecLen;
+  dimBooleanSpectrum = kSpecLen;
 
-        attr_ushort_spectrum_ro_read = new Tango::DevUShort[kSpecLen];
-        ::memset(attr_ushort_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevUShort));
+  attr_ushort_spectrum_ro_read = new Tango::DevUShort[kSpecLen];
+	::memset(attr_ushort_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevUShort));
 
-        attr_ushort_spectrum_read = new Tango::DevUShort[kSpecLen];
-        ::memset(attr_ushort_spectrum_read, 0, kSpecLen * sizeof(Tango::DevUShort));
+  attr_ushort_spectrum_read = new Tango::DevUShort[kSpecLen];
+	::memset(attr_ushort_spectrum_read, 0, kSpecLen * sizeof(Tango::DevUShort));
 
-        dimUshortSpectrum = kSpecLen;
+  dimUshortSpectrum = kSpecLen;
 
-        attr_uchar_spectrum_ro_read = new Tango::DevUChar[kSpecLen];
-        ::memset(attr_uchar_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevUChar));
+  attr_uchar_spectrum_ro_read = new Tango::DevUChar[kSpecLen];
+	::memset(attr_uchar_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevUChar));
 
-        attr_uchar_spectrum_read = new Tango::DevUChar[kSpecLen];
-        ::memset(attr_uchar_spectrum_read, 0, kSpecLen * sizeof(Tango::DevUChar));
+	attr_uchar_spectrum_read = new Tango::DevUChar[kSpecLen];
+	::memset(attr_uchar_spectrum_read, 0, kSpecLen * sizeof(Tango::DevUChar));
 
-        dimUcharSpectrum = kSpecLen;
+  dimUcharSpectrum = kSpecLen;
 
-        attr_float_spectrum_ro_read = new Tango::DevFloat[kSpecLen];
-        ::memset(attr_float_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevFloat));
+  attr_float_spectrum_ro_read = new Tango::DevFloat[kSpecLen];
+	::memset(attr_float_spectrum_ro_read, 0, kSpecLen * sizeof(Tango::DevFloat));
 
-        attr_float_spectrum_read = new Tango::DevFloat[kSpecLen];
-        ::memset(attr_float_spectrum_read, 0, kSpecLen * sizeof(Tango::DevFloat));
+	attr_float_spectrum_read = new Tango::DevFloat[kSpecLen];
+	::memset(attr_float_spectrum_read, 0, kSpecLen * sizeof(Tango::DevFloat));
 
-        dimFloatSpectrum = kSpecLen;
+  dimFloatSpectrum = kSpecLen;
 
-        //- Images
-        attr_short_image_read = new Tango::DevShort[kImagLen * kImagLen];
-        ::memset(attr_short_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevShort));
+  //- Images
+	attr_short_image_read = new Tango::DevShort[kImagLen * kImagLen];
+	::memset(attr_short_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevShort));
 
-        dimXShortImage = kImagLen;
-        dimYShortImage = kImagLen;
+  dimXShortImage = kImagLen;
+  dimYShortImage = kImagLen;
 
-        attr_long_image_read = new Tango::DevLong[kImagLen * kImagLen];
-        ::memset(attr_long_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevLong));
+	attr_long_image_read = new Tango::DevLong[kImagLen * kImagLen];
+	::memset(attr_long_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevLong));
 
-        dimXLongImage = kImagLen;
-        dimYLongImage = kImagLen;
+  dimXLongImage = kImagLen;
+  dimYLongImage = kImagLen;
 
-        attr_double_image_read = new Tango::DevDouble[kImagLen * kImagLen];
-        ::memset(attr_double_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevDouble));
+	attr_double_image_read = new Tango::DevDouble[kImagLen * kImagLen];
+	::memset(attr_double_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevDouble));
 
-        dimXDoubleImage = kImagLen;
-        dimYDoubleImage = kImagLen;
+  dimXDoubleImage = kImagLen;
+  dimYDoubleImage = kImagLen;
 
-        attr_uchar_image_read = new Tango::DevUChar[kImagLen * kImagLen];
-        ::memset(attr_uchar_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevUChar));
+	attr_uchar_image_read = new Tango::DevUChar[kImagLen * kImagLen];
+	::memset(attr_uchar_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevUChar));
 
-        dimXUcharImage = kImagLen;
-        dimYUcharImage = kImagLen;
+  dimXUcharImage = kImagLen;
+  dimYUcharImage = kImagLen;
 
-        attr_ushort_image_read = new Tango::DevUShort[kImagLen * kImagLen];
-        ::memset(attr_ushort_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevUShort));
+	attr_ushort_image_read = new Tango::DevUShort[kImagLen * kImagLen];
+	::memset(attr_ushort_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevUShort));
 
-        dimXUshortImage = kImagLen;
-        dimYUshortImage = kImagLen;
+  dimXUshortImage = kImagLen;
+  dimYUshortImage = kImagLen;
 
-        attr_float_image_read = new Tango::DevFloat[kImagLen * kImagLen];
-        ::memset(attr_float_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevFloat));
+	attr_float_image_read = new Tango::DevFloat[kImagLen * kImagLen];
+	::memset(attr_float_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevFloat));
 
-        dimXFloatImage = kImagLen;
-        dimYFloatImage = kImagLen;
+  dimXFloatImage = kImagLen;
+  dimYFloatImage = kImagLen;
 
-        attr_boolean_image_read = new Tango::DevBoolean[kImagLen * kImagLen];
-        ::memset(attr_boolean_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevBoolean));
+  	attr_boolean_image_read = new Tango::DevBoolean[kImagLen * kImagLen];
+	::memset(attr_boolean_image_read, 0, kImagLen * kImagLen * sizeof(Tango::DevBoolean));
 
-        dimXBooleanImage = kImagLen;
-        dimYBooleanImage = kImagLen;
+  dimXBooleanImage = kImagLen;
+  dimYBooleanImage = kImagLen;
 
-        attr_short_image_ro_read = new Tango::DevShort[kImagLen * kImagLen];
-        ::memset(attr_short_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevShort));
+  attr_short_image_ro_read = new Tango::DevShort[kImagLen * kImagLen];
+	::memset(attr_short_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevShort));
 
-        attr_long_image_ro_read = new Tango::DevLong[kImagLen * kImagLen];
-        ::memset(attr_long_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevLong));
+	attr_long_image_ro_read = new Tango::DevLong[kImagLen * kImagLen];
+	::memset(attr_long_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevLong));
 
-        attr_ulong_image_ro_read = new Tango::DevULong[kImagLen * kImagLen];
-        ::memset(attr_ulong_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevULong));
+  attr_ulong_image_ro_read = new Tango::DevULong[kImagLen * kImagLen];
+  ::memset(attr_ulong_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevULong));
 
-        attr_long64_image_ro_read = new Tango::DevLong64[kImagLen * kImagLen];
-        ::memset(attr_long64_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevLong64));
+  attr_long64_image_ro_read = new Tango::DevLong64[kImagLen * kImagLen];
+  ::memset(attr_long64_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevLong64));
 
-        attr_ulong64_image_ro_read = new Tango::DevULong64[kImagLen * kImagLen];
-        ::memset(attr_ulong64_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevULong64));
+  attr_ulong64_image_ro_read = new Tango::DevULong64[kImagLen * kImagLen];
+  ::memset(attr_ulong64_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevULong64));
 
-        attr_double_image_ro_read = new Tango::DevDouble[kImagLen * kImagLen];
-        ::memset(attr_double_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevDouble));
+	attr_double_image_ro_read = new Tango::DevDouble[kImagLen * kImagLen];
+	::memset(attr_double_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevDouble));
 
-        attr_uchar_image_ro_read = new Tango::DevUChar[kImagLen * kImagLen];
-        ::memset(attr_uchar_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevUChar));
+	attr_uchar_image_ro_read = new Tango::DevUChar[kImagLen * kImagLen];
+	::memset(attr_uchar_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevUChar));
 
-        attr_ushort_image_ro_read = new Tango::DevUShort[uShort_image_ro_size * uShort_image_ro_size];
-        ::memset(attr_ushort_image_ro_read, 0, uShort_image_ro_size * uShort_image_ro_size * sizeof(Tango::DevUShort));
+	attr_ushort_image_ro_read = new Tango::DevUShort[uShort_image_ro_size * uShort_image_ro_size];
+	::memset(attr_ushort_image_ro_read, 0, uShort_image_ro_size * uShort_image_ro_size * sizeof(Tango::DevUShort));
 
-        attr_float_image_ro_read = new Tango::DevFloat[kImagLen * kImagLen];
-        ::memset(attr_float_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevFloat));
+	attr_float_image_ro_read = new Tango::DevFloat[kImagLen * kImagLen];
+	::memset(attr_float_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevFloat));
 
-        attr_boolean_image_ro_read = new Tango::DevBoolean[kImagLen * kImagLen];
-        ::memset(attr_boolean_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevBoolean));
+  attr_boolean_image_ro_read = new Tango::DevBoolean[kImagLen * kImagLen];
+	::memset(attr_boolean_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevBoolean));
 
-        attr_string_image_ro_read = new char *[kImagLen * kImagLen];
-        for (s = 0; s < kImagLen * kImagLen; s++) {
-            attr_string_image_ro_read[s] = CORBA::string_alloc(kSpecLen);
-            ::memset(attr_string_image_ro_read[s], 0, kSpecLen * sizeof(char));
-        }
+  attr_string_image_ro_read = new char*[kImagLen * kImagLen];
+  for (s = 0; s < kImagLen * kImagLen; s++)
+  {
+    attr_string_image_ro_read[s] = CORBA::string_alloc(kSpecLen);
+    ::memset(attr_string_image_ro_read[s], 0, kSpecLen * sizeof(char));
+  }
 
-        attr_string_image_read = new char *[kImagLen * kImagLen];
-        for (s = 0; s < kImagLen * kImagLen; s++) {
-            attr_string_image_read[s] = CORBA::string_alloc(kSpecLen);
-            ::memset(attr_string_image_read[s], 0, kSpecLen * sizeof(char));
-        }
-        attr_string_image_write = 0;
+  attr_string_image_read = new char*[kImagLen * kImagLen];
+  for (s = 0; s < kImagLen * kImagLen; s++)
+  {
+    attr_string_image_read[s] = CORBA::string_alloc(kSpecLen);
+    ::memset(attr_string_image_read[s], 0, kSpecLen * sizeof(char));
+  }
+  attr_string_image_write = 0;
 
-        dimXStringImage = kImagLen;
-        dimYStringImage = kImagLen;
+  dimXStringImage = kImagLen;
+  dimYStringImage = kImagLen;
 
 
-        // Multithreaded implementation stuffs
-        if (mthreaded_impl == 0) {
-            data_gen = 0;
-            return;
-        }
+  // Multithreaded implementation stuffs
+  if (mthreaded_impl == 0) {
+   data_gen = 0;
+   return;
+  }
 
-        Tango::Attribute &att1 = dev_attr->get_attr_by_name("short_image_ro");
-        att1.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att1 = dev_attr->get_attr_by_name("short_image_ro");
+  att1.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att2 = dev_attr->get_attr_by_name("long_image_ro");
-        att2.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att2 = dev_attr->get_attr_by_name("long_image_ro");
+  att2.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att3 = dev_attr->get_attr_by_name("ulong_image_ro");
-        att3.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att3 = dev_attr->get_attr_by_name("ulong_image_ro");
+  att3.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att4 = dev_attr->get_attr_by_name("long64_image_ro");
-        att4.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att4 = dev_attr->get_attr_by_name("long64_image_ro");
+  att4.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att5 = dev_attr->get_attr_by_name("ulong64_image_ro");
-        att5.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att5 = dev_attr->get_attr_by_name("ulong64_image_ro");
+  att5.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att6 = dev_attr->get_attr_by_name("float_image_ro");
-        att6.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att6 = dev_attr->get_attr_by_name("float_image_ro");
+  att6.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att7 = dev_attr->get_attr_by_name("double_image_ro");
-        att7.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att7 = dev_attr->get_attr_by_name("double_image_ro");
+  att7.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att8 = dev_attr->get_attr_by_name("boolean_image_ro");
-        att8.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att8 = dev_attr->get_attr_by_name("boolean_image_ro");
+  att8.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att9 = dev_attr->get_attr_by_name("uchar_image_ro");
-        att9.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att9 = dev_attr->get_attr_by_name("uchar_image_ro");
+  att9.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        Tango::Attribute &att10 = dev_attr->get_attr_by_name("ushort_image_ro");
-        att10.set_attr_serial_model(Tango::ATTR_BY_USER);
+  Tango::Attribute &att10 = dev_attr->get_attr_by_name("ushort_image_ro");
+  att10.set_attr_serial_model(Tango::ATTR_BY_USER);
 
-        data_gen = new DataGenerator(*this, sleep_period);
-        data_gen->go();
+  data_gen = new DataGenerator(*this, sleep_period);
+  data_gen->go();
 
 // pipe
-        pi_str = "The string";
-        pi_long = 666;
-        pi_short = (Tango::DevShort) 12;
+  pi_str = "The string";
+  pi_long = 666;
+  pi_short = (Tango::DevShort)12;
 
-        generic_blob_rw_has_value = false;
+  generic_blob_rw_has_value = false;
 
-        set_state(Tango::RUNNING);
+  set_state(Tango::RUNNING);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::init_device
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::init_device
 }
 
 //--------------------------------------------------------
@@ -930,12 +942,12 @@ void TangoTest::get_device_property()
 {
 	/*----- PROTECTED REGION ID(TangoTest::get_device_property_before) ENABLED START -----*/
 
-        //	Initialize property data members
-        mthreaded_impl = 1;
-        sleep_period = 2000;
-        uShort_image_ro_size = kImagLen;
+	//	Initialize property data members
+	mthreaded_impl = 1;
+	sleep_period = 2000;
+	uShort_image_ro_size = kImagLen;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::get_device_property_before
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::get_device_property_before
 
 
 	//	Read device properties from database.
@@ -994,12 +1006,12 @@ void TangoTest::get_device_property()
 
 	/*----- PROTECTED REGION ID(TangoTest::get_device_property_after) ENABLED START -----*/
 
-        //	Check device property data members init
-        DEBUG_STREAM << "sleep_period=" << sleep_period << std::endl;
-        DEBUG_STREAM << "mthreaded_impl=" << mthreaded_impl << std::endl;
-        DEBUG_STREAM << "uShort_image_ro_size=" << uShort_image_ro_size << std::endl;
+	//	Check device property data members init
+	DEBUG_STREAM << "sleep_period=" << sleep_period << std::endl;
+	DEBUG_STREAM << "mthreaded_impl=" << mthreaded_impl << std::endl;
+	DEBUG_STREAM << "uShort_image_ro_size=" << uShort_image_ro_size << std::endl;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::get_device_property_after
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::get_device_property_after
 }
 
 //--------------------------------------------------------
@@ -1013,9 +1025,9 @@ void TangoTest::always_executed_hook()
 	DEBUG_STREAM << "TangoTest::always_executed_hook()  " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::always_executed_hook) ENABLED START -----*/
 
-        //	code always executed before all requests
+	//	code always executed before all requests
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::always_executed_hook
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::always_executed_hook
 }
 
 //--------------------------------------------------------
@@ -1029,15 +1041,15 @@ void TangoTest::read_attr_hardware(TANGO_UNUSED(std::vector<long> &attr_list))
 	DEBUG_STREAM << "TangoTest::read_attr_hardware(std::vector<long> &attr_list) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_attr_hardware) ENABLED START -----*/
 
-        //	Add your own code
-        LOG_DEBUG(("In read_attr_hardware for %d attributes", attr_list.size()));
+	//	Add your own code
+	LOG_DEBUG(("In read_attr_hardware for %d attributes",attr_list.size()));
 
-        // Generate data for all attributes
-        if (mthreaded_impl == 0) {
-            gen_data();
-        }
+  // Generate data for all attributes
+  if (mthreaded_impl == 0) {
+ 	  gen_data();
+  }
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_attr_hardware
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_attr_hardware
 }
 //--------------------------------------------------------
 /**
@@ -1050,9 +1062,9 @@ void TangoTest::write_attr_hardware(TANGO_UNUSED(std::vector<long> &attr_list))
 	DEBUG_STREAM << "TangoTest::write_attr_hardware(std::vector<long> &attr_list) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::write_attr_hardware) ENABLED START -----*/
 
-        //	Add your own code
+	//	Add your own code
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_attr_hardware
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_attr_hardware
 }
 
 //--------------------------------------------------------
@@ -1071,10 +1083,10 @@ void TangoTest::write_ampli(Tango::WAttribute &attr)
 	Tango::DevDouble	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_ampli) ENABLED START -----*/
-        DEBUG_STREAM << "ampli = " << w_val << std::endl;
-        attr_ampli_write = w_val;
+  	DEBUG_STREAM << "ampli = " << w_val << std::endl;
+	attr_ampli_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_ampli
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_ampli
 }
 //--------------------------------------------------------
 /**
@@ -1089,9 +1101,9 @@ void TangoTest::read_boolean_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_boolean_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_boolean_scalar) ENABLED START -----*/
-        attr.set_value(attr_boolean_scalar_read);
+	attr.set_value(attr_boolean_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1109,13 +1121,13 @@ void TangoTest::write_boolean_scalar(Tango::WAttribute &attr)
 	Tango::DevBoolean	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_boolean_scalar) ENABLED START -----*/
-        *attr_boolean_scalar_read = w_val;
-        attr_boolean_scalar_write = w_val;
-        DEBUG_STREAM << "Read and write attributes were set to the same value" << std::endl;
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        DEBUG_STREAM << "attr_boolean_scalar_read = " << *attr_boolean_scalar_read << std::endl;
+	*attr_boolean_scalar_read = w_val;
+	attr_boolean_scalar_write = w_val;
+	DEBUG_STREAM << "Read and write attributes were set to the same value" << std::endl;
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	DEBUG_STREAM << "attr_boolean_scalar_read = " << *attr_boolean_scalar_read << std::endl;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_boolean_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_boolean_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1130,9 +1142,9 @@ void TangoTest::read_double_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_double_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_double_scalar) ENABLED START -----*/
-        attr.set_value(attr_double_scalar_read);
+	attr.set_value(attr_double_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1150,10 +1162,10 @@ void TangoTest::write_double_scalar(Tango::WAttribute &attr)
 	Tango::DevDouble	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_double_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_double_scalar_write = w_val;
+    DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_double_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1168,9 +1180,9 @@ void TangoTest::read_double_scalar_rww(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_double_scalar_rww(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_double_scalar_rww) ENABLED START -----*/
-        attr.set_value(attr_double_scalar_rww_read);
+	attr.set_value(attr_double_scalar_rww_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_scalar_rww
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_scalar_rww
 }
 //--------------------------------------------------------
 /**
@@ -1189,7 +1201,7 @@ void TangoTest::write_double_scalar_rww(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_double_scalar_rww) ENABLED START -----*/
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_scalar_rww
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_scalar_rww
 }
 //--------------------------------------------------------
 /**
@@ -1207,10 +1219,10 @@ void TangoTest::write_double_scalar_w(Tango::WAttribute &attr)
 	Tango::DevDouble	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_double_scalar_w) ENABLED START -----*/
-        DEBUG_STREAM << "double_scalar_w = " << w_val << std::endl;
-        attr_double_scalar_w_write = w_val;
+  	DEBUG_STREAM << "double_scalar_w = " << w_val << std::endl;
+	attr_double_scalar_w_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_scalar_w
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_scalar_w
 }
 //--------------------------------------------------------
 /**
@@ -1225,9 +1237,9 @@ void TangoTest::read_float_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_float_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_float_scalar) ENABLED START -----*/
-        attr.set_value(attr_float_scalar_read);
+	attr.set_value(attr_float_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1245,10 +1257,10 @@ void TangoTest::write_float_scalar(Tango::WAttribute &attr)
 	Tango::DevFloat	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_float_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_float_scalar_write = w_val;
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_float_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_float_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_float_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1263,9 +1275,9 @@ void TangoTest::read_long64_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long64_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long64_scalar) ENABLED START -----*/
-        attr.set_value(attr_long64_scalar_read);
+	attr.set_value(attr_long64_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long64_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long64_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1283,10 +1295,10 @@ void TangoTest::write_long64_scalar(Tango::WAttribute &attr)
 	Tango::DevLong64	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_long64_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_long64_scalar_write = w_val;
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_long64_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_long64_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_long64_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1301,9 +1313,9 @@ void TangoTest::read_long_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long_scalar) ENABLED START -----*/
-        attr.set_value(attr_long_scalar_read);
+	attr.set_value(attr_long_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1321,10 +1333,10 @@ void TangoTest::write_long_scalar(Tango::WAttribute &attr)
 	Tango::DevLong	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_long_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_long_scalar_write = w_val;
+    DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_long_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1339,9 +1351,9 @@ void TangoTest::read_long_scalar_rww(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long_scalar_rww(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long_scalar_rww) ENABLED START -----*/
-        attr.set_value(attr_long_scalar_rww_read);
+	attr.set_value(attr_long_scalar_rww_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_scalar_rww
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_scalar_rww
 }
 //--------------------------------------------------------
 /**
@@ -1360,7 +1372,7 @@ void TangoTest::write_long_scalar_rww(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_long_scalar_rww) ENABLED START -----*/
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_scalar_rww
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_scalar_rww
 }
 //--------------------------------------------------------
 /**
@@ -1378,10 +1390,10 @@ void TangoTest::write_long_scalar_w(Tango::WAttribute &attr)
 	Tango::DevLong	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_long_scalar_w) ENABLED START -----*/
-        DEBUG_STREAM << "long_scalar_w = " << w_val << std::endl;
-        attr_long_scalar_w_write = w_val;
+  	DEBUG_STREAM << "long_scalar_w = " << w_val << std::endl;
+	attr_long_scalar_w_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_scalar_w
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_scalar_w
 }
 //--------------------------------------------------------
 /**
@@ -1397,7 +1409,7 @@ void TangoTest::read_no_value(Tango::Attribute &attr)
 	DEBUG_STREAM << "TangoTest::read_no_value(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_no_value) ENABLED START -----*/
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_no_value
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_no_value
 }
 //--------------------------------------------------------
 /**
@@ -1412,9 +1424,9 @@ void TangoTest::read_short_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_scalar) ENABLED START -----*/
-        attr.set_value(attr_short_scalar_read);
+	attr.set_value(attr_short_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1432,10 +1444,10 @@ void TangoTest::write_short_scalar(Tango::WAttribute &attr)
 	Tango::DevShort	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_short_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_short_scalar_write = w_val;
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_short_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1450,9 +1462,9 @@ void TangoTest::read_short_scalar_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_scalar_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_scalar_ro) ENABLED START -----*/
-        attr.set_value(attr_short_scalar_ro_read);
+	attr.set_value(attr_short_scalar_ro_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_scalar_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_scalar_ro
 }
 //--------------------------------------------------------
 /**
@@ -1467,9 +1479,9 @@ void TangoTest::read_short_scalar_rww(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_scalar_rww(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_scalar_rww) ENABLED START -----*/
-        attr.set_value(attr_short_scalar_rww_read);
+	attr.set_value(attr_short_scalar_rww_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_scalar_rww
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_scalar_rww
 }
 //--------------------------------------------------------
 /**
@@ -1488,7 +1500,7 @@ void TangoTest::write_short_scalar_rww(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_short_scalar_rww) ENABLED START -----*/
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_scalar_rww
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_scalar_rww
 }
 //--------------------------------------------------------
 /**
@@ -1506,10 +1518,10 @@ void TangoTest::write_short_scalar_w(Tango::WAttribute &attr)
 	Tango::DevShort	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_short_scalar_w) ENABLED START -----*/
-        DEBUG_STREAM << "short_scalar_w = " << w_val << std::endl;
-        attr_short_scalar_w_write = w_val;
+  	DEBUG_STREAM << "short_scalar_w = " << w_val << std::endl;
+	attr_short_scalar_w_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_scalar_w
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_scalar_w
 }
 //--------------------------------------------------------
 /**
@@ -1524,9 +1536,9 @@ void TangoTest::read_string_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_string_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_string_scalar) ENABLED START -----*/
-        attr.set_value(attr_string_scalar_read);
+	attr.set_value(attr_string_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1544,19 +1556,21 @@ void TangoTest::write_string_scalar(Tango::WAttribute &attr)
 	Tango::DevString	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_string_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_string_scalar_write = w_val;
-        if (*attr_string_scalar_read) {
-            delete[] *attr_string_scalar_read;
-            size_t len = ::strlen(w_val) + 1;
-            *attr_string_scalar_read = new char[len];
-            if (*attr_string_scalar_read) {
-                ::memset(*attr_string_scalar_read, 0, len * sizeof(char));
-                ::strcpy(*attr_string_scalar_read, w_val);
-            }
-        }
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_string_scalar_write = w_val;
+  	if (*attr_string_scalar_read)
+  	{
+   	 	delete[] *attr_string_scalar_read;
+    	size_t len = ::strlen(w_val) + 1;
+    	*attr_string_scalar_read = new char[len];
+    	if (*attr_string_scalar_read)
+    	{
+      		::memset(*attr_string_scalar_read, 0, len * sizeof(char));
+      		::strcpy(*attr_string_scalar_read, w_val);
+    	}
+  	}
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_string_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_string_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1571,10 +1585,10 @@ void TangoTest::read_throw_exception(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_throw_exception(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_throw_exception) ENABLED START -----*/
-        Tango::Except::throw_exception((const char *) "exception test",
-                                       (const char *) "here is the exception you requested",
-                                       (const char *) "TangoTest::read_throw_exception");
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_throw_exception
+  Tango::Except::throw_exception((const char *)"exception test",
+						                     (const char *)"here is the exception you requested",
+						                     (const char *)"TangoTest::read_throw_exception");
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_throw_exception
 }
 //--------------------------------------------------------
 /**
@@ -1589,9 +1603,9 @@ void TangoTest::read_uchar_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_uchar_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_uchar_scalar) ENABLED START -----*/
-        attr.set_value(attr_uchar_scalar_read);
+	attr.set_value(attr_uchar_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1609,10 +1623,10 @@ void TangoTest::write_uchar_scalar(Tango::WAttribute &attr)
 	Tango::DevUChar	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_uchar_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_uchar_scalar_write = w_val;
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_uchar_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_uchar_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_uchar_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1627,9 +1641,9 @@ void TangoTest::read_ulong64_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ulong64_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ulong64_scalar) ENABLED START -----*/
-        attr.set_value(attr_ulong64_scalar_read);
+	attr.set_value(attr_ulong64_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong64_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong64_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1647,10 +1661,10 @@ void TangoTest::write_ulong64_scalar(Tango::WAttribute &attr)
 	Tango::DevULong64	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_ulong64_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_ulong64_scalar_write = w_val;
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_ulong64_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_ulong64_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_ulong64_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1665,9 +1679,9 @@ void TangoTest::read_ushort_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ushort_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ushort_scalar) ENABLED START -----*/
-        attr.set_value(attr_ushort_scalar_read);
+	attr.set_value(attr_ushort_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1685,10 +1699,10 @@ void TangoTest::write_ushort_scalar(Tango::WAttribute &attr)
 	Tango::DevUShort	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_ushort_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_ushort_scalar_write = w_val;
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_ushort_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_ushort_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_ushort_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1703,9 +1717,9 @@ void TangoTest::read_ulong_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ulong_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ulong_scalar) ENABLED START -----*/
-        attr.set_value(attr_ulong_scalar_read);
+	attr.set_value(attr_ulong_scalar_read);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1723,10 +1737,10 @@ void TangoTest::write_ulong_scalar(Tango::WAttribute &attr)
 	Tango::DevULong	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_ulong_scalar) ENABLED START -----*/
-        DEBUG_STREAM << "w_val = " << w_val << std::endl;
-        attr_ulong_scalar_write = w_val;
+  	DEBUG_STREAM << "w_val = " << w_val << std::endl;
+	attr_ulong_scalar_write = w_val;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_ulong_scalar
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_ulong_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1741,10 +1755,10 @@ void TangoTest::read_enum_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_enum_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_enum_scalar) ENABLED START -----*/
-        //	Set the attribute value
-        attr.set_value(attr_enum_scalar_read);
-
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_enum_scalar
+	//	Set the attribute value
+	attr.set_value(attr_enum_scalar_read);
+	
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_enum_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1762,30 +1776,9 @@ void TangoTest::write_enum_scalar(Tango::WAttribute &attr)
 	enum_scalarEnum	w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_enum_scalar) ENABLED START -----*/
-        *attr_enum_scalar_read = w_val;
-
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_enum_scalar
-}
-//--------------------------------------------------------
-/**
- *	Write attribute freq related method
- *	Description: 
- *
- *	Data type:	Tango::DevDouble
- *	Attr type:	Scalar
- */
-//--------------------------------------------------------
-void TangoTest::write_freq(Tango::WAttribute &attr)
-{
-	DEBUG_STREAM << "TangoTest::write_freq(Tango::WAttribute &attr) entering... " << std::endl;
-	//	Retrieve write value
-	Tango::DevDouble	w_val;
-	attr.get_write_value(w_val);
-	/*----- PROTECTED REGION ID(TangoTest::write_freq) ENABLED START -----*/
-        DEBUG_STREAM << "freq = " << w_val << std::endl;
-        attr_freq_write = w_val;
-
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_freq
+	*attr_enum_scalar_read = w_val;
+	
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_enum_scalar
 }
 //--------------------------------------------------------
 /**
@@ -1800,9 +1793,9 @@ void TangoTest::read_boolean_spectrum(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_boolean_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_boolean_spectrum) ENABLED START -----*/
-        attr.set_value(attr_boolean_spectrum_read, dimBooleanSpectrum);
+	attr.set_value(attr_boolean_spectrum_read, dimBooleanSpectrum);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -1824,16 +1817,16 @@ void TangoTest::write_boolean_spectrum(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_boolean_spectrum) ENABLED START -----*/
 
-        long len = attr.get_write_value_length();
-        DEBUG_STREAM << "Length :" << len << std::endl;
+  long len = attr.get_write_value_length();
+  DEBUG_STREAM << "Length :" << len << std::endl;
 
-        len = (len <= kSpecLen) ? len : kSpecLen;
+  len = (len <= kSpecLen) ? len : kSpecLen;
 
-        ::memcpy(attr_boolean_spectrum_read, w_val, len * sizeof(Tango::DevBoolean));
+  ::memcpy(attr_boolean_spectrum_read, w_val, len * sizeof(Tango::DevBoolean));
 
-        dimBooleanSpectrum = len;
+  dimBooleanSpectrum = len;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_boolean_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_boolean_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -1848,9 +1841,9 @@ void TangoTest::read_boolean_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_boolean_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_boolean_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_boolean_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_boolean_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -1865,9 +1858,9 @@ void TangoTest::read_double_spectrum(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_double_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_double_spectrum) ENABLED START -----*/
-        attr.set_value(attr_double_spectrum_read, dimDoubleSpectrum);
+	attr.set_value(attr_double_spectrum_read, dimDoubleSpectrum);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -1889,16 +1882,16 @@ void TangoTest::write_double_spectrum(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_double_spectrum) ENABLED START -----*/
 
-        long len = attr.get_write_value_length();
-        DEBUG_STREAM << "Length :" << len << std::endl;
+  long len = attr.get_write_value_length();
+  DEBUG_STREAM << "Length :" << len << std::endl;
 
-        len = (len <= kSpecLen) ? len : kSpecLen;
+  len = (len <= kSpecLen) ? len : kSpecLen;
 
-        ::memcpy(attr_double_spectrum_read, w_val, len * sizeof(Tango::DevDouble));
+  ::memcpy(attr_double_spectrum_read, w_val, len * sizeof(Tango::DevDouble));
 
-        dimDoubleSpectrum = len;
+  dimDoubleSpectrum = len;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -1913,9 +1906,9 @@ void TangoTest::read_double_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_double_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_double_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_double_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_double_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -1930,9 +1923,9 @@ void TangoTest::read_float_spectrum(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_float_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_float_spectrum) ENABLED START -----*/
-        attr.set_value(attr_float_spectrum_read, dimFloatSpectrum);
+	attr.set_value(attr_float_spectrum_read, dimFloatSpectrum);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -1954,16 +1947,16 @@ void TangoTest::write_float_spectrum(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_float_spectrum) ENABLED START -----*/
 
-        long len = attr.get_write_value_length();
-        DEBUG_STREAM << "Length :" << len << std::endl;
+  long len = attr.get_write_value_length();
+  DEBUG_STREAM << "Length :" << len << std::endl;
 
-        len = (len <= kSpecLen) ? len : kSpecLen;
+  len = (len <= kSpecLen) ? len : kSpecLen;
 
-        ::memcpy(attr_float_spectrum_read, w_val, len * sizeof(Tango::DevFloat));
+  ::memcpy(attr_float_spectrum_read, w_val, len * sizeof(Tango::DevFloat));
 
-        dimFloatSpectrum = len;
+  dimFloatSpectrum = len;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_float_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_float_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -1978,9 +1971,9 @@ void TangoTest::read_float_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_float_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_float_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_float_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_float_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -1995,9 +1988,9 @@ void TangoTest::read_long64_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long64_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long64_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_long64_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_long64_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long64_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long64_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -2012,9 +2005,9 @@ void TangoTest::read_long_spectrum(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long_spectrum) ENABLED START -----*/
-        attr.set_value(attr_long_spectrum_read, dimLongSpectrum);
+	attr.set_value(attr_long_spectrum_read, dimLongSpectrum);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2036,16 +2029,16 @@ void TangoTest::write_long_spectrum(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_long_spectrum) ENABLED START -----*/
 
-        long len = attr.get_write_value_length();
-        DEBUG_STREAM << "Length :" << len << std::endl;
+  long len = attr.get_write_value_length();
+  DEBUG_STREAM << "Length :" << len << std::endl;
 
-        len = (len <= kSpecLen) ? len : kSpecLen;
+  len = (len <= kSpecLen) ? len : kSpecLen;
 
-        ::memcpy(attr_long_spectrum_read, w_val, len * sizeof(Tango::DevLong));
+  ::memcpy(attr_long_spectrum_read, w_val, len * sizeof(Tango::DevLong));
 
-        dimLongSpectrum = len;
+  dimLongSpectrum = len;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2060,9 +2053,9 @@ void TangoTest::read_long_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_long_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_long_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -2077,9 +2070,9 @@ void TangoTest::read_short_spectrum(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_spectrum) ENABLED START -----*/
-        attr.set_value(attr_short_spectrum_read, dimShortSpectrum);
+	attr.set_value(attr_short_spectrum_read, dimShortSpectrum);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2100,22 +2093,22 @@ void TangoTest::write_short_spectrum(Tango::WAttribute &attr)
 	const Tango::DevShort	*w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_short_spectrum) ENABLED START -----*/
-        long len = attr.get_write_value_length();
-        DEBUG_STREAM << "Length :" << len << std::endl;
+	long len = attr.get_write_value_length();
+  DEBUG_STREAM << "Length :" << len << std::endl;
 
-        len = attr.get_write_value_length();
-        DEBUG_STREAM << "Length from get_write_value_length:" << len << std::endl;
+  len = attr.get_write_value_length();
+  DEBUG_STREAM << "Length from get_write_value_length:" << len << std::endl;
 
-        len = (len <= kSpecLen) ? len : kSpecLen;
+  len = (len <= kSpecLen) ? len : kSpecLen;
 
-        DEBUG_STREAM << "Final length:" << len << std::endl;
+  DEBUG_STREAM << "Final length:" << len << std::endl;
 
-        ::memcpy(attr_short_spectrum_read, w_val, len * sizeof(Tango::DevShort));
-        dimShortSpectrum = len;
+  ::memcpy(attr_short_spectrum_read, w_val, len * sizeof(Tango::DevShort));
+  dimShortSpectrum = len;
 
-        //::memcpy(attr_short_spectrum_read, p, len * sizeof(Tango::DevShort));
+  //::memcpy(attr_short_spectrum_read, p, len * sizeof(Tango::DevShort));
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2130,9 +2123,9 @@ void TangoTest::read_short_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_short_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_short_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -2147,9 +2140,9 @@ void TangoTest::read_string_spectrum(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_string_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_string_spectrum) ENABLED START -----*/
-        attr.set_value(attr_string_spectrum_read, dimStringSpectrum);
+	attr.set_value(attr_string_spectrum_read, dimStringSpectrum);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2171,20 +2164,20 @@ void TangoTest::write_string_spectrum(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_string_spectrum) ENABLED START -----*/
 
-        int len = attr.get_w_dim_x();
-        len = (len <= kSpecLen) ? len : kSpecLen;
+  int len = attr.get_w_dim_x();
+  len = (len <= kSpecLen) ? len : kSpecLen;
 
-        // Free the old spectrum first in case the new spectrum length is less
-        // than the previous spectrum.
-        for (int i = 0; i < dimStringSpectrum; i++) {
-            CORBA::string_free(attr_string_spectrum_read[i]);
-        }
-        for (int i = 0; i < len; i++) {
-            attr_string_spectrum_read[i] = CORBA::string_dup(w_val[i]);
-        }
-        dimStringSpectrum = len;
+  // Free the old spectrum first in case the new spectrum length is less
+  // than the previous spectrum.
+  for (int i = 0; i < dimStringSpectrum; i++) {
+    CORBA::string_free(attr_string_spectrum_read[i]);
+  }
+  for (int i = 0; i < len; i++) {
+    attr_string_spectrum_read[i] = CORBA::string_dup(w_val[i]);
+  }
+  dimStringSpectrum = len;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_string_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_string_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2199,9 +2192,9 @@ void TangoTest::read_string_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_string_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_string_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_string_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_string_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -2216,9 +2209,9 @@ void TangoTest::read_uchar_spectrum(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_uchar_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_uchar_spectrum) ENABLED START -----*/
-        attr.set_value(attr_uchar_spectrum_read, dimUcharSpectrum);
+	attr.set_value(attr_uchar_spectrum_read, dimUcharSpectrum);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2239,17 +2232,17 @@ void TangoTest::write_uchar_spectrum(Tango::WAttribute &attr)
 	const Tango::DevUChar	*w_val;
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_uchar_spectrum) ENABLED START -----*/
+	
+  long len = attr.get_write_value_length();
+  DEBUG_STREAM << "Length :" << len << std::endl;
 
-        long len = attr.get_write_value_length();
-        DEBUG_STREAM << "Length :" << len << std::endl;
+  len = (len <= kSpecLen) ? len : kSpecLen;
 
-        len = (len <= kSpecLen) ? len : kSpecLen;
+  ::memcpy(attr_uchar_spectrum_read, w_val, len * sizeof(Tango::DevUChar));
 
-        ::memcpy(attr_uchar_spectrum_read, w_val, len * sizeof(Tango::DevUChar));
+  dimUcharSpectrum = len;
 
-        dimUcharSpectrum = len;
-
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_uchar_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_uchar_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2264,9 +2257,9 @@ void TangoTest::read_uchar_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_uchar_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_uchar_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_uchar_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_uchar_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -2281,9 +2274,9 @@ void TangoTest::read_ulong64_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ulong64_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ulong64_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_ulong64_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_ulong64_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong64_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong64_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -2298,9 +2291,9 @@ void TangoTest::read_ulong_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ulong_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ulong_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_ulong_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_ulong_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -2315,9 +2308,9 @@ void TangoTest::read_ushort_spectrum(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ushort_spectrum(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ushort_spectrum) ENABLED START -----*/
-        attr.set_value(attr_ushort_spectrum_read, dimUshortSpectrum);
+	attr.set_value(attr_ushort_spectrum_read, dimUshortSpectrum);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2339,16 +2332,16 @@ void TangoTest::write_ushort_spectrum(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_ushort_spectrum) ENABLED START -----*/
 
-        long len = attr.get_write_value_length();
-        DEBUG_STREAM << "Length :" << len << std::endl;
+  long len = attr.get_write_value_length();
+  DEBUG_STREAM << "Length :" << len << std::endl;
 
-        len = (len <= kSpecLen) ? len : kSpecLen;
+  len = (len <= kSpecLen) ? len : kSpecLen;
 
-        ::memcpy(attr_ushort_spectrum_read, w_val, len * sizeof(Tango::DevUShort));
+  ::memcpy(attr_ushort_spectrum_read, w_val, len * sizeof(Tango::DevUShort));
 
-        dimUshortSpectrum = len;
+  dimUshortSpectrum = len;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_ushort_spectrum
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_ushort_spectrum
 }
 //--------------------------------------------------------
 /**
@@ -2363,9 +2356,9 @@ void TangoTest::read_ushort_spectrum_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ushort_spectrum_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ushort_spectrum_ro) ENABLED START -----*/
-        attr.set_value(attr_ushort_spectrum_ro_read, kSpecLen);
+	attr.set_value(attr_ushort_spectrum_ro_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_spectrum_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_spectrum_ro
 }
 //--------------------------------------------------------
 /**
@@ -2380,9 +2373,9 @@ void TangoTest::read_wave(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_wave(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_wave) ENABLED START -----*/
-        attr.set_value(attr_wave_read, kSpecLen);
+	attr.set_value(attr_wave_read, kSpecLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_wave
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_wave
 }
 //--------------------------------------------------------
 /**
@@ -2397,9 +2390,9 @@ void TangoTest::read_boolean_image(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_boolean_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_boolean_image) ENABLED START -----*/
-        attr.set_value(attr_boolean_image_read, dimXBooleanImage, dimYBooleanImage);
+	attr.set_value(attr_boolean_image_read, dimXBooleanImage, dimYBooleanImage);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_image
 }
 //--------------------------------------------------------
 /**
@@ -2421,19 +2414,19 @@ void TangoTest::write_boolean_image(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_boolean_image) ENABLED START -----*/
 
-        dimXBooleanImage = attr.get_w_dim_x();
-        DEBUG_STREAM << "X :" << dimXBooleanImage << std::endl;
+  dimXBooleanImage = attr.get_w_dim_x();
+  DEBUG_STREAM << "X :" << dimXBooleanImage << std::endl;
 
-        dimYBooleanImage = attr.get_w_dim_y();
-        DEBUG_STREAM << "Y :" << dimYBooleanImage << std::endl;
+  dimYBooleanImage = attr.get_w_dim_y();
+  DEBUG_STREAM << "Y :" << dimYBooleanImage << std::endl;
 
-        long len = dimXBooleanImage * dimYBooleanImage;
+  long len = dimXBooleanImage * dimYBooleanImage;
 
-        len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
+  len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
 
-        ::memcpy(attr_boolean_image_read, w_val, len * sizeof(Tango::DevBoolean));
+  ::memcpy(attr_boolean_image_read, w_val, len * sizeof(Tango::DevBoolean));
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_boolean_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_boolean_image
 }
 //--------------------------------------------------------
 /**
@@ -2448,12 +2441,12 @@ void TangoTest::read_boolean_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_boolean_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_boolean_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            boolean_image_lock.lock();
-        attr.set_value(attr_boolean_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&boolean_image_lock);
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_image_ro
+	if (mthreaded_impl != 0)
+		boolean_image_lock.lock();
+	attr.set_value(attr_boolean_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&boolean_image_lock);
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2468,9 +2461,9 @@ void TangoTest::read_double_image(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_double_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_double_image) ENABLED START -----*/
-        attr.set_value(attr_double_image_read, dimXDoubleImage, dimYDoubleImage);
+	attr.set_value(attr_double_image_read, dimXDoubleImage, dimYDoubleImage);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_image
 }
 //--------------------------------------------------------
 /**
@@ -2492,19 +2485,19 @@ void TangoTest::write_double_image(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_double_image) ENABLED START -----*/
 
-        dimXDoubleImage = attr.get_w_dim_x();
-        DEBUG_STREAM << "X :" << dimXDoubleImage << std::endl;
+  dimXDoubleImage = attr.get_w_dim_x();
+  DEBUG_STREAM << "X :" << dimXDoubleImage << std::endl;
 
-        dimYDoubleImage = attr.get_w_dim_y();
-        DEBUG_STREAM << "Y :" << dimYDoubleImage << std::endl;
+  dimYDoubleImage = attr.get_w_dim_y();
+  DEBUG_STREAM << "Y :" << dimYDoubleImage << std::endl;
 
-        long len = dimXDoubleImage * dimYDoubleImage;
+  long len = dimXDoubleImage * dimYDoubleImage;
 
-        len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
+  len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
 
-        ::memcpy(attr_double_image_read, w_val, len * sizeof(Tango::DevDouble));
+  ::memcpy(attr_double_image_read, w_val, len * sizeof(Tango::DevDouble));
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_double_image
 }
 //--------------------------------------------------------
 /**
@@ -2519,12 +2512,12 @@ void TangoTest::read_double_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_double_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_double_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            double_image_lock.lock();
-        attr.set_value(attr_double_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&double_image_lock);
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_image_ro
+	if (mthreaded_impl != 0)
+		double_image_lock.lock();
+	attr.set_value(attr_double_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&double_image_lock);
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2539,9 +2532,9 @@ void TangoTest::read_float_image(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_float_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_float_image) ENABLED START -----*/
-        attr.set_value(attr_float_image_read, dimXFloatImage, dimYFloatImage);
+	attr.set_value(attr_float_image_read, dimXFloatImage, dimYFloatImage);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_image
 }
 //--------------------------------------------------------
 /**
@@ -2563,19 +2556,19 @@ void TangoTest::write_float_image(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_float_image) ENABLED START -----*/
 
-        dimXFloatImage = attr.get_w_dim_x();
-        DEBUG_STREAM << "X :" << dimXFloatImage << std::endl;
+  dimXFloatImage = attr.get_w_dim_x();
+  DEBUG_STREAM << "X :" << dimXFloatImage << std::endl;
 
-        dimYFloatImage = attr.get_w_dim_y();
-        DEBUG_STREAM << "Y :" << dimYFloatImage << std::endl;
+  dimYFloatImage = attr.get_w_dim_y();
+  DEBUG_STREAM << "Y :" << dimYFloatImage << std::endl;
 
-        long len = dimXFloatImage * dimYFloatImage;
+  long len = dimXFloatImage * dimYFloatImage;
 
-        len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
+  len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
 
-        ::memcpy(attr_float_image_read, w_val, len * sizeof(Tango::DevFloat));
+  ::memcpy(attr_float_image_read, w_val, len * sizeof(Tango::DevFloat));
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_float_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_float_image
 }
 //--------------------------------------------------------
 /**
@@ -2590,13 +2583,13 @@ void TangoTest::read_float_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_float_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_float_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            float_image_lock.lock();
-        attr.set_value(attr_float_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&float_image_lock);
+	if (mthreaded_impl != 0)
+		float_image_lock.lock();
+	attr.set_value(attr_float_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&float_image_lock);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_image_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2611,13 +2604,13 @@ void TangoTest::read_long64_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long64_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long64_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            long64_image_lock.lock();
-        attr.set_value(attr_long64_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&long64_image_lock);
+	if (mthreaded_impl != 0)
+		long64_image_lock.lock();
+	attr.set_value(attr_long64_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&long64_image_lock);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long64_image_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long64_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2632,9 +2625,9 @@ void TangoTest::read_long_image(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long_image) ENABLED START -----*/
-        attr.set_value(attr_long_image_read, kImagLen, kImagLen);
+	attr.set_value(attr_long_image_read, kImagLen, kImagLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_image
 }
 //--------------------------------------------------------
 /**
@@ -2656,19 +2649,19 @@ void TangoTest::write_long_image(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_long_image) ENABLED START -----*/
 
-        dimXLongImage = attr.get_w_dim_x();
-        DEBUG_STREAM << "X :" << dimXLongImage << std::endl;
+  dimXLongImage = attr.get_w_dim_x();
+  DEBUG_STREAM << "X :" << dimXLongImage << std::endl;
 
-        dimYLongImage = attr.get_w_dim_y();
-        DEBUG_STREAM << "Y :" << dimYLongImage << std::endl;
+  dimYLongImage = attr.get_w_dim_y();
+  DEBUG_STREAM << "Y :" << dimYLongImage << std::endl;
 
-        long len = dimXLongImage * dimYLongImage;
+  long len = dimXLongImage * dimYLongImage;
 
-        len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
+  len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
 
-        ::memcpy(attr_long_image_read, w_val, len * sizeof(Tango::DevLong));
+  ::memcpy(attr_long_image_read, w_val, len * sizeof(Tango::DevLong));
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_long_image
 }
 //--------------------------------------------------------
 /**
@@ -2683,12 +2676,12 @@ void TangoTest::read_long_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            long_image_lock.lock();
-        attr.set_value(attr_long_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&long_image_lock);
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_image_ro
+	if (mthreaded_impl != 0)
+		long_image_lock.lock();
+	attr.set_value(attr_long_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&long_image_lock);
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2703,9 +2696,9 @@ void TangoTest::read_short_image(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_image) ENABLED START -----*/
-        attr.set_value(attr_short_image_read, dimXShortImage, dimYShortImage);
+	attr.set_value(attr_short_image_read, dimXShortImage, dimYShortImage);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_image
 }
 //--------------------------------------------------------
 /**
@@ -2727,19 +2720,19 @@ void TangoTest::write_short_image(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_short_image) ENABLED START -----*/
 
-        dimXShortImage = attr.get_w_dim_x();
-        DEBUG_STREAM << "X :" << dimXShortImage << std::endl;
+  dimXShortImage = attr.get_w_dim_x();
+  DEBUG_STREAM << "X :" << dimXShortImage << std::endl;
 
-        dimYShortImage = attr.get_w_dim_y();
-        DEBUG_STREAM << "Y :" << dimYShortImage << std::endl;
+  dimYShortImage = attr.get_w_dim_y();
+  DEBUG_STREAM << "Y :" << dimYShortImage << std::endl;
 
-        long len = dimXShortImage * dimYShortImage;
+  long len = dimXShortImage * dimYShortImage;
 
-        len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
+  len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
 
-        ::memcpy(attr_short_image_read, w_val, len * sizeof(Tango::DevShort));
+  ::memcpy(attr_short_image_read, w_val, len * sizeof(Tango::DevShort));
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_short_image
 }
 //--------------------------------------------------------
 /**
@@ -2754,12 +2747,12 @@ void TangoTest::read_short_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            short_image_lock.lock();
-        attr.set_value(attr_short_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&short_image_lock);
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_image_ro
+	if (mthreaded_impl != 0)
+		short_image_lock.lock();
+	attr.set_value(attr_short_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&short_image_lock);
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2774,9 +2767,9 @@ void TangoTest::read_string_image(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_string_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_string_image) ENABLED START -----*/
-        attr.set_value(attr_string_image_read, dimXStringImage, dimYStringImage);
+	attr.set_value(attr_string_image_read, dimXStringImage, dimYStringImage);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_image
 }
 //--------------------------------------------------------
 /**
@@ -2798,26 +2791,28 @@ void TangoTest::write_string_image(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_string_image) ENABLED START -----*/
 
-        dimXStringImage = attr.get_w_dim_x();
-        if (dimXStringImage > kImagLen)
-            dimXStringImage = kImagLen;
-        DEBUG_STREAM << "X :" << dimXStringImage << std::endl;
+  dimXStringImage = attr.get_w_dim_x();
+  if (dimXStringImage > kImagLen)
+    dimXStringImage = kImagLen;
+  DEBUG_STREAM << "X :" << dimXStringImage << std::endl;
 
-        dimYStringImage = attr.get_w_dim_y();
-        if (dimYStringImage > kImagLen)
-            dimYStringImage = kImagLen;
-        DEBUG_STREAM << "Y :" << dimYStringImage << std::endl;
+  dimYStringImage = attr.get_w_dim_y();
+  if (dimYStringImage > kImagLen)
+    dimYStringImage = kImagLen;
+  DEBUG_STREAM << "Y :" << dimYStringImage << std::endl;
 
-        int i, j, str_index;
-        for (j = 0; j < dimYStringImage; j++) {
-            for (i = 0; i < dimXStringImage; i++) {
-                str_index = i + j * dimXStringImage;
-                CORBA::string_free(attr_string_image_read[str_index]);
-                attr_string_image_read[str_index] = CORBA::string_dup(w_val[str_index]);
-            }
-        }
+  int i ,j, str_index;
+  for (j = 0; j < dimYStringImage; j++)
+  {
+    for (i = 0; i < dimXStringImage; i++)
+    {
+      str_index = i + j * dimXStringImage;
+      CORBA::string_free(attr_string_image_read[str_index]);
+      attr_string_image_read[str_index] = CORBA::string_dup(w_val[str_index]);
+    }
+  }
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_string_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_string_image
 }
 //--------------------------------------------------------
 /**
@@ -2832,9 +2827,9 @@ void TangoTest::read_string_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_string_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_string_image_ro) ENABLED START -----*/
-        attr.set_value(attr_string_image_ro_read, kImagLen, kImagLen);
+	attr.set_value(attr_string_image_ro_read, kImagLen, kImagLen);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_image_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2849,9 +2844,9 @@ void TangoTest::read_uchar_image(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_uchar_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_uchar_image) ENABLED START -----*/
-        attr.set_value(attr_uchar_image_read, dimXUcharImage, dimYUcharImage);
+	attr.set_value(attr_uchar_image_read, dimXUcharImage, dimYUcharImage);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_image
 }
 //--------------------------------------------------------
 /**
@@ -2873,19 +2868,19 @@ void TangoTest::write_uchar_image(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_uchar_image) ENABLED START -----*/
 
-        dimXUcharImage = attr.get_w_dim_x();
-        DEBUG_STREAM << "X :" << dimXUcharImage << std::endl;
+  dimXUcharImage = attr.get_w_dim_x();
+  DEBUG_STREAM << "X :" << dimXUcharImage << std::endl;
 
-        dimYUcharImage = attr.get_w_dim_y();
-        DEBUG_STREAM << "Y :" << dimYUcharImage << std::endl;
+  dimYUcharImage = attr.get_w_dim_y();
+  DEBUG_STREAM << "Y :" << dimYUcharImage << std::endl;
 
-        long len = dimXUcharImage * dimYUcharImage;
+  long len = dimXUcharImage * dimYUcharImage;
 
-        len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
+  len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
 
-        ::memcpy(attr_uchar_image_read, w_val, len * sizeof(Tango::DevUChar));
+  ::memcpy(attr_uchar_image_read, w_val, len * sizeof(Tango::DevUChar));
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_uchar_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_uchar_image
 }
 //--------------------------------------------------------
 /**
@@ -2900,12 +2895,12 @@ void TangoTest::read_uchar_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_uchar_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_uchar_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            uchar_image_lock.lock();
-        attr.set_value(attr_uchar_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&uchar_image_lock);
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_image_ro
+	if (mthreaded_impl != 0)
+		uchar_image_lock.lock();
+	attr.set_value(attr_uchar_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&uchar_image_lock);
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2920,12 +2915,12 @@ void TangoTest::read_ulong64_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ulong64_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ulong64_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            ulong64_image_lock.lock();
-        attr.set_value(attr_ulong64_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&ulong64_image_lock);
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong64_image_ro
+	if (mthreaded_impl != 0)
+		ulong64_image_lock.lock();
+	attr.set_value(attr_ulong64_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&ulong64_image_lock);
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong64_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2940,12 +2935,12 @@ void TangoTest::read_ulong_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ulong_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ulong_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            ulong_image_lock.lock();
-        attr.set_value(attr_ulong_image_ro_read, kImagLen, kImagLen);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&ulong_image_lock);
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong_image_ro
+	if (mthreaded_impl != 0)
+		ulong_image_lock.lock();
+	attr.set_value(attr_ulong_image_ro_read, kImagLen, kImagLen);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&ulong_image_lock);
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong_image_ro
 }
 //--------------------------------------------------------
 /**
@@ -2960,9 +2955,9 @@ void TangoTest::read_ushort_image(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ushort_image(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ushort_image) ENABLED START -----*/
-        attr.set_value(attr_ushort_image_read, dimXUshortImage, dimYUshortImage);
+	attr.set_value(attr_ushort_image_read, dimXUshortImage, dimYUshortImage);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_image
 }
 //--------------------------------------------------------
 /**
@@ -2984,19 +2979,19 @@ void TangoTest::write_ushort_image(Tango::WAttribute &attr)
 	attr.get_write_value(w_val);
 	/*----- PROTECTED REGION ID(TangoTest::write_ushort_image) ENABLED START -----*/
 
-        dimXUshortImage = attr.get_w_dim_x();
-        DEBUG_STREAM << "X :" << dimXUshortImage << std::endl;
+  dimXUshortImage = attr.get_w_dim_x();
+  DEBUG_STREAM << "X :" << dimXUshortImage << std::endl;
 
-        dimYUshortImage = attr.get_w_dim_y();
-        DEBUG_STREAM << "Y :" << dimYUshortImage << std::endl;
+  dimYUshortImage = attr.get_w_dim_y();
+  DEBUG_STREAM << "Y :" << dimYUshortImage << std::endl;
 
-        long len = dimXUshortImage * dimYUshortImage;
+  long len = dimXUshortImage * dimYUshortImage;
 
-        len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
+  len = (len <= kImagLen * kImagLen) ? len : kImagLen * kImagLen;
 
-        ::memcpy(attr_ushort_image_read, w_val, len * sizeof(Tango::DevUShort));
+  ::memcpy(attr_ushort_image_read, w_val, len * sizeof(Tango::DevUShort));
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_ushort_image
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_ushort_image
 }
 //--------------------------------------------------------
 /**
@@ -3011,12 +3006,12 @@ void TangoTest::read_ushort_image_ro(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ushort_image_ro(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ushort_image_ro) ENABLED START -----*/
-        if (mthreaded_impl != 0)
-            ushort_image_lock.lock();
-        attr.set_value(attr_ushort_image_ro_read, uShort_image_ro_size, uShort_image_ro_size);
-        if (mthreaded_impl != 0)
-            attr.set_user_attr_mutex(&ushort_image_lock);
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_image_ro
+	if (mthreaded_impl != 0)
+		ushort_image_lock.lock();
+	attr.set_value(attr_ushort_image_ro_read, uShort_image_ro_size, uShort_image_ro_size);
+	if (mthreaded_impl != 0)
+		attr.set_user_attr_mutex(&ushort_image_lock);
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_image_ro
 }
 
 //--------------------------------------------------------
@@ -3030,9 +3025,9 @@ void TangoTest::add_dynamic_attributes()
 {
 	/*----- PROTECTED REGION ID(TangoTest::add_dynamic_attributes) ENABLED START -----*/
 
-        //	Add your own code to create and add dynamic attributes if any
+	//	Add your own code to create and add dynamic attributes if any
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::add_dynamic_attributes
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::add_dynamic_attributes
 }
 
 //--------------------------------------------------------
@@ -3046,15 +3041,15 @@ void TangoTest::read_string_long_short_ro(Tango::Pipe &pipe)
 	DEBUG_STREAM << "TangoTest::read_string_long_short_ro(Tango::Pipe &pipe) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_string_long_short_ro) ENABLED START -----*/
 
-        std::vector<std::string> de_names;
-        de_names.push_back("FirstDE");
-        de_names.push_back("SecondDE");
-        de_names.push_back("ThirdDE");
-        pipe.set_data_elt_names(de_names);
+    std::vector<std::string> de_names;
+    de_names.push_back("FirstDE");
+    de_names.push_back("SecondDE");
+    de_names.push_back("ThirdDE");
+    pipe.set_data_elt_names(de_names);
 
-        pipe << pi_str << pi_long << pi_short;
+    pipe << pi_str << pi_long << pi_short;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_long_short_ro
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_string_long_short_ro
 }
 //--------------------------------------------------------
 /**
@@ -3066,20 +3061,24 @@ void TangoTest::read_generic_blob_rw(Tango::Pipe &pipe)
 {
 	DEBUG_STREAM << "TangoTest::read_generic_blob_rw(Tango::Pipe &pipe) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_generic_blob_rw) ENABLED START -----*/
-        if (generic_blob_rw_has_value) {
-            auto names = generic_blob_rw_data.get_data_elt_names();
-            pipe.get_blob().set_data_elt_names(names);
-            pipe.set_value_flag(true);
-            for (int i = 0; i < generic_blob_rw_data.get_data_elt_nb(); ++i) {
-                (*(pipe.get_blob().get_insert_data()))[i] = (*(generic_blob_rw_data.get_extract_data()))[i];
-            }
-        } else {
-            std::vector<std::string> de_names{"NO BLOB"};
-            pipe.get_blob().set_data_elt_names(de_names);
-            short generic_blob_rw_status = 0;
-            pipe << generic_blob_rw_status;
-        }
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_generic_blob_rw
+	if (generic_blob_rw_has_value)
+	{
+		auto names = generic_blob_rw_data.get_data_elt_names();
+		pipe.get_blob().set_data_elt_names(names);
+		pipe.set_value_flag(true);
+		for (int i = 0; i < generic_blob_rw_data.get_data_elt_nb(); ++i)
+		{
+			(*(pipe.get_blob().get_insert_data()))[i] = (*(generic_blob_rw_data.get_extract_data()))[i];
+		}
+	}
+	else
+	{
+		std::vector<std::string> de_names{"NO BLOB"};
+		pipe.get_blob().set_data_elt_names(de_names);
+		int generic_blob_rw_status = 0;
+		pipe << generic_blob_rw_status;
+	}
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_generic_blob_rw
 }
 //--------------------------------------------------------
 /**
@@ -3091,9 +3090,9 @@ void TangoTest::write_generic_blob_rw(Tango::WPipe &pipe)
 {
 	DEBUG_STREAM << "TangoTest::write_generic_blob_rw(Tango::WPipe &pipe) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::write_generic_blob_rw) ENABLED START -----*/
-        generic_blob_rw_data = pipe.get_blob();
-        generic_blob_rw_has_value = true;
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_generic_blob_rw
+	generic_blob_rw_data = pipe.get_blob();
+	generic_blob_rw_has_value = true;
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::write_generic_blob_rw
 }
 //--------------------------------------------------------
 /**
@@ -3107,18 +3106,18 @@ void TangoTest::crash_from_developper_thread()
 	DEBUG_STREAM << "TangoTest::CrashFromDevelopperThread()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::crash_from_developper_thread) ENABLED START -----*/
 
-            //	Add your own code
-#if defined(ENABLE_CRASH_REPORT)
-            if (data_gen)
-              data_gen->crash();
+	//	Add your own code
+	#if defined(ENABLE_CRASH_REPORT)
+  if (data_gen)
+    data_gen->crash();
 #else
-        ERROR_STREAM << "Crash report disabled "
-                     << "[rebuild this device with ENABLE_CRASH_REPORT defined "
-                     << "and link against the breakpad_client library"
-                     << std::endl;
+  ERROR_STREAM << "Crash report disabled "
+               << "[rebuild this device with ENABLE_CRASH_REPORT defined "
+               << "and link against the breakpad_client library"
+               << std::endl;
 #endif
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::crash_from_developper_thread
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::crash_from_developper_thread
 }
 //--------------------------------------------------------
 /**
@@ -3132,19 +3131,19 @@ void TangoTest::crash_from_omni_thread()
 	DEBUG_STREAM << "TangoTest::CrashFromOmniThread()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::crash_from_omni_thread) ENABLED START -----*/
 
-            //	Add your own code
-#if defined(ENABLE_CRASH_REPORT)
-            //	Add your own code to control device here
-          int * invalid_ptr = 0;
-          *invalid_ptr = 0;
+	//	Add your own code
+	#if defined(ENABLE_CRASH_REPORT)
+	//	Add your own code to control device here
+  int * invalid_ptr = 0;
+  *invalid_ptr = 0;
 #else
-        ERROR_STREAM << "Crash report disabled "
-                     << "[rebuild this device with ENABLE_CRASH_REPORT defined "
-                     << "and link against the breakpad_client library"
-                     << std::endl;
+  ERROR_STREAM << "Crash report disabled "
+               << "[rebuild this device with ENABLE_CRASH_REPORT defined "
+               << "and link against the breakpad_client library"
+               << std::endl;
 #endif
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::crash_from_omni_thread
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::crash_from_omni_thread
 }
 //--------------------------------------------------------
 /**
@@ -3161,11 +3160,11 @@ Tango::DevBoolean TangoTest::dev_boolean(Tango::DevBoolean argin)
 	DEBUG_STREAM << "TangoTest::DevBoolean()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_boolean) ENABLED START -----*/
 
-        //	Add your own code
-        // Tangotest : just send back input argument
-        return argin;
+	//	Add your own code
+	// Tangotest : just send back input argument
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_boolean
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_boolean
 	return argout;
 }
 //--------------------------------------------------------
@@ -3183,11 +3182,11 @@ Tango::DevDouble TangoTest::dev_double(Tango::DevDouble argin)
 	DEBUG_STREAM << "TangoTest::DevDouble()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_double) ENABLED START -----*/
 
-        //	Add your own code
-        // Tangotest : just send back input argument
-        return argin;
+	//	Add your own code
+	// Tangotest : just send back input argument
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_double
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_double
 	return argout;
 }
 //--------------------------------------------------------
@@ -3205,11 +3204,11 @@ Tango::DevFloat TangoTest::dev_float(Tango::DevFloat argin)
 	DEBUG_STREAM << "TangoTest::DevFloat()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_float) ENABLED START -----*/
 
-        //	Add your own code
-        // Tangotest : just send back input argument
-        return argin;
+	//	Add your own code
+	// Tangotest : just send back input argument
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_float
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_float
 	return argout;
 }
 //--------------------------------------------------------
@@ -3227,11 +3226,11 @@ Tango::DevLong TangoTest::dev_long(Tango::DevLong argin)
 	DEBUG_STREAM << "TangoTest::DevLong()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_long) ENABLED START -----*/
 
-        //	Add your own code
-        // Tangotest : just send back input argument
-        return argin;
+	//	Add your own code
+	// Tangotest : just send back input argument
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_long
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_long
 	return argout;
 }
 //--------------------------------------------------------
@@ -3249,10 +3248,10 @@ Tango::DevLong64 TangoTest::dev_long64(Tango::DevLong64 argin)
 	DEBUG_STREAM << "TangoTest::DevLong64()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_long64) ENABLED START -----*/
 
-        //	Add your own code
-        return argin;
+	//	Add your own code
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_long64
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_long64
 	return argout;
 }
 //--------------------------------------------------------
@@ -3270,11 +3269,11 @@ Tango::DevShort TangoTest::dev_short(Tango::DevShort argin)
 	DEBUG_STREAM << "TangoTest::DevShort()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_short) ENABLED START -----*/
 
-        //	Add your own code
-        // Tangotest : just send back input argument
-        return argin;
+	//	Add your own code
+	// Tangotest : just send back input argument
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_short
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_short
 	return argout;
 }
 //--------------------------------------------------------
@@ -3292,22 +3291,22 @@ Tango::DevString TangoTest::dev_string(Tango::DevString argin)
 	DEBUG_STREAM << "TangoTest::DevString()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_string) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new char[::strlen(argin) + 1];
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevString" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_string");
-        }
+	//	Add your own code
+	// Allocate argout
+  argout = new char [::strlen(argin) + 1];
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevString" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_string");
+  }
 
-        // Tangotest : just send back input argument
-        ::strcpy(argout, argin);
+  // Tangotest : just send back input argument
+	::strcpy(argout, argin);
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_string
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_string
 	return argout;
 }
 //--------------------------------------------------------
@@ -3325,11 +3324,11 @@ Tango::DevULong TangoTest::dev_ulong(Tango::DevULong argin)
 	DEBUG_STREAM << "TangoTest::DevULong()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_ulong) ENABLED START -----*/
 
-        //	Add your own code
-        // Tangotest : just send back input argument
-        return argin;
+	//	Add your own code
+	// Tangotest : just send back input argument
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_ulong
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_ulong
 	return argout;
 }
 //--------------------------------------------------------
@@ -3347,10 +3346,10 @@ Tango::DevULong64 TangoTest::dev_ulong64(Tango::DevULong64 argin)
 	DEBUG_STREAM << "TangoTest::DevULong64()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_ulong64) ENABLED START -----*/
 
-        //	Add your own code
-        return argin;
+	//	Add your own code
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_ulong64
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_ulong64
 	return argout;
 }
 //--------------------------------------------------------
@@ -3368,11 +3367,11 @@ Tango::DevUShort TangoTest::dev_ushort(Tango::DevUShort argin)
 	DEBUG_STREAM << "TangoTest::DevUShort()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_ushort) ENABLED START -----*/
 
-        //	Add your own code
-        // Tangotest : just send back input argument
-        return argin;
+	//	Add your own code
+	// Tangotest : just send back input argument
+	return argin;
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_ushort
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_ushort
 	return argout;
 }
 //--------------------------------------------------------
@@ -3390,29 +3389,29 @@ Tango::DevVarCharArray *TangoTest::dev_var_char_array(const Tango::DevVarCharArr
 	DEBUG_STREAM << "TangoTest::DevVarCharArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_char_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarCharArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarCharArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_char_array");
-        }
+	//	Add your own code
+	// Allocate argout
+	argout = new Tango::DevVarCharArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarCharArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_char_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++) {
-            (*argout)[i] = (*argin)[i];
-        }
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++) {
+    (*argout)[i] = (*argin)[i];
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_char_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_char_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3430,29 +3429,29 @@ Tango::DevVarDoubleArray *TangoTest::dev_var_double_array(const Tango::DevVarDou
 	DEBUG_STREAM << "TangoTest::DevVarDoubleArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_double_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarDoubleArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarDoubleArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_double_array");
-        }
+	//	Add your own code
+	// Allocate argout
+	argout = new Tango::DevVarDoubleArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarDoubleArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_double_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++) {
-            (*argout)[i] = (*argin)[i];
-        }
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++) {
+    (*argout)[i] = (*argin)[i];
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_double_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_double_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3470,30 +3469,30 @@ Tango::DevVarDoubleStringArray *TangoTest::dev_var_double_string_array(const Tan
 	DEBUG_STREAM << "TangoTest::DevVarDoubleStringArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_double_string_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarDoubleStringArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarDoubleStringArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_double_string_array");
-        }
+	//	Add your own code
+	// Allocate argout
+  argout = new Tango::DevVarDoubleStringArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarDoubleStringArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_double_string_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->dvalue = argin->dvalue;
-        argout->svalue.length(argin->svalue.length());
-        for (unsigned int i = 0; i < argin->svalue.length(); i++) {
-            argout->svalue[i] = CORBA::string_dup(argin->svalue[i]);
-        }
+  // Tangotest : just send back input argument
+  argout->dvalue = argin->dvalue;
+  argout->svalue.length(argin->svalue.length());
+  for (unsigned int i = 0; i < argin->svalue.length(); i++) {
+    argout->svalue[i] = CORBA::string_dup(argin->svalue[i]);
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_double_string_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_double_string_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3511,29 +3510,29 @@ Tango::DevVarFloatArray *TangoTest::dev_var_float_array(const Tango::DevVarFloat
 	DEBUG_STREAM << "TangoTest::DevVarFloatArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_float_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarFloatArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarFloatArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_float_array");
-        }
+	//	Add your own code
+	// Allocate argout
+	argout = new Tango::DevVarFloatArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarFloatArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_float_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++) {
-            (*argout)[i] = (*argin)[i];
-        }
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++) {
+    (*argout)[i] = (*argin)[i];
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_float_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_float_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3551,28 +3550,29 @@ Tango::DevVarLong64Array *TangoTest::dev_var_long64_array(const Tango::DevVarLon
 	DEBUG_STREAM << "TangoTest::DevVarLong64Array()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_long64_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarLong64Array();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarLong64Array" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_long64_array");
-        }
+	//	Add your own code
+	// Allocate argout
+  argout = new Tango::DevVarLong64Array();
+  if (argout == 0)
+  {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarLong64Array" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+                                   o.str(),
+                                   (const char *)"TangoTest::dev_var_long64_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++)
-            (*argout)[i] = (*argin)[i];
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++)
+    (*argout)[i] = (*argin)[i];
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_long64_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_long64_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3590,29 +3590,29 @@ Tango::DevVarLongArray *TangoTest::dev_var_long_array(const Tango::DevVarLongArr
 	DEBUG_STREAM << "TangoTest::DevVarLongArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_long_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarLongArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarLongArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_long_array");
-        }
+	//	Add your own code
+	// Allocate argout
+  argout = new Tango::DevVarLongArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarLongArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_long_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++) {
-            (*argout)[i] = (*argin)[i];
-        }
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++) {
+    (*argout)[i] = (*argin)[i];
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_long_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_long_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3630,30 +3630,30 @@ Tango::DevVarLongStringArray *TangoTest::dev_var_long_string_array(const Tango::
 	DEBUG_STREAM << "TangoTest::DevVarLongStringArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_long_string_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarLongStringArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarLongStringArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_long_string_array");
-        }
+	//	Add your own code
+	// Allocate argout
+	argout = new Tango::DevVarLongStringArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarLongStringArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_long_string_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->lvalue = argin->lvalue;
-        argout->svalue.length(argin->svalue.length());
-        for (unsigned int i = 0; i < argin->svalue.length(); i++) {
-            argout->svalue[i] = CORBA::string_dup(argin->svalue[i]);
-        }
+  // Tangotest : just send back input argument
+  argout->lvalue = argin->lvalue;
+  argout->svalue.length(argin->svalue.length());
+  for (unsigned int i = 0; i < argin->svalue.length(); i++) {
+    argout->svalue[i] = CORBA::string_dup(argin->svalue[i]);
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_long_string_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_long_string_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3671,29 +3671,29 @@ Tango::DevVarShortArray *TangoTest::dev_var_short_array(const Tango::DevVarShort
 	DEBUG_STREAM << "TangoTest::DevVarShortArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_short_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarShortArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarShortArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_short_array");
-        }
+	//	Add your own code
+	// Allocate argout
+  argout = new Tango::DevVarShortArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarShortArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_short_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++) {
-            (*argout)[i] = (*argin)[i];
-        }
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++) {
+    (*argout)[i] = (*argin)[i];
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_short_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_short_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3711,29 +3711,29 @@ Tango::DevVarStringArray *TangoTest::dev_var_string_array(const Tango::DevVarStr
 	DEBUG_STREAM << "TangoTest::DevVarStringArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_string_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarStringArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarStringArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_string_array");
-        }
+	//	Add your own code
+	// Allocate argout
+	argout = new Tango::DevVarStringArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarStringArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_string_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++) {
-            (*argout)[i] = CORBA::string_dup((*argin)[i]);
-        }
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++) {
+    (*argout)[i] = CORBA::string_dup((*argin)[i]);
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_string_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_string_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3751,28 +3751,29 @@ Tango::DevVarULong64Array *TangoTest::dev_var_ulong64_array(const Tango::DevVarU
 	DEBUG_STREAM << "TangoTest::DevVarULong64Array()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_ulong64_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarULong64Array();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarULong64Array" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_ulong64_array");
-        }
+	//	Add your own code
+	// Allocate argout
+  argout = new Tango::DevVarULong64Array();
+  if (argout == 0)
+  {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarULong64Array" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+                                   o.str(),
+                                   (const char *)"TangoTest::dev_var_ulong64_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++)
-            (*argout)[i] = (*argin)[i];
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++)
+    (*argout)[i] = (*argin)[i];
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_ulong64_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_ulong64_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3790,29 +3791,29 @@ Tango::DevVarULongArray *TangoTest::dev_var_ulong_array(const Tango::DevVarULong
 	DEBUG_STREAM << "TangoTest::DevVarULongArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_ulong_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarULongArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarULongArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_ulong_array");
-        }
+	//	Add your own code
+	// Allocate argout
+	argout = new Tango::DevVarULongArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarULongArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_ulong_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++) {
-            (*argout)[i] = (*argin)[i];
-        }
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++) {
+    (*argout)[i] = (*argin)[i];
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_ulong_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_ulong_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3830,29 +3831,29 @@ Tango::DevVarUShortArray *TangoTest::dev_var_ushort_array(const Tango::DevVarUSh
 	DEBUG_STREAM << "TangoTest::DevVarUShortArray()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_var_ushort_array) ENABLED START -----*/
 
-        //	Add your own code
-        // Allocate argout
-        argout = new Tango::DevVarUShortArray();
-        if (argout == 0) {
-            TangoSys_OMemStream o;
-            o << "Failed to allocate Tango::DevVarUShortArray" << std::ends;
-            LOG_ERROR((o.str()));
-            Tango::Except::throw_exception((const char *) "Out of memory error",
-                                           o.str(),
-                                           (const char *) "TangoTest::dev_var_ushort_array");
-        }
+	//	Add your own code
+	// Allocate argout
+	argout = new Tango::DevVarUShortArray();
+  if (argout == 0) {
+    TangoSys_OMemStream o;
+    o << "Failed to allocate Tango::DevVarUShortArray" << std::ends;
+    LOG_ERROR((o.str()));
+    Tango::Except::throw_exception((const char *)"Out of memory error",
+						                       o.str(),
+						                       (const char *)"TangoTest::dev_var_ushort_array");
+  }
 
-        // Tangotest : just send back input argument
-        argout->length(argin->length());
-        for (unsigned int i = 0; i < argin->length(); i++) {
-            (*argout)[i] = (*argin)[i];
-        }
+  // Tangotest : just send back input argument
+  argout->length(argin->length());
+  for (unsigned int i = 0; i < argin->length(); i++) {
+    (*argout)[i] = (*argin)[i];
+  }
 
-        // DO NOT DELETE <argin>
-        // See the TANGO programmer's manual section 7.2.3
-        // for more info about C++ memory management.
+  // DO NOT DELETE <argin>
+  // See the TANGO programmer's manual section 7.2.3
+  // for more info about C++ memory management.
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_ushort_array
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_var_ushort_array
 	return argout;
 }
 //--------------------------------------------------------
@@ -3867,10 +3868,10 @@ void TangoTest::dev_void()
 	DEBUG_STREAM << "TangoTest::DevVoid()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dev_void) ENABLED START -----*/
 
-        //	Add your own code
-        //	Add your own code to control device here
+	//	Add your own code
+	//	Add your own code to control device here
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dev_void
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dev_void
 }
 //--------------------------------------------------------
 /**
@@ -3884,17 +3885,17 @@ void TangoTest::dump_execution_state()
 	DEBUG_STREAM << "TangoTest::DumpExecutionState()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::dump_execution_state) ENABLED START -----*/
 
-            //	Add your own code
-#if defined(ENABLE_CRASH_REPORT)
-            TangoCrashHandler::dump_current_exec_state();
+	//	Add your own code
+	#if defined(ENABLE_CRASH_REPORT)
+  TangoCrashHandler::dump_current_exec_state();
 #else
-        ERROR_STREAM << "Crash report disabled "
-                     << "[rebuild this device with ENABLE_CRASH_REPORT defined "
-                     << "and link against the breakpad_client library"
-                     << std::endl;
+  ERROR_STREAM << "Crash report disabled "
+               << "[rebuild this device with ENABLE_CRASH_REPORT defined "
+               << "and link against the breakpad_client library"
+               << std::endl;
 #endif
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::dump_execution_state
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::dump_execution_state
 }
 //--------------------------------------------------------
 /**
@@ -3908,14 +3909,17 @@ void TangoTest::switch_states()
 	DEBUG_STREAM << "TangoTest::SwitchStates()  - " << device_name << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::switch_states) ENABLED START -----*/
 
-        //	Add your own code
-        if (get_state() == Tango::RUNNING) {
-            set_state(Tango::FAULT);
-        } else {
-            set_state(Tango::RUNNING);
-        }
+	//	Add your own code
+	if(get_state() == Tango::RUNNING)
+	{
+		set_state(Tango::FAULT);
+	}
+	else
+	{
+		set_state(Tango::RUNNING);
+	}
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::switch_states
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::switch_states
 }
 //--------------------------------------------------------
 /**
@@ -3928,9 +3932,9 @@ void TangoTest::add_dynamic_commands()
 {
 	/*----- PROTECTED REGION ID(TangoTest::add_dynamic_commands) ENABLED START -----*/
 
-        //	Add your own code to create and add dynamic commands if any
+	//	Add your own code to create and add dynamic commands if any
 
-        /*----- PROTECTED REGION END -----*/	//	TangoTest::add_dynamic_commands
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::add_dynamic_commands
 }
 
 /*----- PROTECTED REGION ID(TangoTest::namespace_ending) ENABLED START -----*/
@@ -3939,196 +3943,198 @@ void TangoTest::add_dynamic_commands()
 //=============================================================================
 // Standalone template function: generates a random <T> in the range [0, max]
 //=============================================================================
-    template<typename T>
-    inline T randomize(T max) {
-        if (max > 1) {
-            int r = ::rand();
-            r = r < 0 ? -r : r;
-            return static_cast<T>(r % static_cast<int>(max));
-        }
-        return 0;
-    }
-
+template<typename T> inline T randomize (T max)
+{
+  if (max > 1)
+  {
+    int r = ::rand();
+	  r = r < 0 ? -r : r;
+	  return static_cast<T>(r % static_cast<int>(max));
+  }
+  return 0;
+}
 //=============================================================================
 // Standalone template function: generates a random image
 //=============================================================================
-    template<typename T>
-    void generate_full_image(T *buffer, long max_xy, long max_value, omni_mutex &lock) {
-        lock.lock();
-        // For each pixel, we need to generate a random value between [0, max_value]
-        for (long i = 0; i < max_xy; i++) {
-            for (long j = 0; j < max_xy; j++) {
-                int r = ::rand();
-                r = r < 0 ? -r : r;
-                buffer[i * max_xy + j] = (long) (r % (int) max_value);
-            }
-        }
-        lock.unlock();
-    }
-
+template<typename T>
+void generate_full_image (T* buffer, long max_xy, long max_value, omni_mutex &lock)
+{
+    lock.lock();
+	// For each pixel, we need to generate a random value between [0, max_value]
+	for(long i=0; i<max_xy; i++)
+	{
+		for(long j=0; j<max_xy; j++)
+		{
+      int r = ::rand();
+			r = r < 0 ? -r : r;
+			buffer[i * max_xy + j] = (long)(r % (int)max_value);
+		}
+	}
+	lock.unlock();
+}
 //=============================================================================
 // Standalone template function: generates a dummy beam image
 //=============================================================================
-    template<typename T>
-    void generate_image(T *buffer, long max_xy, omni_mutex &lock) {
-        lock.lock();
-        long bimg_center_x = ::rand() % (int) (max_xy * 0.05);
-        if (::rand() % 2) {
-            bimg_center_x *= -1;
+template <typename T>
+void generate_image (T* buffer, long max_xy, omni_mutex &lock)
+{
+  lock.lock();
+	long bimg_center_x = ::rand() % (int)(max_xy * 0.05);
+  if (::rand() % 2) {
+    bimg_center_x *= -1;
+  }
+	long bimg_center_y = ::rand() % (int)(max_xy * 0.05);
+  if (::rand() % 2) {
+    bimg_center_y *= -1;
+  }
+	long bimg_offset_to_zero = (max_xy - 1) / 2;
+	long bimg_x_offset_to_zero = bimg_offset_to_zero + bimg_center_x;
+	long bimg_y_offset_to_zero = bimg_offset_to_zero + bimg_center_y;
+  long limit = max_xy / 8;
+  long noise = ::rand() % (int)(limit * 0.2);
+  if (::rand() % 2) {
+    noise *= -1;
+  }
+  limit += noise;
+  // Reset image content
+  ::memset(buffer, 0, max_xy * max_xy * sizeof(T));
+  // Fill image buffer
+  long i, j, x, y, value;
+  for (i = -limit; i < limit; i++) {
+    y = i + bimg_y_offset_to_zero;
+    if (y >= 0 && y < max_xy) {
+      for (j = -limit; j < limit; j++) {
+	      x = j + bimg_x_offset_to_zero;
+        if (x >= 0 && x < max_xy) {
+          value = (long)::sqrt((double)(i * i + j * j));
+          buffer[x * max_xy + y] = (T) ((value < limit) ? limit - value : 0);
         }
-        long bimg_center_y = ::rand() % (int) (max_xy * 0.05);
-        if (::rand() % 2) {
-            bimg_center_y *= -1;
-        }
-        long bimg_offset_to_zero = (max_xy - 1) / 2;
-        long bimg_x_offset_to_zero = bimg_offset_to_zero + bimg_center_x;
-        long bimg_y_offset_to_zero = bimg_offset_to_zero + bimg_center_y;
-        long limit = max_xy / 8;
-        long noise = ::rand() % (int) (limit * 0.2);
-        if (::rand() % 2) {
-            noise *= -1;
-        }
-        limit += noise;
-        // Reset image content
-        ::memset(buffer, 0, max_xy * max_xy * sizeof(T));
-        // Fill image buffer
-        long i, j, x, y, value;
-        for (i = -limit; i < limit; i++) {
-            y = i + bimg_y_offset_to_zero;
-            if (y >= 0 && y < max_xy) {
-                for (j = -limit; j < limit; j++) {
-                    x = j + bimg_x_offset_to_zero;
-                    if (x >= 0 && x < max_xy) {
-                        value = (long) ::sqrt((double) (i * i + j * j));
-                        buffer[x * max_xy + y] = (T) ((value < limit) ? limit - value : 0);
-                    }
-                }
-            }
-        }
-        lock.unlock();
+      }
     }
+  }
+  lock.unlock();
+}
 
 
 //=============================================================================
 // TangoTest::gen_data
 //=============================================================================
-    void TangoTest::gen_data() {
-        // Generate data for all attributes
-        static long k = 0;
-        static const double kpi_deg = 3.14159 / 180.0;
-        static const int boolean_generation_max_value = 2;
-        static const int int_generation_max_value = 256;
+void TangoTest::gen_data ()
+{
+  // Generate data for all attributes
+  static long k = 0;
+  static const double kpi_deg = 3.14159 / 180.0;
+  static const int boolean_generation_max_value = 2;
+  static const int int_generation_max_value = 256;
 
-        *attr_short_scalar_rww_read =
-                randomize(attr_short_scalar_w_write);
+  *attr_short_scalar_rww_read =
+			randomize(attr_short_scalar_w_write);
 
-        *attr_long_scalar_rww_read =
-                randomize(attr_long_scalar_w_write);
+  *attr_long_scalar_rww_read =
+     	randomize(attr_long_scalar_w_write);
 
-        *attr_double_scalar_rww_read =
-                attr_double_scalar_w_write * ::sin(kpi_deg * (k % 360));
+  *attr_double_scalar_rww_read =
+       attr_double_scalar_w_write * ::sin(kpi_deg * (k%360));
 
-        *attr_short_scalar_ro_read =
-                randomize(attr_short_scalar_write);
+  *attr_short_scalar_ro_read =
+     randomize(attr_short_scalar_write);
 
-        *attr_short_scalar_read =
-                randomize(attr_short_scalar_write);
+  *attr_short_scalar_read =
+     randomize(attr_short_scalar_write);
 
-        *attr_long_scalar_read =
-                randomize(attr_long_scalar_write);
+ 	*attr_long_scalar_read =
+     randomize(attr_long_scalar_write);
 
-        *attr_ulong_scalar_read =
-                randomize(attr_ulong_scalar_write);
+  *attr_ulong_scalar_read =
+     randomize(attr_ulong_scalar_write);
 
-        *attr_long64_scalar_read =
-                randomize(attr_long_scalar_write);
+  *attr_long64_scalar_read =
+     randomize(attr_long_scalar_write);
 
-        *attr_ulong64_scalar_read =
-                randomize(attr_ulong_scalar_write);
+  *attr_ulong64_scalar_read =
+     randomize(attr_ulong_scalar_write);
 
-        *attr_double_scalar_read =
-                attr_double_scalar_write * ::sin(kpi_deg * (k % 360));
+ 	*attr_double_scalar_read =
+     attr_double_scalar_write * ::sin(kpi_deg * (k%360));
 
-        *attr_ushort_scalar_read =
-                randomize(attr_ushort_scalar_write);
+ 	*attr_ushort_scalar_read =
+     randomize(attr_ushort_scalar_write);
 
-        *attr_uchar_scalar_read =
-                randomize(attr_uchar_scalar_write);
+  *attr_uchar_scalar_read =
+     randomize(attr_uchar_scalar_write);
 
-        *attr_float_scalar_read =
-                randomize(attr_float_scalar_write);
+  *attr_float_scalar_read =
+     randomize(attr_float_scalar_write);
 
-        int i, j;
+ 	int i, j;
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_short_spectrum_ro_read[i] = randomize(int_generation_max_value);
+	for (i = 0; i < kSpecLen; i++)
+		attr_short_spectrum_ro_read[i] = randomize(int_generation_max_value);
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_long_spectrum_ro_read[i] = randomize(int_generation_max_value);
+	for (i = 0; i < kSpecLen; i++)
+		attr_long_spectrum_ro_read[i] = randomize(int_generation_max_value);
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_ulong_spectrum_ro_read[i] = randomize(int_generation_max_value);
+  for (i = 0; i < kSpecLen; i++)
+    attr_ulong_spectrum_ro_read[i] = randomize(int_generation_max_value);
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_long64_spectrum_ro_read[i] = randomize(int_generation_max_value);
+  for (i = 0; i < kSpecLen; i++)
+    attr_long64_spectrum_ro_read[i] = randomize(int_generation_max_value);
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_ulong64_spectrum_ro_read[i] = randomize(int_generation_max_value);
+  for (i = 0; i < kSpecLen; i++)
+    attr_ulong64_spectrum_ro_read[i] = randomize(int_generation_max_value);
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_double_spectrum_ro_read[i] = randomize(int_generation_max_value);
+	for (i = 0; i < kSpecLen; i++)
+		attr_double_spectrum_ro_read[i] = randomize(int_generation_max_value);
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_wave_read[i] = attr_ampli_write * ::sin(attr_freq_write * kpi_deg * (i + (k % 360)));
+	for (i = 0; i < kSpecLen; i++)
+     attr_wave_read[i] = attr_ampli_write * ::sin(kpi_deg * (i + (k%360)));
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_boolean_spectrum_ro_read[i] =
-                    randomize(boolean_generation_max_value) ? true : false;
+	for (i = 0; i < kSpecLen; i++)
+		attr_boolean_spectrum_ro_read[i] =
+            randomize(boolean_generation_max_value) ? true : false;
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_ushort_spectrum_ro_read[i] = randomize(int_generation_max_value);
+	for (i = 0; i < kSpecLen; i++)
+		attr_ushort_spectrum_ro_read[i] = randomize(int_generation_max_value);
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_uchar_spectrum_ro_read[i] = randomize(int_generation_max_value);
+	for (i = 0; i < kSpecLen; i++)
+		attr_uchar_spectrum_ro_read[i] = randomize(int_generation_max_value);
 
-        for (i = 0; i < kSpecLen; i++)
-            attr_float_spectrum_ro_read[i] = (float) randomize(int_generation_max_value);
+	for (i = 0; i < kSpecLen; i++)
+		attr_float_spectrum_ro_read[i] = (float) randomize(int_generation_max_value);
 
-        generate_image(attr_short_image_ro_read, kImagLen, short_image_lock);
+  generate_image(attr_short_image_ro_read,  kImagLen, short_image_lock);
 
-        generate_image(attr_long_image_ro_read, kImagLen, long_image_lock);
+  generate_image(attr_long_image_ro_read,  kImagLen, long_image_lock);
 
-        generate_image(attr_ulong_image_ro_read, kImagLen, ulong64_image_lock);
+  generate_image(attr_ulong_image_ro_read,  kImagLen, ulong64_image_lock);
 
-        generate_image(attr_long64_image_ro_read, kImagLen, long64_image_lock);
+  generate_image(attr_long64_image_ro_read,  kImagLen, long64_image_lock);
 
-        generate_image(attr_ulong64_image_ro_read, kImagLen, ulong64_image_lock);
+  generate_image(attr_ulong64_image_ro_read,  kImagLen, ulong64_image_lock);
 
-        generate_image(attr_float_image_ro_read, kImagLen, float_image_lock);
+  generate_image(attr_float_image_ro_read, kImagLen, float_image_lock);
 
-        generate_image(attr_double_image_ro_read, kImagLen, double_image_lock);
+  generate_image(attr_double_image_ro_read,  kImagLen, double_image_lock);
 
-        generate_full_image(attr_boolean_image_ro_read, kImagLen, boolean_generation_max_value, boolean_image_lock);
+  generate_full_image(attr_boolean_image_ro_read, kImagLen, boolean_generation_max_value, boolean_image_lock);
 
-        generate_full_image(attr_uchar_image_ro_read, kImagLen, int_generation_max_value, uchar_image_lock);
+  generate_full_image(attr_uchar_image_ro_read, kImagLen, int_generation_max_value, uchar_image_lock);
 
-        generate_full_image(attr_ushort_image_ro_read, uShort_image_ro_size, int_generation_max_value,
-                            ushort_image_lock);
+  generate_full_image(attr_ushort_image_ro_read, uShort_image_ro_size, int_generation_max_value, ushort_image_lock);
 
-        for (i = 0; i < kSpecLen; i++)
-            ::sprintf(attr_string_spectrum_ro_read[i], "[%.2d]::hello-world-%.4d", i,
-                      randomize(int_generation_max_value));
+  for (i = 0; i < kSpecLen; i++)
+    ::sprintf(attr_string_spectrum_ro_read[i],"[%.2d]::hello-world-%.4d", i, randomize(int_generation_max_value));
 
-        for (j = 0; j < kImagLen; j++)
-            for (i = 0; i < kImagLen; i++)
-                ::sprintf(attr_string_image_ro_read[i + j * kImagLen],
-                          "[%.2d][%.2d]::hello world::%.4d",
-                          i,
-                          j,
-                          randomize(int_generation_max_value));
+  for (j = 0; j < kImagLen; j++)
+    for (i = 0; i < kImagLen; i++)
+      ::sprintf(attr_string_image_ro_read[ i + j * kImagLen],
+                "[%.2d][%.2d]::hello world::%.4d",
+                i,
+                j,
+                randomize(int_generation_max_value));
 
-        k++;
-    }
+  k++;
+}
 
 /*----- PROTECTED REGION END -----*/	//	TangoTest::namespace_ending
 } //	namespace

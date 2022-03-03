@@ -1,0 +1,52 @@
+message("# LOAD DEFAULT MACRO - default-macro.cmake")
+
+MACRO(GET_SUBDIRS result current_dir)
+  FILE(GLOB children RELATIVE ${current_dir} ${current_dir}/*)
+  SET(list_dir "")
+  FOREACH(child ${children})
+    IF(IS_DIRECTORY ${current_dir}/${child})
+      LIST(APPEND list_dir ${child})
+    ENDIF()
+  ENDFOREACH()
+  SET(${result} ${list_dir})
+ENDMACRO()
+
+MACRO(GET_HEADER_FILES result current_dir)
+  SET(list_file "")
+
+  FILE(GLOB children RELATIVE ${current_dir} ${current_dir}/*.h)
+  FOREACH(child ${children})
+    IF(NOT IS_DIRECTORY ${current_dir}/${child})
+      LIST(APPEND list_file ${child})
+    ENDIF()
+  ENDFOREACH()
+
+  FILE(GLOB children RELATIVE ${current_dir} ${current_dir}/*.hpp)
+  FOREACH(child ${children})
+    IF(NOT IS_DIRECTORY ${current_dir}/${child})
+      LIST(APPEND list_file ${child})
+    ENDIF()
+  ENDFOREACH()
+
+  SET(${result} ${list_file})
+ENDMACRO()
+
+MACRO(GET_SOURCE_FILES result current_dir)
+  SET(list_file "")
+
+  FILE(GLOB children RELATIVE ${current_dir} ${current_dir}/*.c)
+  FOREACH(child ${children})
+    IF(NOT IS_DIRECTORY ${current_dir}/${child})
+      LIST(APPEND list_file ${child})
+    ENDIF()
+  ENDFOREACH()
+
+  FILE(GLOB children RELATIVE ${current_dir} ${current_dir}/*.cpp)
+  FOREACH(child ${children})
+    IF(NOT IS_DIRECTORY ${current_dir}/${child})
+      LIST(APPEND list_file ${child})
+    ENDIF()
+  ENDFOREACH()
+
+  SET(${result} ${list_file})
+ENDMACRO()
