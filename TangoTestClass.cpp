@@ -1406,7 +1406,7 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	delta_val	not set for enum_scalar
 	
 	{
-		vector<std::string> labels;
+		std::vector<std::string> labels;
 		labels.push_back("LABEL0");
 		labels.push_back("LABEL1");
 		labels.push_back("LABEL2");

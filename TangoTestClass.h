@@ -372,7 +372,7 @@ public:
 		{(static_cast<TangoTest *>(dev))->write_enum_scalar(att);}
 	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
 		{return (static_cast<TangoTest *>(dev))->is_enum_scalar_allowed(ty);}
-	virtual bool same_type(const type_info &in_type) {return typeid(enum_scalarEnum) == in_type;}
+	virtual bool same_type(const std::type_info &in_type) {return typeid(enum_scalarEnum) == in_type;}
 	virtual std::string get_enum_type() {return std::string("enum_scalarEnum");}
 };
 
