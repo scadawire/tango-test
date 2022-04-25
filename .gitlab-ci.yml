@@ -1,0 +1,96 @@
+variables:
+    DEBIAN_FRONTEND: noninteractive
+    CMAKE_BUILD_TYPE: Debug
+
+# Not possible with parallel, see https://gitlab.com/gitlab-org/gitlab/-/issues/254821
+.build-cppTango-template: &build-cppTango-template
+  image: debian:bullseye
+  before_script:
+    - apt-get update
+    - >
+      apt-get install -y
+      build-essential
+      cmake
+      git
+      libcos4-dev
+      libomniorb4-dev
+      libomnithread4-dev
+      libzmq3-dev
+      omniidl
+      pkg-config
+    # Install tango-idl
+    - git clone --depth 1 https://gitlab.com/tango-controls/tango-idl.git /idl
+    - cmake -B /idl/build -DCMAKE_INSTALL_PREFIX=/usr/local/tango-idl /idl
+    - make -C /idl/build install
+    # Install cppzmq
+    - git clone -b v4.7.1 --depth 1 https://github.com/zeromq/cppzmq.git /cppzmq
+    - cmake -B /cppzmq/build -DCPPZMQ_BUILD_TESTS=OFF /cppzmq
+    - make -C /cppzmq/build install
+    # Clone cppTango
+    - git clone -b ${BRANCH} --depth 1 https://gitlab.com/tango-controls/cppTango.git /cppTango
+    - >
+      cmake -B /cppTango/build
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DBUILD_TESTING=OFF
+      -DTANGO_IDL_BASE=/usr/local/tango-idl
+      -DIDL_BASE=/usr/local/tango-idl
+      -DTANGO_USE_JPEG=OFF
+      -DTANGO_USE_USING_NAMESPACE=OFF
+      /cppTango
+  script:
+    - make -C /cppTango/build install
+    - tar cf usr-local.tar /usr/local
+  artifacts:
+    when: on_success
+    paths:
+      - usr-local.tar
+
+build-cppTango-main:
+  variables:
+    BRANCH: main
+  <<: *build-cppTango-template
+
+build-cppTango-9.3-backports:
+  variables:
+    BRANCH: 9.3-backports
+  <<: *build-cppTango-template
+
+.build-template: &build-template
+  image: debian:bullseye
+  before_script:
+    - apt-get update
+    - >
+      apt-get install -y
+      build-essential
+      cmake
+      git
+      libcos4-dev
+      libomniorb4-dev
+      libomnithread4-dev
+      libzmq3-dev
+      omniidl
+      pkg-config
+    - mkdir build
+
+build-main:
+  <<: *build-template
+  needs: ["build-cppTango-main"]
+  script:
+    - tar xf usr-local.tar -C /
+    - cmake -B build .
+    - make -C build install
+
+build-9.3-backports:
+  <<: *build-template
+  needs: ["build-cppTango-9.3-backports"]
+  script:
+    - tar xf usr-local.tar -C /
+    - cmake -B build .
+    - make -C build install
+
+build-stock:
+  <<: *build-template
+  script:
+    - apt-get install -y libtango-dev
+    - cmake -B build .
+    - make -C build install
