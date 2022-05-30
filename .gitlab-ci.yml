@@ -11,6 +11,62 @@ variables:
   LIBTANGO: libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
   TANGO_PATH: ${DEPS_PATH}/libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
+  CMAKE_BUILD_TYPE: Debug
+  DEBIAN_FRONTEND: noninteractive
+
+# Not possible with parallel, see https://gitlab.com/gitlab-org/gitlab/-/issues/254821
+.build-cppTango:
+  image: debian:bullseye
+  stage: build
+  before_script:
+    - apt-get update
+    - >
+      apt-get install -y
+      build-essential
+      cmake
+      git
+      libcos4-dev
+      libomniorb4-dev
+      libomnithread4-dev
+      libzmq3-dev
+      omniidl
+      pkg-config
+    # Install tango-idl
+    - git clone --depth 1 https://gitlab.com/tango-controls/tango-idl.git /idl
+    - cmake -B /idl/build -DCMAKE_INSTALL_PREFIX=/usr/local/tango-idl /idl
+    - make -C /idl/build install
+    # Install cppzmq
+    - git clone -b v4.7.1 --depth 1 https://github.com/zeromq/cppzmq.git /cppzmq
+    - cmake -B /cppzmq/build -DCPPZMQ_BUILD_TESTS=OFF /cppzmq
+    - make -C /cppzmq/build install
+    # Clone cppTango
+    - git clone -b ${BRANCH} --depth 1 https://gitlab.com/tango-controls/cppTango.git /cppTango
+    - >
+      cmake -B /cppTango/build
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DBUILD_TESTING=OFF
+      -DTANGO_IDL_BASE=/usr/local/tango-idl
+      -DIDL_BASE=/usr/local/tango-idl
+      -DTANGO_USE_JPEG=OFF
+      -DTANGO_USE_USING_NAMESPACE=OFF
+      /cppTango
+  script:
+    - make -C /cppTango/build install
+    - tar cf usr-local.tar /usr/local
+  artifacts:
+    when: on_success
+    paths:
+      - usr-local.tar
+
+build-cppTango-main:
+  extends: .build-cppTango
+  variables:
+    BRANCH: main
+
+build-cppTango-9.3-backports:
+  extends: .build-cppTango
+  variables:
+    BRANCH: 9.3-backports
 
 .build-tangotest-win:
   stage: build
@@ -41,7 +97,7 @@ variables:
     expire_in: 1 day
   tags:
     - shared-windows
-    
+
 build-tangotest-win-64bit:
   extends: .build-tangotest-win
   variables:
@@ -53,6 +109,50 @@ build-tangotest-win-32bit:
   variables:
     ARCH: x86
     PLATFORM: Win32
+
+.build-tangotest-linux:
+  image: debian:bullseye
+  stage: build
+  before_script:
+    - apt-get update
+    - >
+      apt-get install -y
+      build-essential
+      cmake
+      git
+      libcos4-dev
+      libomniorb4-dev
+      libomnithread4-dev
+      libzmq3-dev
+      omniidl
+      pkg-config
+    - mkdir build
+
+build-tangotest-linux-main:
+  extends: .build-tangotest-linux
+  needs:
+    - build-cppTango-main
+  script:
+    - tar xf usr-local.tar -C /
+    - cmake -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
+    - make -C build install
+
+build-tangotest-linux-9.3-backports:
+  extends: .build-tangotest-linux
+  needs:
+    - build-cppTango-9.3-backports
+  script:
+    - tar xf usr-local.tar -C /
+    - cmake -B build .
+    - make -C build install
+
+build-tangotest-linux-stock:
+  extends: .build-tangotest-linux
+  script:
+    - apt-get install -y libtango-dev
+    - cmake -B build .
+    - make -C build install
+
 
 release-builds:
   stage: release
