@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.3)
+cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 set(CMP0048 NEW)
 project(TangoTest LANGUAGES CXX
         VERSION 3.0)
