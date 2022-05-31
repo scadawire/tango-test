@@ -1,5 +1,4 @@
 /*----- PROTECTED REGION ID(TangoTest.cpp) ENABLED START -----*/
-static const char *RcsId = "$Id$";
 //=============================================================================
 //
 // file :        TangoTest.cpp

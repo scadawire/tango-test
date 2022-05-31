@@ -1,5 +1,4 @@
 /*----- PROTECTED REGION ID(TangoTest::ClassFactory.cpp) ENABLED START -----*/
-static const char *RcsId = "$Header$";
 //+=============================================================================
 //
 // file :        ClassFactory.cpp

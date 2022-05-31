@@ -1,9 +1,4 @@
 /*----- PROTECTED REGION ID(TangoTestClass.cpp) ENABLED START -----*/
-static const char *RcsId      = "$Id$";
-static const char *TagName    = "$Name:  $";
-static const char *CvsPath    = "$Source:  $";
-static const char *SvnPath    = "$HeadURL:  $";
-static const char *HttpServer = "http://www.esrf.eu/computing/cs/tango/tango_doc/ds_doc/";
 //=============================================================================
 //
 // file :        TangoTestClass.cpp
