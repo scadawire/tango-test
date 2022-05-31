@@ -77,7 +77,7 @@ build-main:
   needs: ["build-cppTango-main"]
   script:
     - tar xf usr-local.tar -C /
-    - cmake -B build .
+    - cmake -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
     - make -C build install
 
 build-9.3-backports:
