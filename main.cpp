@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
 		tg->server_run();
 	}
-	catch (std::bad_alloc)
+	catch (std::bad_alloc &)
 	{
 		TANGO_LOG << "Can't allocate memory to store device object !!!" << std::endl;
 		TANGO_LOG << "Exiting" << std::endl;
