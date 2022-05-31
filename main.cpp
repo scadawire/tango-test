@@ -40,6 +40,7 @@ static const char *RcsId = "$Id$";
 
 
 #include <tango.h>
+#include "Logging.h"
 
 #if defined(ENABLE_CRASH_REPORT)
 # include <crashreporting/crash_report.h>
@@ -69,26 +70,26 @@ int main(int argc, char *argv[])
 
 		// Run the endless loop
 		//----------------------------------------
-		cout << "Ready to accept request" << std::endl;
+		TANGO_LOG << "Ready to accept request" << std::endl;
 
 		tg->server_run();
 	}
 	catch (std::bad_alloc)
 	{
-		cout << "Can't allocate memory to store device object !!!" << std::endl;
-		cout << "Exiting" << std::endl;
+		TANGO_LOG << "Can't allocate memory to store device object !!!" << std::endl;
+		TANGO_LOG << "Exiting" << std::endl;
 	}
 	catch (CORBA::Exception &e)
 	{
 		Tango::Except::print_exception(e);
 		
-		cout << "Received a CORBA_Exception" << std::endl;
-		cout << "Exiting" << std::endl;
+		TANGO_LOG << "Received a CORBA_Exception" << std::endl;
+		TANGO_LOG << "Exiting" << std::endl;
 	}
   catch (...)
   {
-		cout << "Received an unknown exception" << std::endl;
-		cout << "Exiting" << std::endl;
+		TANGO_LOG << "Received an unknown exception" << std::endl;
+		TANGO_LOG << "Exiting" << std::endl;
   }
 
 	tg->server_cleanup();
