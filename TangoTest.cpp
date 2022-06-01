@@ -2466,8 +2466,6 @@ void TangoTest::write_enum_spectrum(Tango::WAttribute &attr)
 	//	Retrieve pointer on write values (Do not delete !)
 	const short *w_val;
 	attr.get_write_value(w_val);
-	enum_spectrumEnum enum_val[w_length];
-	for (int i=0 ; i<w_length ; i++)  enum_val[i]=(enum_spectrumEnum) w_val[i];
 	/*----- PROTECTED REGION ID(TangoTest::write_enum_spectrum) ENABLED START -----*/
 
 	int len = (w_length <= dimEnumSpectrum) ? w_length : dimEnumSpectrum;
@@ -3195,8 +3193,6 @@ void TangoTest::write_enum_image(Tango::WAttribute &attr)
 	//	Retrieve pointer on write values (Do not delete !)
 	const short *w_val;
 	attr.get_write_value(w_val);
-	enum_imageEnum enum_val[w_length];
-	for (int i=0 ; i<w_length ; i++)  enum_val[i]=(enum_imageEnum) w_val[i];
 	/*----- PROTECTED REGION ID(TangoTest::write_enum_image) ENABLED START -----*/
 	(void) w_length;
 
