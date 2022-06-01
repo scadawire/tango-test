@@ -474,6 +474,22 @@ bool TangoTest::is_freq_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
+ *	Method      : TangoTest::is_enum_scalar_ro_allowed()
+ *	Description : Execution allowed for enum_scalar_ro attribute
+ */
+//--------------------------------------------------------
+bool TangoTest::is_enum_scalar_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
+{
+
+	//	Not any excluded states for enum_scalar_ro attribute in read access.
+	/*----- PROTECTED REGION ID(TangoTest::enum_scalar_roStateAllowed_READ) ENABLED START -----*/
+
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::enum_scalar_roStateAllowed_READ
+	return true;
+}
+
+//--------------------------------------------------------
+/**
  *	Method      : TangoTest::is_boolean_spectrum_allowed()
  *	Description : Execution allowed for boolean_spectrum attribute
  */
@@ -826,6 +842,42 @@ bool TangoTest::is_wave_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
+ *	Method      : TangoTest::is_enum_spectrum_allowed()
+ *	Description : Execution allowed for enum_spectrum attribute
+ */
+//--------------------------------------------------------
+bool TangoTest::is_enum_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
+{
+	//	Not any excluded states for enum_spectrum attribute in Write access.
+	/*----- PROTECTED REGION ID(TangoTest::enum_spectrumStateAllowed_WRITE) ENABLED START -----*/
+
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::enum_spectrumStateAllowed_WRITE
+
+	//	Not any excluded states for enum_spectrum attribute in read access.
+	/*----- PROTECTED REGION ID(TangoTest::enum_spectrumStateAllowed_READ) ENABLED START -----*/
+
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::enum_spectrumStateAllowed_READ
+	return true;
+}
+
+//--------------------------------------------------------
+/**
+ *	Method      : TangoTest::is_enum_spectrum_ro_allowed()
+ *	Description : Execution allowed for enum_spectrum_ro attribute
+ */
+//--------------------------------------------------------
+bool TangoTest::is_enum_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
+{
+
+	//	Not any excluded states for enum_spectrum_ro attribute in read access.
+	/*----- PROTECTED REGION ID(TangoTest::enum_spectrum_roStateAllowed_READ) ENABLED START -----*/
+
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::enum_spectrum_roStateAllowed_READ
+	return true;
+}
+
+//--------------------------------------------------------
+/**
  *	Method      : TangoTest::is_boolean_image_allowed()
  *	Description : Execution allowed for boolean_image attribute
  */
@@ -1157,6 +1209,42 @@ bool TangoTest::is_ushort_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 	/*----- PROTECTED REGION ID(TangoTest::ushort_image_roStateAllowed_READ) ENABLED START -----*/
 	
 	/*----- PROTECTED REGION END -----*/	//	TangoTest::ushort_image_roStateAllowed_READ
+	return true;
+}
+
+//--------------------------------------------------------
+/**
+ *	Method      : TangoTest::is_enum_image_ro_allowed()
+ *	Description : Execution allowed for enum_image_ro attribute
+ */
+//--------------------------------------------------------
+bool TangoTest::is_enum_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
+{
+
+	//	Not any excluded states for enum_image_ro attribute in read access.
+	/*----- PROTECTED REGION ID(TangoTest::enum_image_roStateAllowed_READ) ENABLED START -----*/
+
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::enum_image_roStateAllowed_READ
+	return true;
+}
+
+//--------------------------------------------------------
+/**
+ *	Method      : TangoTest::is_enum_image_allowed()
+ *	Description : Execution allowed for enum_image attribute
+ */
+//--------------------------------------------------------
+bool TangoTest::is_enum_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
+{
+	//	Not any excluded states for enum_image attribute in Write access.
+	/*----- PROTECTED REGION ID(TangoTest::enum_imageStateAllowed_WRITE) ENABLED START -----*/
+
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::enum_imageStateAllowed_WRITE
+
+	//	Not any excluded states for enum_image attribute in read access.
+	/*----- PROTECTED REGION ID(TangoTest::enum_imageStateAllowed_READ) ENABLED START -----*/
+
+	/*----- PROTECTED REGION END -----*/	//	TangoTest::enum_imageStateAllowed_READ
 	return true;
 }
 

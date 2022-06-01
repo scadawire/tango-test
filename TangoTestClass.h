@@ -390,6 +390,21 @@ public:
 		{return (static_cast<TangoTest *>(dev))->is_freq_allowed(ty);}
 };
 
+//	Attribute enum_scalar_ro class definition
+class enum_scalar_roAttrib: public Tango::Attr
+{
+public:
+	enum_scalar_roAttrib():Attr("enum_scalar_ro",
+			Tango::DEV_ENUM, Tango::READ) {};
+	~enum_scalar_roAttrib() {};
+	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+		{(static_cast<TangoTest *>(dev))->read_enum_scalar_ro(att);}
+	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+		{return (static_cast<TangoTest *>(dev))->is_enum_scalar_ro_allowed(ty);}
+	virtual bool same_type(const std::type_info &in_type) {return typeid(enum_scalar_roEnum) == in_type;}
+	virtual std::string get_enum_type() {return std::string("enum_scalar_roEnum");}
+};
+
 //	Attribute boolean_spectrum class definition
 class boolean_spectrumAttrib: public Tango::SpectrumAttr
 {
@@ -666,6 +681,38 @@ public:
 		{return (static_cast<TangoTest *>(dev))->is_wave_allowed(ty);}
 };
 
+//	Attribute enum_spectrum class definition
+class enum_spectrumAttrib: public Tango::SpectrumAttr
+{
+public:
+	enum_spectrumAttrib():SpectrumAttr("enum_spectrum",
+			Tango::DEV_ENUM, Tango::READ_WRITE, 4096) {};
+	~enum_spectrumAttrib() {};
+	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+		{(static_cast<TangoTest *>(dev))->read_enum_spectrum(att);}
+	virtual void write(Tango::DeviceImpl *dev,Tango::WAttribute &att)
+		{(static_cast<TangoTest *>(dev))->write_enum_spectrum(att);}
+	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+		{return (static_cast<TangoTest *>(dev))->is_enum_spectrum_allowed(ty);}
+	virtual bool same_type(const std::type_info &in_type) {return typeid(enum_spectrumEnum) == in_type;}
+	virtual std::string get_enum_type() {return std::string("enum_spectrumEnum");}
+};
+
+//	Attribute enum_spectrum_ro class definition
+class enum_spectrum_roAttrib: public Tango::SpectrumAttr
+{
+public:
+	enum_spectrum_roAttrib():SpectrumAttr("enum_spectrum_ro",
+			Tango::DEV_ENUM, Tango::READ, 4096) {};
+	~enum_spectrum_roAttrib() {};
+	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+		{(static_cast<TangoTest *>(dev))->read_enum_spectrum_ro(att);}
+	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+		{return (static_cast<TangoTest *>(dev))->is_enum_spectrum_ro_allowed(ty);}
+	virtual bool same_type(const std::type_info &in_type) {return typeid(enum_spectrum_roEnum) == in_type;}
+	virtual std::string get_enum_type() {return std::string("enum_spectrum_roEnum");}
+};
+
 //	Attribute boolean_image class definition
 class boolean_imageAttrib: public Tango::ImageAttr
 {
@@ -927,6 +974,38 @@ public:
 		{(static_cast<TangoTest *>(dev))->read_ushort_image_ro(att);}
 	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
 		{return (static_cast<TangoTest *>(dev))->is_ushort_image_ro_allowed(ty);}
+};
+
+//	Attribute enum_image_ro class definition
+class enum_image_roAttrib: public Tango::ImageAttr
+{
+public:
+	enum_image_roAttrib():ImageAttr("enum_image_ro",
+			Tango::DEV_ENUM, Tango::READ, 251, 251) {};
+	~enum_image_roAttrib() {};
+	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+		{(static_cast<TangoTest *>(dev))->read_enum_image_ro(att);}
+	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+		{return (static_cast<TangoTest *>(dev))->is_enum_image_ro_allowed(ty);}
+	virtual bool same_type(const std::type_info &in_type) {return typeid(enum_image_roEnum) == in_type;}
+	virtual std::string get_enum_type() {return std::string("enum_image_roEnum");}
+};
+
+//	Attribute enum_image class definition
+class enum_imageAttrib: public Tango::ImageAttr
+{
+public:
+	enum_imageAttrib():ImageAttr("enum_image",
+			Tango::DEV_ENUM, Tango::READ_WRITE, 251, 251) {};
+	~enum_imageAttrib() {};
+	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+		{(static_cast<TangoTest *>(dev))->read_enum_image(att);}
+	virtual void write(Tango::DeviceImpl *dev,Tango::WAttribute &att)
+		{(static_cast<TangoTest *>(dev))->write_enum_image(att);}
+	virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+		{return (static_cast<TangoTest *>(dev))->is_enum_image_allowed(ty);}
+	virtual bool same_type(const std::type_info &in_type) {return typeid(enum_imageEnum) == in_type;}
+	virtual std::string get_enum_type() {return std::string("enum_imageEnum");}
 };
 
 
