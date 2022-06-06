@@ -1,8 +1,4 @@
 ---
-stages:
-  - build
-  - release
-
 variables:
   TANGO_VERSION: 9.3.4
   MSVC_VERSION: v140
@@ -17,7 +13,6 @@ variables:
 # Not possible with parallel, see https://gitlab.com/gitlab-org/gitlab/-/issues/254821
 .build-cppTango:
   image: debian:bullseye
-  stage: build
   before_script:
     - apt-get update
     - >
@@ -69,7 +64,6 @@ build-cppTango-9.3-backports:
     BRANCH: 9.3-backports
 
 .build-tangotest-win:
-  stage: build
   before_script:
     - choco install cmake -y
     - $env:Path += ";C:\Program Files\CMake\bin"
@@ -112,7 +106,6 @@ build-tangotest-win-32bit:
 
 .build-tangotest-linux:
   image: debian:bullseye
-  stage: build
   before_script:
     - apt-get update
     - >
@@ -155,8 +148,13 @@ build-tangotest-linux-stock:
 
 
 release-builds:
-  stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - build-tangotest-linux-stock
+    - build-tangotest-linux-9.3-backports
+    - build-tangotest-linux-main
+    - build-tangotest-win-32bit
+    - build-tangotest-win-64bit
   before_script:
     - apk update
     - apk add curl
