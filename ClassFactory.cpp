@@ -42,7 +42,7 @@
 
 
 #include <tango.h>
-#include <TangoTestClass.h>
+#include "TangoTestClass.h"
 
 /**
  *	Create TangoTestClass singleton and store it in DServer object.

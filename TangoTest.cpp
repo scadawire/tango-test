@@ -34,8 +34,8 @@
 
 #include <math.h>
 #include <tango.h>
-#include <TangoTest.h>
-#include <TangoTestClass.h>
+#include "TangoTest.h"
+#include "TangoTestClass.h"
 
 #if defined(ENABLE_CRASH_REPORT)
 # include <crashreporting/crash_report.h>
