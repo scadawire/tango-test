@@ -33,8 +33,8 @@
 
 
 #include <tango.h>
-#include <TangoTest.h>
-#include <TangoTestClass.h>
+#include "TangoTest.h"
+#include "TangoTestClass.h"
 
 /*----- PROTECTED REGION END -----*/	//	TangoTestClass.cpp
 

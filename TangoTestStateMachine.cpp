@@ -27,7 +27,7 @@
 //        (Program Obviously used to Generate tango Object)
 //=============================================================================
 
-#include <TangoTest.h>
+#include "TangoTest.h"
 
 /*----- PROTECTED REGION END -----*/	//	TangoTest::TangoTestStateMachine.cpp
 
