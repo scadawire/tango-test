@@ -1,96 +1,81 @@
+---
+stages:
+  - build
+  - release
+
 variables:
-    DEBIAN_FRONTEND: noninteractive
-    CMAKE_BUILD_TYPE: Debug
+  TANGO_VERSION: 9.3.4
+  MSVC_VERSION: v140
+  GENERATOR_VERSION: Visual Studio 16 2019
+  DEPS_PATH: C:/dependencies
+  LIBTANGO: libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
+  TANGO_PATH: ${DEPS_PATH}/libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
 
-# Not possible with parallel, see https://gitlab.com/gitlab-org/gitlab/-/issues/254821
-.build-cppTango-template: &build-cppTango-template
-  image: debian:bullseye
+.build-tangotest-static:
+  stage: build
   before_script:
-    - apt-get update
-    - >
-      apt-get install -y
-      build-essential
-      cmake
-      git
-      libcos4-dev
-      libomniorb4-dev
-      libomnithread4-dev
-      libzmq3-dev
-      omniidl
-      pkg-config
-    # Install tango-idl
-    - git clone --depth 1 https://gitlab.com/tango-controls/tango-idl.git /idl
-    - cmake -B /idl/build -DCMAKE_INSTALL_PREFIX=/usr/local/tango-idl /idl
-    - make -C /idl/build install
-    # Install cppzmq
-    - git clone -b v4.7.1 --depth 1 https://github.com/zeromq/cppzmq.git /cppzmq
-    - cmake -B /cppzmq/build -DCPPZMQ_BUILD_TESTS=OFF /cppzmq
-    - make -C /cppzmq/build install
-    # Clone cppTango
-    - git clone -b ${BRANCH} --depth 1 https://gitlab.com/tango-controls/cppTango.git /cppTango
-    - >
-      cmake -B /cppTango/build
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBUILD_TESTING=OFF
-      -DTANGO_IDL_BASE=/usr/local/tango-idl
-      -DIDL_BASE=/usr/local/tango-idl
-      -DTANGO_USE_JPEG=OFF
-      -DTANGO_USE_USING_NAMESPACE=OFF
-      /cppTango
+    - choco install cmake -y
+    - $env:Path += ";C:\Program Files\CMake\bin"
+    - $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
+    - msbuild /version
+    - if (Test-Path "${DEPS_PATH}") { Remove-Item "${DEPS_PATH}" -Recurse -Force; }
+    - New-Item "${DEPS_PATH}" -ItemType Directory
+    - wget.exe "https://github.com/tango-controls/cppTango/releases/download/${TANGO_VERSION}/${LIBTANGO}.zip" -P "${DEPS_PATH}"
+    - 7z x "${TANGO_PATH}.zip" -o"${DEPS_PATH}"
   script:
-    - make -C /cppTango/build install
-    - tar cf usr-local.tar /usr/local
+    # Dirty path on Windows. Comment out pipe call, to prevent compilation error described in issue #18. Remove after issue is solved
+    - ((Get-Content -path TangoTest.cpp -Raw) -replace 'pipe << generic_blob_rw_status;','//pipe << generic_blob_rw_status;') | Set-Content -Path TangoTest.cpp
+    - New-Item build -ItemType Directory
+    - cd build
+    - cmake -G"${GENERATOR_VERSION}" -A"${PLATFORM}" .. -DTANGO_PKG_LIBRARY_DIRS="${TANGO_PATH}\lib" -DTANGO_PKG_INCLUDE_DIRS="${TANGO_PATH}\include" -DTANGO_PKG_LIBRARIES="comctl32;libtango;omniORB4;omniDynamic4;COS4;omnithread;libzmq-${MSVC_VERSION}-mt-s-4_0_5" -DTANGO_PKG_CFLAGS_OTHER="/MT;/p:Platform=${ARCH}" -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"
+    - cmake --build . --config Release
+    - cmake --install .
+  after_script:
+    - New-Item artifacts -ItemType Directory
+    - if (Test-Path "C:\Program Files\TangoTest\bin") { Move-Item -Path "C:\Program Files\TangoTest\bin\TangoTest.exe" -Destination "artifacts\TangoTest-x64.exe"; }
+    - if (Test-Path "C:\Program Files (x86)\TangoTest\bin") { Move-Item -Path "C:\Program Files (x86)\TangoTest\bin\TangoTest.exe" -Destination "artifacts\TangoTest-x86.exe"; }
   artifacts:
-    when: on_success
     paths:
-      - usr-local.tar
+      - artifacts
+    expire_in: 1 day
+  tags:
+    - shared-windows
 
-build-cppTango-main:
+build-tangotest-static-64bit:
+  extends: .build-tangotest-static
   variables:
-    BRANCH: main
-  <<: *build-cppTango-template
+    ARCH: x64
+    PLATFORM: x64
 
-build-cppTango-9.3-backports:
+build-tangotest-static-32bit:
+  extends: .build-tangotest-static
   variables:
-    BRANCH: 9.3-backports
-  <<: *build-cppTango-template
+    ARCH: x86
+    PLATFORM: Win32
 
-.build-template: &build-template
-  image: debian:bullseye
+release-builds:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
   before_script:
-    - apt-get update
+    - apk update
+    - apk add curl
+    - apk --no-cache add findutils
+  script:
+    - cd artifacts
     - >
-      apt-get install -y
-      build-essential
-      cmake
-      git
-      libcos4-dev
-      libomniorb4-dev
-      libomnithread4-dev
-      libzmq3-dev
-      omniidl
-      pkg-config
-    - mkdir build
-
-build-main:
-  <<: *build-template
-  needs: ["build-cppTango-main"]
-  script:
-    - tar xf usr-local.tar -C /
-    - cmake -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
-    - make -C build install
-
-build-9.3-backports:
-  <<: *build-template
-  needs: ["build-cppTango-9.3-backports"]
-  script:
-    - tar xf usr-local.tar -C /
-    - cmake -B build .
-    - make -C build install
-
-build-stock:
-  <<: *build-template
-  script:
-    - apt-get install -y libtango-dev
-    - cmake -B build .
-    - make -C build install
+      find . -type f -printf "%f\n" -exec curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file {} "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/{}" \;
+  release:
+    name: 'Release $CI_COMMIT_TAG'
+    tag_name: '$CI_COMMIT_TAG'
+    description: 'Release $CI_COMMIT_TAG'
+    ref: '$CI_COMMIT_SHA'
+    assets:
+      links:
+        - name: 'TangoTest-x64.exe'
+          url: "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/TangoTest-x64.exe"
+        - name: 'TangoTest-x86.exe'
+          url: "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/TangoTest-x86.exe"
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: on_success
