@@ -74,8 +74,6 @@ build-cppTango-9.3-backports:
     - wget.exe "https://github.com/tango-controls/cppTango/releases/download/${TANGO_VERSION}/${LIBTANGO}.zip" -P "${DEPS_PATH}"
     - 7z x "${TANGO_PATH}.zip" -o"${DEPS_PATH}"
   script:
-    # Dirty path on Windows. Comment out pipe call, to prevent compilation error described in issue #18. Remove after issue is solved
-    - ((Get-Content -path TangoTest.cpp -Raw) -replace 'pipe << generic_blob_rw_status;','//pipe << generic_blob_rw_status;') | Set-Content -Path TangoTest.cpp
     - New-Item build -ItemType Directory
     - cd build
     - cmake -G"${GENERATOR_VERSION}" -A"${PLATFORM}" .. -DTANGO_PKG_LIBRARY_DIRS="${TANGO_PATH}\lib" -DTANGO_PKG_INCLUDE_DIRS="${TANGO_PATH}\include" -DTANGO_PKG_LIBRARIES="comctl32;libtango;omniORB4;omniDynamic4;COS4;omnithread;libzmq-${MSVC_VERSION}-mt-s-4_0_5" -DTANGO_PKG_CFLAGS_OTHER="/MT" -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"
