@@ -1,9 +1,17 @@
+---
 variables:
-    DEBIAN_FRONTEND: noninteractive
-    CMAKE_BUILD_TYPE: Debug
+  TANGO_VERSION: 9.3.4
+  MSVC_VERSION: v140
+  GENERATOR_VERSION: Visual Studio 16 2019
+  DEPS_PATH: C:/dependencies
+  LIBTANGO: libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
+  TANGO_PATH: ${DEPS_PATH}/libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
+  CMAKE_BUILD_TYPE: Debug
+  DEBIAN_FRONTEND: noninteractive
 
 # Not possible with parallel, see https://gitlab.com/gitlab-org/gitlab/-/issues/254821
-.build-cppTango-template: &build-cppTango-template
+.build-cppTango:
   image: debian:bullseye
   before_script:
     - apt-get update
@@ -46,16 +54,55 @@ variables:
       - usr-local.tar
 
 build-cppTango-main:
+  extends: .build-cppTango
   variables:
     BRANCH: main
-  <<: *build-cppTango-template
 
 build-cppTango-9.3-backports:
+  extends: .build-cppTango
   variables:
     BRANCH: 9.3-backports
-  <<: *build-cppTango-template
 
-.build-template: &build-template
+.build-tangotest-win:
+  before_script:
+    - choco install cmake -y
+    - $env:Path += ";C:\Program Files\CMake\bin"
+    - $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
+    - msbuild /version
+    - if (Test-Path "${DEPS_PATH}") { Remove-Item "${DEPS_PATH}" -Recurse -Force; }
+    - New-Item "${DEPS_PATH}" -ItemType Directory
+    - wget.exe "https://github.com/tango-controls/cppTango/releases/download/${TANGO_VERSION}/${LIBTANGO}.zip" -P "${DEPS_PATH}"
+    - 7z x "${TANGO_PATH}.zip" -o"${DEPS_PATH}"
+  script:
+    - New-Item build -ItemType Directory
+    - cd build
+    - cmake -G"${GENERATOR_VERSION}" -A"${PLATFORM}" .. -DTANGO_PKG_LIBRARY_DIRS="${TANGO_PATH}\lib" -DTANGO_PKG_INCLUDE_DIRS="${TANGO_PATH}\include" -DTANGO_PKG_LIBRARIES="comctl32;libtango;omniORB4;omniDynamic4;COS4;omnithread;libzmq-${MSVC_VERSION}-mt-s-4_0_5" -DTANGO_PKG_CFLAGS_OTHER="/MT" -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"
+    - cmake --build . --config Release
+    - cmake --install .
+  after_script:
+    - New-Item artifacts -ItemType Directory
+    - if (Test-Path "C:\Program Files\TangoTest\bin") { Move-Item -Path "C:\Program Files\TangoTest\bin\TangoTest.exe" -Destination "artifacts\TangoTest-x64.exe"; }
+    - if (Test-Path "C:\Program Files (x86)\TangoTest\bin") { Move-Item -Path "C:\Program Files (x86)\TangoTest\bin\TangoTest.exe" -Destination "artifacts\TangoTest-x86.exe"; }
+  artifacts:
+    paths:
+      - artifacts
+    expire_in: 1 day
+  tags:
+    - shared-windows
+
+build-tangotest-win-64bit:
+  extends: .build-tangotest-win
+  variables:
+    ARCH: x64
+    PLATFORM: x64
+
+build-tangotest-win-32bit:
+  extends: .build-tangotest-win
+  variables:
+    ARCH: x86
+    PLATFORM: Win32
+
+.build-tangotest-linux:
   image: debian:bullseye
   before_script:
     - apt-get update
@@ -72,25 +119,59 @@ build-cppTango-9.3-backports:
       pkg-config
     - mkdir build
 
-build-main:
-  <<: *build-template
-  needs: ["build-cppTango-main"]
+build-tangotest-linux-main:
+  extends: .build-tangotest-linux
+  needs:
+    - build-cppTango-main
   script:
     - tar xf usr-local.tar -C /
     - cmake -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
     - make -C build install
 
-build-9.3-backports:
-  <<: *build-template
-  needs: ["build-cppTango-9.3-backports"]
+build-tangotest-linux-9.3-backports:
+  extends: .build-tangotest-linux
+  needs:
+    - build-cppTango-9.3-backports
   script:
     - tar xf usr-local.tar -C /
     - cmake -B build .
     - make -C build install
 
-build-stock:
-  <<: *build-template
+build-tangotest-linux-stock:
+  extends: .build-tangotest-linux
   script:
     - apt-get install -y libtango-dev
     - cmake -B build .
     - make -C build install
+
+
+release-builds:
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - build-tangotest-linux-stock
+    - build-tangotest-linux-9.3-backports
+    - build-tangotest-linux-main
+    - build-tangotest-win-32bit
+    - build-tangotest-win-64bit
+  before_script:
+    - apk update
+    - apk add curl
+    - apk --no-cache add findutils
+  script:
+    - cd artifacts
+    - >
+      find . -type f -printf "%f\n" -exec curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file {} "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/{}" \;
+  release:
+    name: 'Release $CI_COMMIT_TAG'
+    tag_name: '$CI_COMMIT_TAG'
+    description: 'Release $CI_COMMIT_TAG'
+    ref: '$CI_COMMIT_SHA'
+    assets:
+      links:
+        - name: 'TangoTest-x64.exe'
+          url: "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/TangoTest-x64.exe"
+        - name: 'TangoTest-x86.exe'
+          url: "${PACKAGE_REGISTRY_URL}/${CI_COMMIT_TAG}/TangoTest-x86.exe"
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: on_success
