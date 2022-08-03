@@ -41,7 +41,7 @@
 //=============================================================================
 
 
-#include <tango.h>
+#include <tango/tango.h>
 #include "TangoTestClass.h"
 
 /**

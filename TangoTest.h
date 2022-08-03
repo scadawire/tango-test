@@ -38,7 +38,7 @@
 #ifndef TangoTest_H
 #define TangoTest_H
 
-#include <tango.h>
+#include <tango/tango.h>
 
 
 

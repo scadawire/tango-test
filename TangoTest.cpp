@@ -33,7 +33,7 @@
 
 
 #include <math.h>
-#include <tango.h>
+#include <tango/tango.h>
 #include "TangoTest.h"
 #include "TangoTestClass.h"
 
