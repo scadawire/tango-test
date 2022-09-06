@@ -87,6 +87,7 @@ build-cppTango-9.3-backports:
     paths:
       - artifacts
     expire_in: 1 day
+  allow_failure: true
   tags:
     - shared-windows
 
