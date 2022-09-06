@@ -42,7 +42,7 @@
 #ifndef TangoTestClass_H
 #define TangoTestClass_H
 
-#include <tango.h>
+#include <tango/tango.h>
 #include "TangoTest.h"
 #include "Logging.h"
 

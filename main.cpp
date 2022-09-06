@@ -31,7 +31,7 @@
 //=============================================================================
 
 
-#include <tango.h>
+#include <tango/tango.h>
 #include "Logging.h"
 
 #if defined(ENABLE_CRASH_REPORT)
