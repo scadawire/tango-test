@@ -144,7 +144,12 @@ build-tangotest-linux-stock:
     - apt-get install -y libtango-dev
     - cmake -B build .
     - make -C build install
-
+  after_script:
+    - cp /usr/local cache
+  cache:
+    key: $CI_COMMIT_SHA
+    paths:
+      - cache
 
 release-builds:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
@@ -176,3 +181,22 @@ release-builds:
   rules:
     - if: $CI_COMMIT_TAG
       when: on_success
+
+release-docker-image:
+  needs:
+    - build-tangotest-linux-stock
+  image: docker:dind
+  services:
+    - docker:dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - |
+      if [[ "$CI_COMMIT_TAG" ]]; then
+        export TAG=$CI_COMMIT_TAG
+      else
+        export TAG=$CI_COMMIT_SHA
+      fi
+    - docker build --tag tangotest:$TAG
+    - docker push tangotest:$TAG
+  rules:
+    - if: $CI_COMMIT_TAG
