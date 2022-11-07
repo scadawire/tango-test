@@ -691,10 +691,10 @@ void TangoTest::init_device()
         attr_ushort_scalar_write = 0;
 
         attr_enum_scalar_read = new enum_scalarEnum;
-        *attr_enum_scalar_read = _LABEL0;
+        *attr_enum_scalar_read = enum_scalarEnum::_LABEL0;
 
         attr_enum_scalar_ro_read = new enum_scalar_roEnum;
-        *attr_enum_scalar_ro_read = _LABEL3;
+        *attr_enum_scalar_ro_read = enum_scalar_roEnum::_LABEL3;
 
         //- Spectrum
         attr_short_spectrum_ro_read = new Tango::DevShort[kSpecLen];
@@ -785,10 +785,10 @@ void TangoTest::init_device()
         dimFloatSpectrum = kSpecLen;
 
         attr_enum_spectrum_ro_read = new enum_spectrum_roEnum[kSpecLen];
-        std::fill_n(attr_enum_spectrum_ro_read, kSpecLen, _LABEL9);
+        std::fill_n(attr_enum_spectrum_ro_read, kSpecLen, enum_spectrum_roEnum::_LABEL9);
 
         attr_enum_spectrum_read = new enum_spectrumEnum[kSpecLen];
-        std::fill_n(attr_enum_spectrum_read, kSpecLen, _LABEL6);
+        std::fill_n(attr_enum_spectrum_read, kSpecLen, enum_spectrumEnum::_LABEL6);
 
         dimEnumSpectrum = kSpecLen;
 
@@ -836,7 +836,7 @@ void TangoTest::init_device()
         dimYBooleanImage = kImagLen;
 
         attr_enum_image_read = new enum_imageEnum[kImagLen * kImagLen];
-        std::fill_n(attr_enum_image_read, kImagLen * kImagLen, _LABEL15);
+        std::fill_n(attr_enum_image_read, kImagLen * kImagLen, enum_imageEnum::_LABEL15);
 
         dimXenumImage = kImagLen;
         dimYenumImage = kImagLen;
@@ -872,7 +872,7 @@ void TangoTest::init_device()
         ::memset(attr_boolean_image_ro_read, 0, kImagLen * kImagLen * sizeof(Tango::DevBoolean));
 
         attr_enum_image_ro_read = new enum_image_roEnum[kImagLen * kImagLen];
-        std::fill_n(attr_enum_image_ro_read, kImagLen * kImagLen, _LABEL12);
+        std::fill_n(attr_enum_image_ro_read, kImagLen * kImagLen, enum_image_roEnum::_LABEL12);
 
         attr_string_image_ro_read = new char *[kImagLen * kImagLen];
         for (s = 0; s < kImagLen * kImagLen; s++) {
