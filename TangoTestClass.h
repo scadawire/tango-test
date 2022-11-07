@@ -409,8 +409,10 @@ public:
 class boolean_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for boolean_spectrum attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	boolean_spectrumAttrib():SpectrumAttr("boolean_spectrum",
-			Tango::DEV_BOOLEAN, Tango::READ_WRITE, 4096) {};
+			Tango::DEV_BOOLEAN, Tango::READ_WRITE, boolean_spectrumAttrib::X_DATA_SIZE) {};
 	~boolean_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_boolean_spectrum(att);}
@@ -424,8 +426,10 @@ public:
 class boolean_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for boolean_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	boolean_spectrum_roAttrib():SpectrumAttr("boolean_spectrum_ro",
-			Tango::DEV_BOOLEAN, Tango::READ, 4096) {};
+			Tango::DEV_BOOLEAN, Tango::READ, boolean_spectrum_roAttrib::X_DATA_SIZE) {};
 	~boolean_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_boolean_spectrum_ro(att);}
@@ -437,8 +441,10 @@ public:
 class double_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for double_spectrum attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	double_spectrumAttrib():SpectrumAttr("double_spectrum",
-			Tango::DEV_DOUBLE, Tango::READ_WRITE, 4096) {};
+			Tango::DEV_DOUBLE, Tango::READ_WRITE, double_spectrumAttrib::X_DATA_SIZE) {};
 	~double_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_double_spectrum(att);}
@@ -452,8 +458,10 @@ public:
 class double_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for double_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	double_spectrum_roAttrib():SpectrumAttr("double_spectrum_ro",
-			Tango::DEV_DOUBLE, Tango::READ, 4096) {};
+			Tango::DEV_DOUBLE, Tango::READ, double_spectrum_roAttrib::X_DATA_SIZE) {};
 	~double_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_double_spectrum_ro(att);}
@@ -465,8 +473,10 @@ public:
 class float_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for float_spectrum attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	float_spectrumAttrib():SpectrumAttr("float_spectrum",
-			Tango::DEV_FLOAT, Tango::READ_WRITE, 4096) {};
+			Tango::DEV_FLOAT, Tango::READ_WRITE, float_spectrumAttrib::X_DATA_SIZE) {};
 	~float_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_float_spectrum(att);}
@@ -480,8 +490,10 @@ public:
 class float_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for float_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	float_spectrum_roAttrib():SpectrumAttr("float_spectrum_ro",
-			Tango::DEV_FLOAT, Tango::READ, 4096) {};
+			Tango::DEV_FLOAT, Tango::READ, float_spectrum_roAttrib::X_DATA_SIZE) {};
 	~float_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_float_spectrum_ro(att);}
@@ -493,8 +505,10 @@ public:
 class long64_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for long64_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	long64_spectrum_roAttrib():SpectrumAttr("long64_spectrum_ro",
-			Tango::DEV_LONG64, Tango::READ, 4096) {};
+			Tango::DEV_LONG64, Tango::READ, long64_spectrum_roAttrib::X_DATA_SIZE) {};
 	~long64_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_long64_spectrum_ro(att);}
@@ -506,8 +520,10 @@ public:
 class long_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for long_spectrum attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	long_spectrumAttrib():SpectrumAttr("long_spectrum",
-			Tango::DEV_LONG, Tango::READ_WRITE, 4096) {};
+			Tango::DEV_LONG, Tango::READ_WRITE, long_spectrumAttrib::X_DATA_SIZE) {};
 	~long_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_long_spectrum(att);}
@@ -521,8 +537,10 @@ public:
 class long_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for long_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	long_spectrum_roAttrib():SpectrumAttr("long_spectrum_ro",
-			Tango::DEV_LONG, Tango::READ, 4096) {};
+			Tango::DEV_LONG, Tango::READ, long_spectrum_roAttrib::X_DATA_SIZE) {};
 	~long_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_long_spectrum_ro(att);}
@@ -534,8 +552,10 @@ public:
 class short_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for short_spectrum attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	short_spectrumAttrib():SpectrumAttr("short_spectrum",
-			Tango::DEV_SHORT, Tango::READ_WRITE, 4096) {};
+			Tango::DEV_SHORT, Tango::READ_WRITE, short_spectrumAttrib::X_DATA_SIZE) {};
 	~short_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_short_spectrum(att);}
@@ -549,8 +569,10 @@ public:
 class short_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for short_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	short_spectrum_roAttrib():SpectrumAttr("short_spectrum_ro",
-			Tango::DEV_SHORT, Tango::READ, 4096) {};
+			Tango::DEV_SHORT, Tango::READ, short_spectrum_roAttrib::X_DATA_SIZE) {};
 	~short_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_short_spectrum_ro(att);}
@@ -562,8 +584,10 @@ public:
 class string_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for string_spectrum attribute
+	constexpr static long X_DATA_SIZE = 256;
 	string_spectrumAttrib():SpectrumAttr("string_spectrum",
-			Tango::DEV_STRING, Tango::READ_WRITE, 256) {};
+			Tango::DEV_STRING, Tango::READ_WRITE, string_spectrumAttrib::X_DATA_SIZE) {};
 	~string_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_string_spectrum(att);}
@@ -577,8 +601,10 @@ public:
 class string_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for string_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 256;
 	string_spectrum_roAttrib():SpectrumAttr("string_spectrum_ro",
-			Tango::DEV_STRING, Tango::READ, 256) {};
+			Tango::DEV_STRING, Tango::READ, string_spectrum_roAttrib::X_DATA_SIZE) {};
 	~string_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_string_spectrum_ro(att);}
@@ -590,8 +616,10 @@ public:
 class uchar_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for uchar_spectrum attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	uchar_spectrumAttrib():SpectrumAttr("uchar_spectrum",
-			Tango::DEV_UCHAR, Tango::READ_WRITE, 4096) {};
+			Tango::DEV_UCHAR, Tango::READ_WRITE, uchar_spectrumAttrib::X_DATA_SIZE) {};
 	~uchar_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_uchar_spectrum(att);}
@@ -605,8 +633,10 @@ public:
 class uchar_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for uchar_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	uchar_spectrum_roAttrib():SpectrumAttr("uchar_spectrum_ro",
-			Tango::DEV_UCHAR, Tango::READ, 4096) {};
+			Tango::DEV_UCHAR, Tango::READ, uchar_spectrum_roAttrib::X_DATA_SIZE) {};
 	~uchar_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_uchar_spectrum_ro(att);}
@@ -618,8 +648,10 @@ public:
 class ulong64_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for ulong64_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	ulong64_spectrum_roAttrib():SpectrumAttr("ulong64_spectrum_ro",
-			Tango::DEV_ULONG64, Tango::READ, 4096) {};
+			Tango::DEV_ULONG64, Tango::READ, ulong64_spectrum_roAttrib::X_DATA_SIZE) {};
 	~ulong64_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_ulong64_spectrum_ro(att);}
@@ -631,8 +663,10 @@ public:
 class ulong_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for ulong_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	ulong_spectrum_roAttrib():SpectrumAttr("ulong_spectrum_ro",
-			Tango::DEV_ULONG, Tango::READ, 4096) {};
+			Tango::DEV_ULONG, Tango::READ, ulong_spectrum_roAttrib::X_DATA_SIZE) {};
 	~ulong_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_ulong_spectrum_ro(att);}
@@ -644,8 +678,10 @@ public:
 class ushort_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for ushort_spectrum attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	ushort_spectrumAttrib():SpectrumAttr("ushort_spectrum",
-			Tango::DEV_USHORT, Tango::READ_WRITE, 4096) {};
+			Tango::DEV_USHORT, Tango::READ_WRITE, ushort_spectrumAttrib::X_DATA_SIZE) {};
 	~ushort_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_ushort_spectrum(att);}
@@ -659,8 +695,10 @@ public:
 class ushort_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for ushort_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	ushort_spectrum_roAttrib():SpectrumAttr("ushort_spectrum_ro",
-			Tango::DEV_USHORT, Tango::READ, 4096) {};
+			Tango::DEV_USHORT, Tango::READ, ushort_spectrum_roAttrib::X_DATA_SIZE) {};
 	~ushort_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_ushort_spectrum_ro(att);}
@@ -672,8 +710,10 @@ public:
 class waveAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for wave attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	waveAttrib():SpectrumAttr("wave",
-			Tango::DEV_DOUBLE, Tango::READ, 4096) {};
+			Tango::DEV_DOUBLE, Tango::READ, waveAttrib::X_DATA_SIZE) {};
 	~waveAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_wave(att);}
@@ -685,8 +725,10 @@ public:
 class enum_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for enum_spectrum attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	enum_spectrumAttrib():SpectrumAttr("enum_spectrum",
-			Tango::DEV_ENUM, Tango::READ_WRITE, 4096) {};
+			Tango::DEV_ENUM, Tango::READ_WRITE, enum_spectrumAttrib::X_DATA_SIZE) {};
 	~enum_spectrumAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_enum_spectrum(att);}
@@ -702,8 +744,10 @@ public:
 class enum_spectrum_roAttrib: public Tango::SpectrumAttr
 {
 public:
+	// Constants for enum_spectrum_ro attribute
+	constexpr static long X_DATA_SIZE = 4096;
 	enum_spectrum_roAttrib():SpectrumAttr("enum_spectrum_ro",
-			Tango::DEV_ENUM, Tango::READ, 4096) {};
+			Tango::DEV_ENUM, Tango::READ, enum_spectrum_roAttrib::X_DATA_SIZE) {};
 	~enum_spectrum_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_enum_spectrum_ro(att);}
@@ -717,8 +761,11 @@ public:
 class boolean_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for boolean_image attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	boolean_imageAttrib():ImageAttr("boolean_image",
-			Tango::DEV_BOOLEAN, Tango::READ_WRITE, 251, 251) {};
+			Tango::DEV_BOOLEAN, Tango::READ_WRITE, boolean_imageAttrib::X_DATA_SIZE, boolean_imageAttrib::Y_DATA_SIZE) {};
 	~boolean_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_boolean_image(att);}
@@ -732,8 +779,11 @@ public:
 class boolean_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for boolean_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	boolean_image_roAttrib():ImageAttr("boolean_image_ro",
-			Tango::DEV_BOOLEAN, Tango::READ, 251, 251) {};
+			Tango::DEV_BOOLEAN, Tango::READ, boolean_image_roAttrib::X_DATA_SIZE, boolean_image_roAttrib::Y_DATA_SIZE) {};
 	~boolean_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_boolean_image_ro(att);}
@@ -745,8 +795,11 @@ public:
 class double_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for double_image attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	double_imageAttrib():ImageAttr("double_image",
-			Tango::DEV_DOUBLE, Tango::READ_WRITE, 251, 251) {};
+			Tango::DEV_DOUBLE, Tango::READ_WRITE, double_imageAttrib::X_DATA_SIZE, double_imageAttrib::Y_DATA_SIZE) {};
 	~double_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_double_image(att);}
@@ -760,8 +813,11 @@ public:
 class double_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for double_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	double_image_roAttrib():ImageAttr("double_image_ro",
-			Tango::DEV_DOUBLE, Tango::READ, 251, 251) {};
+			Tango::DEV_DOUBLE, Tango::READ, double_image_roAttrib::X_DATA_SIZE, double_image_roAttrib::Y_DATA_SIZE) {};
 	~double_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_double_image_ro(att);}
@@ -773,8 +829,11 @@ public:
 class float_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for float_image attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	float_imageAttrib():ImageAttr("float_image",
-			Tango::DEV_FLOAT, Tango::READ_WRITE, 251, 251) {};
+			Tango::DEV_FLOAT, Tango::READ_WRITE, float_imageAttrib::X_DATA_SIZE, float_imageAttrib::Y_DATA_SIZE) {};
 	~float_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_float_image(att);}
@@ -788,8 +847,11 @@ public:
 class float_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for float_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	float_image_roAttrib():ImageAttr("float_image_ro",
-			Tango::DEV_FLOAT, Tango::READ, 251, 251) {};
+			Tango::DEV_FLOAT, Tango::READ, float_image_roAttrib::X_DATA_SIZE, float_image_roAttrib::Y_DATA_SIZE) {};
 	~float_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_float_image_ro(att);}
@@ -801,8 +863,11 @@ public:
 class long64_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for long64_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	long64_image_roAttrib():ImageAttr("long64_image_ro",
-			Tango::DEV_LONG64, Tango::READ, 251, 251) {};
+			Tango::DEV_LONG64, Tango::READ, long64_image_roAttrib::X_DATA_SIZE, long64_image_roAttrib::Y_DATA_SIZE) {};
 	~long64_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_long64_image_ro(att);}
@@ -814,8 +879,11 @@ public:
 class long_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for long_image attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	long_imageAttrib():ImageAttr("long_image",
-			Tango::DEV_LONG, Tango::READ_WRITE, 251, 251) {};
+			Tango::DEV_LONG, Tango::READ_WRITE, long_imageAttrib::X_DATA_SIZE, long_imageAttrib::Y_DATA_SIZE) {};
 	~long_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_long_image(att);}
@@ -829,8 +897,11 @@ public:
 class long_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for long_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	long_image_roAttrib():ImageAttr("long_image_ro",
-			Tango::DEV_LONG, Tango::READ, 251, 251) {};
+			Tango::DEV_LONG, Tango::READ, long_image_roAttrib::X_DATA_SIZE, long_image_roAttrib::Y_DATA_SIZE) {};
 	~long_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_long_image_ro(att);}
@@ -842,8 +913,11 @@ public:
 class short_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for short_image attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	short_imageAttrib():ImageAttr("short_image",
-			Tango::DEV_SHORT, Tango::READ_WRITE, 251, 251) {};
+			Tango::DEV_SHORT, Tango::READ_WRITE, short_imageAttrib::X_DATA_SIZE, short_imageAttrib::Y_DATA_SIZE) {};
 	~short_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_short_image(att);}
@@ -857,8 +931,11 @@ public:
 class short_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for short_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	short_image_roAttrib():ImageAttr("short_image_ro",
-			Tango::DEV_SHORT, Tango::READ, 251, 251) {};
+			Tango::DEV_SHORT, Tango::READ, short_image_roAttrib::X_DATA_SIZE, short_image_roAttrib::Y_DATA_SIZE) {};
 	~short_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_short_image_ro(att);}
@@ -870,8 +947,11 @@ public:
 class string_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for string_image attribute
+	constexpr static long X_DATA_SIZE = 256;
+	constexpr static long Y_DATA_SIZE = 256;
 	string_imageAttrib():ImageAttr("string_image",
-			Tango::DEV_STRING, Tango::READ_WRITE, 256, 256) {};
+			Tango::DEV_STRING, Tango::READ_WRITE, string_imageAttrib::X_DATA_SIZE, string_imageAttrib::Y_DATA_SIZE) {};
 	~string_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_string_image(att);}
@@ -885,8 +965,11 @@ public:
 class string_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for string_image_ro attribute
+	constexpr static long X_DATA_SIZE = 256;
+	constexpr static long Y_DATA_SIZE = 256;
 	string_image_roAttrib():ImageAttr("string_image_ro",
-			Tango::DEV_STRING, Tango::READ, 256, 256) {};
+			Tango::DEV_STRING, Tango::READ, string_image_roAttrib::X_DATA_SIZE, string_image_roAttrib::Y_DATA_SIZE) {};
 	~string_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_string_image_ro(att);}
@@ -898,8 +981,11 @@ public:
 class uchar_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for uchar_image attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	uchar_imageAttrib():ImageAttr("uchar_image",
-			Tango::DEV_UCHAR, Tango::READ_WRITE, 251, 251) {};
+			Tango::DEV_UCHAR, Tango::READ_WRITE, uchar_imageAttrib::X_DATA_SIZE, uchar_imageAttrib::Y_DATA_SIZE) {};
 	~uchar_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_uchar_image(att);}
@@ -913,8 +999,11 @@ public:
 class uchar_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for uchar_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	uchar_image_roAttrib():ImageAttr("uchar_image_ro",
-			Tango::DEV_UCHAR, Tango::READ, 251, 251) {};
+			Tango::DEV_UCHAR, Tango::READ, uchar_image_roAttrib::X_DATA_SIZE, uchar_image_roAttrib::Y_DATA_SIZE) {};
 	~uchar_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_uchar_image_ro(att);}
@@ -926,8 +1015,11 @@ public:
 class ulong64_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for ulong64_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	ulong64_image_roAttrib():ImageAttr("ulong64_image_ro",
-			Tango::DEV_ULONG64, Tango::READ, 251, 251) {};
+			Tango::DEV_ULONG64, Tango::READ, ulong64_image_roAttrib::X_DATA_SIZE, ulong64_image_roAttrib::Y_DATA_SIZE) {};
 	~ulong64_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_ulong64_image_ro(att);}
@@ -939,8 +1031,11 @@ public:
 class ulong_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for ulong_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	ulong_image_roAttrib():ImageAttr("ulong_image_ro",
-			Tango::DEV_ULONG, Tango::READ, 251, 251) {};
+			Tango::DEV_ULONG, Tango::READ, ulong_image_roAttrib::X_DATA_SIZE, ulong_image_roAttrib::Y_DATA_SIZE) {};
 	~ulong_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_ulong_image_ro(att);}
@@ -952,8 +1047,11 @@ public:
 class ushort_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for ushort_image attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	ushort_imageAttrib():ImageAttr("ushort_image",
-			Tango::DEV_USHORT, Tango::READ_WRITE, 251, 251) {};
+			Tango::DEV_USHORT, Tango::READ_WRITE, ushort_imageAttrib::X_DATA_SIZE, ushort_imageAttrib::Y_DATA_SIZE) {};
 	~ushort_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_ushort_image(att);}
@@ -967,8 +1065,11 @@ public:
 class ushort_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for ushort_image_ro attribute
+	constexpr static long X_DATA_SIZE = 8192;
+	constexpr static long Y_DATA_SIZE = 8192;
 	ushort_image_roAttrib():ImageAttr("ushort_image_ro",
-			Tango::DEV_USHORT, Tango::READ, 8192, 8192) {};
+			Tango::DEV_USHORT, Tango::READ, ushort_image_roAttrib::X_DATA_SIZE, ushort_image_roAttrib::Y_DATA_SIZE) {};
 	~ushort_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_ushort_image_ro(att);}
@@ -980,8 +1081,11 @@ public:
 class enum_image_roAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for enum_image_ro attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	enum_image_roAttrib():ImageAttr("enum_image_ro",
-			Tango::DEV_ENUM, Tango::READ, 251, 251) {};
+			Tango::DEV_ENUM, Tango::READ, enum_image_roAttrib::X_DATA_SIZE, enum_image_roAttrib::Y_DATA_SIZE) {};
 	~enum_image_roAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_enum_image_ro(att);}
@@ -995,8 +1099,11 @@ public:
 class enum_imageAttrib: public Tango::ImageAttr
 {
 public:
+	// Constants for enum_image attribute
+	constexpr static long X_DATA_SIZE = 251;
+	constexpr static long Y_DATA_SIZE = 251;
 	enum_imageAttrib():ImageAttr("enum_image",
-			Tango::DEV_ENUM, Tango::READ_WRITE, 251, 251) {};
+			Tango::DEV_ENUM, Tango::READ_WRITE, enum_imageAttrib::X_DATA_SIZE, enum_imageAttrib::Y_DATA_SIZE) {};
 	~enum_imageAttrib() {};
 	virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
 		{(static_cast<TangoTest *>(dev))->read_enum_image(att);}
@@ -1052,20 +1159,20 @@ public:
 class CrashFromDevelopperThreadClass : public Tango::Command
 {
 public:
-	CrashFromDevelopperThreadClass(const char   *name,
+	CrashFromDevelopperThreadClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	CrashFromDevelopperThreadClass(const char   *name,
+	CrashFromDevelopperThreadClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~CrashFromDevelopperThreadClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_CrashFromDevelopperThread_allowed(any);}
@@ -1075,20 +1182,20 @@ public:
 class CrashFromOmniThreadClass : public Tango::Command
 {
 public:
-	CrashFromOmniThreadClass(const char   *name,
+	CrashFromOmniThreadClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	CrashFromOmniThreadClass(const char   *name,
+	CrashFromOmniThreadClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~CrashFromOmniThreadClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_CrashFromOmniThread_allowed(any);}
@@ -1098,20 +1205,20 @@ public:
 class DevBooleanClass : public Tango::Command
 {
 public:
-	DevBooleanClass(const char   *name,
+	DevBooleanClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevBooleanClass(const char   *name,
+	DevBooleanClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevBooleanClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevBoolean_allowed(any);}
@@ -1121,20 +1228,20 @@ public:
 class DevDoubleClass : public Tango::Command
 {
 public:
-	DevDoubleClass(const char   *name,
+	DevDoubleClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevDoubleClass(const char   *name,
+	DevDoubleClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevDoubleClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevDouble_allowed(any);}
@@ -1144,20 +1251,20 @@ public:
 class DevFloatClass : public Tango::Command
 {
 public:
-	DevFloatClass(const char   *name,
+	DevFloatClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevFloatClass(const char   *name,
+	DevFloatClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevFloatClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevFloat_allowed(any);}
@@ -1167,20 +1274,20 @@ public:
 class DevLongClass : public Tango::Command
 {
 public:
-	DevLongClass(const char   *name,
+	DevLongClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevLongClass(const char   *name,
+	DevLongClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevLongClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevLong_allowed(any);}
@@ -1190,20 +1297,20 @@ public:
 class DevLong64Class : public Tango::Command
 {
 public:
-	DevLong64Class(const char   *name,
+	DevLong64Class(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevLong64Class(const char   *name,
+	DevLong64Class(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevLong64Class() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevLong64_allowed(any);}
@@ -1213,20 +1320,20 @@ public:
 class DevShortClass : public Tango::Command
 {
 public:
-	DevShortClass(const char   *name,
+	DevShortClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevShortClass(const char   *name,
+	DevShortClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevShortClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevShort_allowed(any);}
@@ -1236,20 +1343,20 @@ public:
 class DevStringClass : public Tango::Command
 {
 public:
-	DevStringClass(const char   *name,
+	DevStringClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevStringClass(const char   *name,
+	DevStringClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevStringClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevString_allowed(any);}
@@ -1259,20 +1366,20 @@ public:
 class DevULongClass : public Tango::Command
 {
 public:
-	DevULongClass(const char   *name,
+	DevULongClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevULongClass(const char   *name,
+	DevULongClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevULongClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevULong_allowed(any);}
@@ -1282,20 +1389,20 @@ public:
 class DevULong64Class : public Tango::Command
 {
 public:
-	DevULong64Class(const char   *name,
+	DevULong64Class(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevULong64Class(const char   *name,
+	DevULong64Class(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevULong64Class() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevULong64_allowed(any);}
@@ -1305,20 +1412,20 @@ public:
 class DevUShortClass : public Tango::Command
 {
 public:
-	DevUShortClass(const char   *name,
+	DevUShortClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevUShortClass(const char   *name,
+	DevUShortClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevUShortClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevUShort_allowed(any);}
@@ -1328,20 +1435,20 @@ public:
 class DevVarCharArrayClass : public Tango::Command
 {
 public:
-	DevVarCharArrayClass(const char   *name,
+	DevVarCharArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarCharArrayClass(const char   *name,
+	DevVarCharArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarCharArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarCharArray_allowed(any);}
@@ -1351,20 +1458,20 @@ public:
 class DevVarDoubleArrayClass : public Tango::Command
 {
 public:
-	DevVarDoubleArrayClass(const char   *name,
+	DevVarDoubleArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarDoubleArrayClass(const char   *name,
+	DevVarDoubleArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarDoubleArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarDoubleArray_allowed(any);}
@@ -1374,20 +1481,20 @@ public:
 class DevVarDoubleStringArrayClass : public Tango::Command
 {
 public:
-	DevVarDoubleStringArrayClass(const char   *name,
+	DevVarDoubleStringArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarDoubleStringArrayClass(const char   *name,
+	DevVarDoubleStringArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarDoubleStringArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarDoubleStringArray_allowed(any);}
@@ -1397,20 +1504,20 @@ public:
 class DevVarFloatArrayClass : public Tango::Command
 {
 public:
-	DevVarFloatArrayClass(const char   *name,
+	DevVarFloatArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarFloatArrayClass(const char   *name,
+	DevVarFloatArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarFloatArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarFloatArray_allowed(any);}
@@ -1420,20 +1527,20 @@ public:
 class DevVarLong64ArrayClass : public Tango::Command
 {
 public:
-	DevVarLong64ArrayClass(const char   *name,
+	DevVarLong64ArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarLong64ArrayClass(const char   *name,
+	DevVarLong64ArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarLong64ArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarLong64Array_allowed(any);}
@@ -1443,20 +1550,20 @@ public:
 class DevVarLongArrayClass : public Tango::Command
 {
 public:
-	DevVarLongArrayClass(const char   *name,
+	DevVarLongArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarLongArrayClass(const char   *name,
+	DevVarLongArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarLongArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarLongArray_allowed(any);}
@@ -1466,20 +1573,20 @@ public:
 class DevVarLongStringArrayClass : public Tango::Command
 {
 public:
-	DevVarLongStringArrayClass(const char   *name,
+	DevVarLongStringArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarLongStringArrayClass(const char   *name,
+	DevVarLongStringArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarLongStringArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarLongStringArray_allowed(any);}
@@ -1489,20 +1596,20 @@ public:
 class DevVarShortArrayClass : public Tango::Command
 {
 public:
-	DevVarShortArrayClass(const char   *name,
+	DevVarShortArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarShortArrayClass(const char   *name,
+	DevVarShortArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarShortArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarShortArray_allowed(any);}
@@ -1512,20 +1619,20 @@ public:
 class DevVarStringArrayClass : public Tango::Command
 {
 public:
-	DevVarStringArrayClass(const char   *name,
+	DevVarStringArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarStringArrayClass(const char   *name,
+	DevVarStringArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarStringArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarStringArray_allowed(any);}
@@ -1535,20 +1642,20 @@ public:
 class DevVarULong64ArrayClass : public Tango::Command
 {
 public:
-	DevVarULong64ArrayClass(const char   *name,
+	DevVarULong64ArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarULong64ArrayClass(const char   *name,
+	DevVarULong64ArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarULong64ArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarULong64Array_allowed(any);}
@@ -1558,20 +1665,20 @@ public:
 class DevVarULongArrayClass : public Tango::Command
 {
 public:
-	DevVarULongArrayClass(const char   *name,
+	DevVarULongArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarULongArrayClass(const char   *name,
+	DevVarULongArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarULongArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarULongArray_allowed(any);}
@@ -1581,20 +1688,20 @@ public:
 class DevVarUShortArrayClass : public Tango::Command
 {
 public:
-	DevVarUShortArrayClass(const char   *name,
+	DevVarUShortArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVarUShortArrayClass(const char   *name,
+	DevVarUShortArrayClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVarUShortArrayClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVarUShortArray_allowed(any);}
@@ -1604,20 +1711,20 @@ public:
 class DevVoidClass : public Tango::Command
 {
 public:
-	DevVoidClass(const char   *name,
+	DevVoidClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DevVoidClass(const char   *name,
+	DevVoidClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DevVoidClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DevVoid_allowed(any);}
@@ -1627,20 +1734,20 @@ public:
 class DumpExecutionStateClass : public Tango::Command
 {
 public:
-	DumpExecutionStateClass(const char   *name,
+	DumpExecutionStateClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	DumpExecutionStateClass(const char   *name,
+	DumpExecutionStateClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~DumpExecutionStateClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_DumpExecutionState_allowed(any);}
@@ -1650,20 +1757,20 @@ public:
 class SwitchStatesClass : public Tango::Command
 {
 public:
-	SwitchStatesClass(const char   *name,
+	SwitchStatesClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out,
 				   const char        *in_desc,
 				   const char        *out_desc,
 				   Tango::DispLevel  level)
-	:Command(name,in,out,in_desc,out_desc, level)	{};
+	:Command(cmd_name,in,out,in_desc,out_desc, level)	{};
 
-	SwitchStatesClass(const char   *name,
+	SwitchStatesClass(const char   *cmd_name,
 	               Tango::CmdArgType in,
 				   Tango::CmdArgType out)
-	:Command(name,in,out)	{};
+	:Command(cmd_name,in,out)	{};
 	~SwitchStatesClass() {};
-	
+
 	virtual CORBA::Any *execute (Tango::DeviceImpl *dev, const CORBA::Any &any);
 	virtual bool is_allowed (Tango::DeviceImpl *dev, const CORBA::Any &any)
 	{return (static_cast<TangoTest *>(dev))->is_SwitchStates_allowed(any);}
@@ -1680,17 +1787,17 @@ class __declspec(dllexport)  TangoTestClass : public Tango::DeviceClass
 class TangoTestClass : public Tango::DeviceClass
 #endif
 {
-	/*----- PROTECTED REGION ID(TangoTestClass::Additionnal DServer data members) ENABLED START -----*/
-	
-	
-	/*----- PROTECTED REGION END -----*/	//	TangoTestClass::Additionnal DServer data members
+	/*----- PROTECTED REGION ID(TangoTestClass::Additional DServer data members) ENABLED START -----*/
+	/* clang-format on */
+	//	Add your own code
+	/* clang-format off */
+	/*----- PROTECTED REGION END -----*/	//	TangoTestClass::Additional DServer data members
 
 	public:
 		//	write class properties data members
 		Tango::DbData	cl_prop;
 		Tango::DbData	cl_def_prop;
 		Tango::DbData	dev_def_prop;
-	
 		//	Method prototypes
 		static TangoTestClass *init(const char *);
 		static TangoTestClass *instance();
@@ -1698,7 +1805,7 @@ class TangoTestClass : public Tango::DeviceClass
 		Tango::DbDatum	get_class_property(std::string &);
 		Tango::DbDatum	get_default_device_property(std::string &);
 		Tango::DbDatum	get_default_class_property(std::string &);
-	
+
 	protected:
 		TangoTestClass(std::string &);
 		static TangoTestClass *_instance;
@@ -1710,9 +1817,9 @@ class TangoTestClass : public Tango::DeviceClass
 		void get_class_property();
 		std::string get_cvstag();
 		std::string get_cvsroot();
-	
+
 	private:
-		void device_factory(const Tango::DevVarStringArray *);
+		void device_factory(TANGO_UNUSED(const Tango::DevVarStringArray *));
 		void create_static_attribute_list(std::vector<Tango::Attr *> &);
 		void erase_dynamic_attributes(const Tango::DevVarStringArray *,std::vector<Tango::Attr *> &);
 		std::vector<std::string>	defaultAttList;

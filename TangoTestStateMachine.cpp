@@ -46,8 +46,8 @@ namespace TangoTest_ns
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ampli_allowed()
- *	Description : Execution allowed for ampli attribute
+ *	Method     : TangoTest::is_ampli_allowed()
+ *	Description: Execution allowed for ampli attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ampli_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -62,8 +62,8 @@ bool TangoTest::is_ampli_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_boolean_scalar_allowed()
- *	Description : Execution allowed for boolean_scalar attribute
+ *	Method     : TangoTest::is_boolean_scalar_allowed()
+ *	Description: Execution allowed for boolean_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_boolean_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -82,8 +82,8 @@ bool TangoTest::is_boolean_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_double_scalar_allowed()
- *	Description : Execution allowed for double_scalar attribute
+ *	Method     : TangoTest::is_double_scalar_allowed()
+ *	Description: Execution allowed for double_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_double_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -102,8 +102,8 @@ bool TangoTest::is_double_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_double_scalar_rww_allowed()
- *	Description : Execution allowed for double_scalar_rww attribute
+ *	Method     : TangoTest::is_double_scalar_rww_allowed()
+ *	Description: Execution allowed for double_scalar_rww attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_double_scalar_rww_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -122,8 +122,8 @@ bool TangoTest::is_double_scalar_rww_allowed(TANGO_UNUSED(Tango::AttReqType type
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_double_scalar_w_allowed()
- *	Description : Execution allowed for double_scalar_w attribute
+ *	Method     : TangoTest::is_double_scalar_w_allowed()
+ *	Description: Execution allowed for double_scalar_w attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_double_scalar_w_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -138,8 +138,8 @@ bool TangoTest::is_double_scalar_w_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_float_scalar_allowed()
- *	Description : Execution allowed for float_scalar attribute
+ *	Method     : TangoTest::is_float_scalar_allowed()
+ *	Description: Execution allowed for float_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_float_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -158,8 +158,8 @@ bool TangoTest::is_float_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long64_scalar_allowed()
- *	Description : Execution allowed for long64_scalar attribute
+ *	Method     : TangoTest::is_long64_scalar_allowed()
+ *	Description: Execution allowed for long64_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long64_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -178,8 +178,8 @@ bool TangoTest::is_long64_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long_scalar_allowed()
- *	Description : Execution allowed for long_scalar attribute
+ *	Method     : TangoTest::is_long_scalar_allowed()
+ *	Description: Execution allowed for long_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -198,8 +198,8 @@ bool TangoTest::is_long_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long_scalar_rww_allowed()
- *	Description : Execution allowed for long_scalar_rww attribute
+ *	Method     : TangoTest::is_long_scalar_rww_allowed()
+ *	Description: Execution allowed for long_scalar_rww attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long_scalar_rww_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -218,8 +218,8 @@ bool TangoTest::is_long_scalar_rww_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long_scalar_w_allowed()
- *	Description : Execution allowed for long_scalar_w attribute
+ *	Method     : TangoTest::is_long_scalar_w_allowed()
+ *	Description: Execution allowed for long_scalar_w attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long_scalar_w_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -234,8 +234,8 @@ bool TangoTest::is_long_scalar_w_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_no_value_allowed()
- *	Description : Execution allowed for no_value attribute
+ *	Method     : TangoTest::is_no_value_allowed()
+ *	Description: Execution allowed for no_value attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_no_value_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -250,8 +250,8 @@ bool TangoTest::is_no_value_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_short_scalar_allowed()
- *	Description : Execution allowed for short_scalar attribute
+ *	Method     : TangoTest::is_short_scalar_allowed()
+ *	Description: Execution allowed for short_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_short_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -270,8 +270,8 @@ bool TangoTest::is_short_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_short_scalar_ro_allowed()
- *	Description : Execution allowed for short_scalar_ro attribute
+ *	Method     : TangoTest::is_short_scalar_ro_allowed()
+ *	Description: Execution allowed for short_scalar_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_short_scalar_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -286,8 +286,8 @@ bool TangoTest::is_short_scalar_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_short_scalar_rww_allowed()
- *	Description : Execution allowed for short_scalar_rww attribute
+ *	Method     : TangoTest::is_short_scalar_rww_allowed()
+ *	Description: Execution allowed for short_scalar_rww attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_short_scalar_rww_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -306,8 +306,8 @@ bool TangoTest::is_short_scalar_rww_allowed(TANGO_UNUSED(Tango::AttReqType type)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_short_scalar_w_allowed()
- *	Description : Execution allowed for short_scalar_w attribute
+ *	Method     : TangoTest::is_short_scalar_w_allowed()
+ *	Description: Execution allowed for short_scalar_w attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_short_scalar_w_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -322,8 +322,8 @@ bool TangoTest::is_short_scalar_w_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_string_scalar_allowed()
- *	Description : Execution allowed for string_scalar attribute
+ *	Method     : TangoTest::is_string_scalar_allowed()
+ *	Description: Execution allowed for string_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_string_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -342,8 +342,8 @@ bool TangoTest::is_string_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_throw_exception_allowed()
- *	Description : Execution allowed for throw_exception attribute
+ *	Method     : TangoTest::is_throw_exception_allowed()
+ *	Description: Execution allowed for throw_exception attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_throw_exception_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -358,8 +358,8 @@ bool TangoTest::is_throw_exception_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_uchar_scalar_allowed()
- *	Description : Execution allowed for uchar_scalar attribute
+ *	Method     : TangoTest::is_uchar_scalar_allowed()
+ *	Description: Execution allowed for uchar_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_uchar_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -378,8 +378,8 @@ bool TangoTest::is_uchar_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ulong64_scalar_allowed()
- *	Description : Execution allowed for ulong64_scalar attribute
+ *	Method     : TangoTest::is_ulong64_scalar_allowed()
+ *	Description: Execution allowed for ulong64_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ulong64_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -398,8 +398,8 @@ bool TangoTest::is_ulong64_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ushort_scalar_allowed()
- *	Description : Execution allowed for ushort_scalar attribute
+ *	Method     : TangoTest::is_ushort_scalar_allowed()
+ *	Description: Execution allowed for ushort_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ushort_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -418,8 +418,8 @@ bool TangoTest::is_ushort_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ulong_scalar_allowed()
- *	Description : Execution allowed for ulong_scalar attribute
+ *	Method     : TangoTest::is_ulong_scalar_allowed()
+ *	Description: Execution allowed for ulong_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ulong_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -438,8 +438,8 @@ bool TangoTest::is_ulong_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_enum_scalar_allowed()
- *	Description : Execution allowed for enum_scalar attribute
+ *	Method     : TangoTest::is_enum_scalar_allowed()
+ *	Description: Execution allowed for enum_scalar attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_enum_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -458,8 +458,8 @@ bool TangoTest::is_enum_scalar_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_freq_allowed()
- *	Description : Execution allowed for freq attribute
+ *	Method     : TangoTest::is_freq_allowed()
+ *	Description: Execution allowed for freq attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_freq_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -474,8 +474,8 @@ bool TangoTest::is_freq_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_enum_scalar_ro_allowed()
- *	Description : Execution allowed for enum_scalar_ro attribute
+ *	Method     : TangoTest::is_enum_scalar_ro_allowed()
+ *	Description: Execution allowed for enum_scalar_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_enum_scalar_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -490,8 +490,8 @@ bool TangoTest::is_enum_scalar_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_boolean_spectrum_allowed()
- *	Description : Execution allowed for boolean_spectrum attribute
+ *	Method     : TangoTest::is_boolean_spectrum_allowed()
+ *	Description: Execution allowed for boolean_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_boolean_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -510,8 +510,8 @@ bool TangoTest::is_boolean_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_boolean_spectrum_ro_allowed()
- *	Description : Execution allowed for boolean_spectrum_ro attribute
+ *	Method     : TangoTest::is_boolean_spectrum_ro_allowed()
+ *	Description: Execution allowed for boolean_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_boolean_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -526,8 +526,8 @@ bool TangoTest::is_boolean_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType ty
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_double_spectrum_allowed()
- *	Description : Execution allowed for double_spectrum attribute
+ *	Method     : TangoTest::is_double_spectrum_allowed()
+ *	Description: Execution allowed for double_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_double_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -546,8 +546,8 @@ bool TangoTest::is_double_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_double_spectrum_ro_allowed()
- *	Description : Execution allowed for double_spectrum_ro attribute
+ *	Method     : TangoTest::is_double_spectrum_ro_allowed()
+ *	Description: Execution allowed for double_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_double_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -562,8 +562,8 @@ bool TangoTest::is_double_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType typ
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_float_spectrum_allowed()
- *	Description : Execution allowed for float_spectrum attribute
+ *	Method     : TangoTest::is_float_spectrum_allowed()
+ *	Description: Execution allowed for float_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_float_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -582,8 +582,8 @@ bool TangoTest::is_float_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_float_spectrum_ro_allowed()
- *	Description : Execution allowed for float_spectrum_ro attribute
+ *	Method     : TangoTest::is_float_spectrum_ro_allowed()
+ *	Description: Execution allowed for float_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_float_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -598,8 +598,8 @@ bool TangoTest::is_float_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long64_spectrum_ro_allowed()
- *	Description : Execution allowed for long64_spectrum_ro attribute
+ *	Method     : TangoTest::is_long64_spectrum_ro_allowed()
+ *	Description: Execution allowed for long64_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long64_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -614,8 +614,8 @@ bool TangoTest::is_long64_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType typ
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long_spectrum_allowed()
- *	Description : Execution allowed for long_spectrum attribute
+ *	Method     : TangoTest::is_long_spectrum_allowed()
+ *	Description: Execution allowed for long_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -634,8 +634,8 @@ bool TangoTest::is_long_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long_spectrum_ro_allowed()
- *	Description : Execution allowed for long_spectrum_ro attribute
+ *	Method     : TangoTest::is_long_spectrum_ro_allowed()
+ *	Description: Execution allowed for long_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -650,8 +650,8 @@ bool TangoTest::is_long_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_short_spectrum_allowed()
- *	Description : Execution allowed for short_spectrum attribute
+ *	Method     : TangoTest::is_short_spectrum_allowed()
+ *	Description: Execution allowed for short_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_short_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -670,8 +670,8 @@ bool TangoTest::is_short_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_short_spectrum_ro_allowed()
- *	Description : Execution allowed for short_spectrum_ro attribute
+ *	Method     : TangoTest::is_short_spectrum_ro_allowed()
+ *	Description: Execution allowed for short_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_short_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -686,8 +686,8 @@ bool TangoTest::is_short_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_string_spectrum_allowed()
- *	Description : Execution allowed for string_spectrum attribute
+ *	Method     : TangoTest::is_string_spectrum_allowed()
+ *	Description: Execution allowed for string_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_string_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -706,8 +706,8 @@ bool TangoTest::is_string_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_string_spectrum_ro_allowed()
- *	Description : Execution allowed for string_spectrum_ro attribute
+ *	Method     : TangoTest::is_string_spectrum_ro_allowed()
+ *	Description: Execution allowed for string_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_string_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -722,8 +722,8 @@ bool TangoTest::is_string_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType typ
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_uchar_spectrum_allowed()
- *	Description : Execution allowed for uchar_spectrum attribute
+ *	Method     : TangoTest::is_uchar_spectrum_allowed()
+ *	Description: Execution allowed for uchar_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_uchar_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -742,8 +742,8 @@ bool TangoTest::is_uchar_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_uchar_spectrum_ro_allowed()
- *	Description : Execution allowed for uchar_spectrum_ro attribute
+ *	Method     : TangoTest::is_uchar_spectrum_ro_allowed()
+ *	Description: Execution allowed for uchar_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_uchar_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -758,8 +758,8 @@ bool TangoTest::is_uchar_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ulong64_spectrum_ro_allowed()
- *	Description : Execution allowed for ulong64_spectrum_ro attribute
+ *	Method     : TangoTest::is_ulong64_spectrum_ro_allowed()
+ *	Description: Execution allowed for ulong64_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ulong64_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -774,8 +774,8 @@ bool TangoTest::is_ulong64_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType ty
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ulong_spectrum_ro_allowed()
- *	Description : Execution allowed for ulong_spectrum_ro attribute
+ *	Method     : TangoTest::is_ulong_spectrum_ro_allowed()
+ *	Description: Execution allowed for ulong_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ulong_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -790,8 +790,8 @@ bool TangoTest::is_ulong_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ushort_spectrum_allowed()
- *	Description : Execution allowed for ushort_spectrum attribute
+ *	Method     : TangoTest::is_ushort_spectrum_allowed()
+ *	Description: Execution allowed for ushort_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ushort_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -810,8 +810,8 @@ bool TangoTest::is_ushort_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ushort_spectrum_ro_allowed()
- *	Description : Execution allowed for ushort_spectrum_ro attribute
+ *	Method     : TangoTest::is_ushort_spectrum_ro_allowed()
+ *	Description: Execution allowed for ushort_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ushort_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -826,8 +826,8 @@ bool TangoTest::is_ushort_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType typ
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_wave_allowed()
- *	Description : Execution allowed for wave attribute
+ *	Method     : TangoTest::is_wave_allowed()
+ *	Description: Execution allowed for wave attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_wave_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -842,8 +842,8 @@ bool TangoTest::is_wave_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_enum_spectrum_allowed()
- *	Description : Execution allowed for enum_spectrum attribute
+ *	Method     : TangoTest::is_enum_spectrum_allowed()
+ *	Description: Execution allowed for enum_spectrum attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_enum_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -862,8 +862,8 @@ bool TangoTest::is_enum_spectrum_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_enum_spectrum_ro_allowed()
- *	Description : Execution allowed for enum_spectrum_ro attribute
+ *	Method     : TangoTest::is_enum_spectrum_ro_allowed()
+ *	Description: Execution allowed for enum_spectrum_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_enum_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -878,8 +878,8 @@ bool TangoTest::is_enum_spectrum_ro_allowed(TANGO_UNUSED(Tango::AttReqType type)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_boolean_image_allowed()
- *	Description : Execution allowed for boolean_image attribute
+ *	Method     : TangoTest::is_boolean_image_allowed()
+ *	Description: Execution allowed for boolean_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_boolean_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -898,8 +898,8 @@ bool TangoTest::is_boolean_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_boolean_image_ro_allowed()
- *	Description : Execution allowed for boolean_image_ro attribute
+ *	Method     : TangoTest::is_boolean_image_ro_allowed()
+ *	Description: Execution allowed for boolean_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_boolean_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -914,8 +914,8 @@ bool TangoTest::is_boolean_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_double_image_allowed()
- *	Description : Execution allowed for double_image attribute
+ *	Method     : TangoTest::is_double_image_allowed()
+ *	Description: Execution allowed for double_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_double_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -934,8 +934,8 @@ bool TangoTest::is_double_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_double_image_ro_allowed()
- *	Description : Execution allowed for double_image_ro attribute
+ *	Method     : TangoTest::is_double_image_ro_allowed()
+ *	Description: Execution allowed for double_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_double_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -950,8 +950,8 @@ bool TangoTest::is_double_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_float_image_allowed()
- *	Description : Execution allowed for float_image attribute
+ *	Method     : TangoTest::is_float_image_allowed()
+ *	Description: Execution allowed for float_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_float_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -970,8 +970,8 @@ bool TangoTest::is_float_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_float_image_ro_allowed()
- *	Description : Execution allowed for float_image_ro attribute
+ *	Method     : TangoTest::is_float_image_ro_allowed()
+ *	Description: Execution allowed for float_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_float_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -986,8 +986,8 @@ bool TangoTest::is_float_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long64_image_ro_allowed()
- *	Description : Execution allowed for long64_image_ro attribute
+ *	Method     : TangoTest::is_long64_image_ro_allowed()
+ *	Description: Execution allowed for long64_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long64_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1002,8 +1002,8 @@ bool TangoTest::is_long64_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long_image_allowed()
- *	Description : Execution allowed for long_image attribute
+ *	Method     : TangoTest::is_long_image_allowed()
+ *	Description: Execution allowed for long_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1022,8 +1022,8 @@ bool TangoTest::is_long_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_long_image_ro_allowed()
- *	Description : Execution allowed for long_image_ro attribute
+ *	Method     : TangoTest::is_long_image_ro_allowed()
+ *	Description: Execution allowed for long_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_long_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1038,8 +1038,8 @@ bool TangoTest::is_long_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_short_image_allowed()
- *	Description : Execution allowed for short_image attribute
+ *	Method     : TangoTest::is_short_image_allowed()
+ *	Description: Execution allowed for short_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_short_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1058,8 +1058,8 @@ bool TangoTest::is_short_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_short_image_ro_allowed()
- *	Description : Execution allowed for short_image_ro attribute
+ *	Method     : TangoTest::is_short_image_ro_allowed()
+ *	Description: Execution allowed for short_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_short_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1074,8 +1074,8 @@ bool TangoTest::is_short_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_string_image_allowed()
- *	Description : Execution allowed for string_image attribute
+ *	Method     : TangoTest::is_string_image_allowed()
+ *	Description: Execution allowed for string_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_string_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1094,8 +1094,8 @@ bool TangoTest::is_string_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_string_image_ro_allowed()
- *	Description : Execution allowed for string_image_ro attribute
+ *	Method     : TangoTest::is_string_image_ro_allowed()
+ *	Description: Execution allowed for string_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_string_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1110,8 +1110,8 @@ bool TangoTest::is_string_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_uchar_image_allowed()
- *	Description : Execution allowed for uchar_image attribute
+ *	Method     : TangoTest::is_uchar_image_allowed()
+ *	Description: Execution allowed for uchar_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_uchar_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1130,8 +1130,8 @@ bool TangoTest::is_uchar_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_uchar_image_ro_allowed()
- *	Description : Execution allowed for uchar_image_ro attribute
+ *	Method     : TangoTest::is_uchar_image_ro_allowed()
+ *	Description: Execution allowed for uchar_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_uchar_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1146,8 +1146,8 @@ bool TangoTest::is_uchar_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ulong64_image_ro_allowed()
- *	Description : Execution allowed for ulong64_image_ro attribute
+ *	Method     : TangoTest::is_ulong64_image_ro_allowed()
+ *	Description: Execution allowed for ulong64_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ulong64_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1162,8 +1162,8 @@ bool TangoTest::is_ulong64_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ulong_image_ro_allowed()
- *	Description : Execution allowed for ulong_image_ro attribute
+ *	Method     : TangoTest::is_ulong_image_ro_allowed()
+ *	Description: Execution allowed for ulong_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ulong_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1178,8 +1178,8 @@ bool TangoTest::is_ulong_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ushort_image_allowed()
- *	Description : Execution allowed for ushort_image attribute
+ *	Method     : TangoTest::is_ushort_image_allowed()
+ *	Description: Execution allowed for ushort_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ushort_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1198,8 +1198,8 @@ bool TangoTest::is_ushort_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_ushort_image_ro_allowed()
- *	Description : Execution allowed for ushort_image_ro attribute
+ *	Method     : TangoTest::is_ushort_image_ro_allowed()
+ *	Description: Execution allowed for ushort_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_ushort_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1214,8 +1214,8 @@ bool TangoTest::is_ushort_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_enum_image_ro_allowed()
- *	Description : Execution allowed for enum_image_ro attribute
+ *	Method     : TangoTest::is_enum_image_ro_allowed()
+ *	Description: Execution allowed for enum_image_ro attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_enum_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1230,8 +1230,8 @@ bool TangoTest::is_enum_image_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_enum_image_allowed()
- *	Description : Execution allowed for enum_image attribute
+ *	Method     : TangoTest::is_enum_image_allowed()
+ *	Description: Execution allowed for enum_image attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_enum_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
@@ -1253,8 +1253,8 @@ bool TangoTest::is_enum_image_allowed(TANGO_UNUSED(Tango::AttReqType type))
 //=================================================
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_string_long_short_ro_allowed()
- *	Description : Execution allowed for string_long_short_ro pipe
+ *	Method     : TangoTest::is_string_long_short_ro_allowed()
+ *	Description: Execution allowed for string_long_short_ro pipe
  */
 //--------------------------------------------------------
 bool TangoTest::is_string_long_short_ro_allowed(TANGO_UNUSED(Tango::PipeReqType type))
@@ -1267,8 +1267,8 @@ bool TangoTest::is_string_long_short_ro_allowed(TANGO_UNUSED(Tango::PipeReqType 
 }
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_generic_blob_rw_allowed()
- *	Description : Execution allowed for generic_blob_rw pipe
+ *	Method     : TangoTest::is_generic_blob_rw_allowed()
+ *	Description: Execution allowed for generic_blob_rw pipe
  */
 //--------------------------------------------------------
 bool TangoTest::is_generic_blob_rw_allowed(TANGO_UNUSED(Tango::PipeReqType type))
@@ -1290,8 +1290,8 @@ bool TangoTest::is_generic_blob_rw_allowed(TANGO_UNUSED(Tango::PipeReqType type)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_CrashFromDevelopperThread_allowed()
- *	Description : Execution allowed for CrashFromDevelopperThread attribute
+ *	Method     : TangoTest::is_CrashFromDevelopperThread_allowed()
+ *	Description: Execution allowed for CrashFromDevelopperThread attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_CrashFromDevelopperThread_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1305,8 +1305,8 @@ bool TangoTest::is_CrashFromDevelopperThread_allowed(TANGO_UNUSED(const CORBA::A
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_CrashFromOmniThread_allowed()
- *	Description : Execution allowed for CrashFromOmniThread attribute
+ *	Method     : TangoTest::is_CrashFromOmniThread_allowed()
+ *	Description: Execution allowed for CrashFromOmniThread attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_CrashFromOmniThread_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1320,8 +1320,8 @@ bool TangoTest::is_CrashFromOmniThread_allowed(TANGO_UNUSED(const CORBA::Any &an
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevBoolean_allowed()
- *	Description : Execution allowed for DevBoolean attribute
+ *	Method     : TangoTest::is_DevBoolean_allowed()
+ *	Description: Execution allowed for DevBoolean attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevBoolean_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1335,8 +1335,8 @@ bool TangoTest::is_DevBoolean_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevDouble_allowed()
- *	Description : Execution allowed for DevDouble attribute
+ *	Method     : TangoTest::is_DevDouble_allowed()
+ *	Description: Execution allowed for DevDouble attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevDouble_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1350,8 +1350,8 @@ bool TangoTest::is_DevDouble_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevFloat_allowed()
- *	Description : Execution allowed for DevFloat attribute
+ *	Method     : TangoTest::is_DevFloat_allowed()
+ *	Description: Execution allowed for DevFloat attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevFloat_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1365,8 +1365,8 @@ bool TangoTest::is_DevFloat_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevLong_allowed()
- *	Description : Execution allowed for DevLong attribute
+ *	Method     : TangoTest::is_DevLong_allowed()
+ *	Description: Execution allowed for DevLong attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevLong_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1380,8 +1380,8 @@ bool TangoTest::is_DevLong_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevLong64_allowed()
- *	Description : Execution allowed for DevLong64 attribute
+ *	Method     : TangoTest::is_DevLong64_allowed()
+ *	Description: Execution allowed for DevLong64 attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevLong64_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1395,8 +1395,8 @@ bool TangoTest::is_DevLong64_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevShort_allowed()
- *	Description : Execution allowed for DevShort attribute
+ *	Method     : TangoTest::is_DevShort_allowed()
+ *	Description: Execution allowed for DevShort attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevShort_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1410,8 +1410,8 @@ bool TangoTest::is_DevShort_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevString_allowed()
- *	Description : Execution allowed for DevString attribute
+ *	Method     : TangoTest::is_DevString_allowed()
+ *	Description: Execution allowed for DevString attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevString_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1425,8 +1425,8 @@ bool TangoTest::is_DevString_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevULong_allowed()
- *	Description : Execution allowed for DevULong attribute
+ *	Method     : TangoTest::is_DevULong_allowed()
+ *	Description: Execution allowed for DevULong attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevULong_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1440,8 +1440,8 @@ bool TangoTest::is_DevULong_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevULong64_allowed()
- *	Description : Execution allowed for DevULong64 attribute
+ *	Method     : TangoTest::is_DevULong64_allowed()
+ *	Description: Execution allowed for DevULong64 attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevULong64_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1455,8 +1455,8 @@ bool TangoTest::is_DevULong64_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevUShort_allowed()
- *	Description : Execution allowed for DevUShort attribute
+ *	Method     : TangoTest::is_DevUShort_allowed()
+ *	Description: Execution allowed for DevUShort attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevUShort_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1470,8 +1470,8 @@ bool TangoTest::is_DevUShort_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarCharArray_allowed()
- *	Description : Execution allowed for DevVarCharArray attribute
+ *	Method     : TangoTest::is_DevVarCharArray_allowed()
+ *	Description: Execution allowed for DevVarCharArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarCharArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1485,8 +1485,8 @@ bool TangoTest::is_DevVarCharArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarDoubleArray_allowed()
- *	Description : Execution allowed for DevVarDoubleArray attribute
+ *	Method     : TangoTest::is_DevVarDoubleArray_allowed()
+ *	Description: Execution allowed for DevVarDoubleArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarDoubleArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1500,8 +1500,8 @@ bool TangoTest::is_DevVarDoubleArray_allowed(TANGO_UNUSED(const CORBA::Any &any)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarDoubleStringArray_allowed()
- *	Description : Execution allowed for DevVarDoubleStringArray attribute
+ *	Method     : TangoTest::is_DevVarDoubleStringArray_allowed()
+ *	Description: Execution allowed for DevVarDoubleStringArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarDoubleStringArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1515,8 +1515,8 @@ bool TangoTest::is_DevVarDoubleStringArray_allowed(TANGO_UNUSED(const CORBA::Any
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarFloatArray_allowed()
- *	Description : Execution allowed for DevVarFloatArray attribute
+ *	Method     : TangoTest::is_DevVarFloatArray_allowed()
+ *	Description: Execution allowed for DevVarFloatArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarFloatArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1530,8 +1530,8 @@ bool TangoTest::is_DevVarFloatArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarLong64Array_allowed()
- *	Description : Execution allowed for DevVarLong64Array attribute
+ *	Method     : TangoTest::is_DevVarLong64Array_allowed()
+ *	Description: Execution allowed for DevVarLong64Array attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarLong64Array_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1545,8 +1545,8 @@ bool TangoTest::is_DevVarLong64Array_allowed(TANGO_UNUSED(const CORBA::Any &any)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarLongArray_allowed()
- *	Description : Execution allowed for DevVarLongArray attribute
+ *	Method     : TangoTest::is_DevVarLongArray_allowed()
+ *	Description: Execution allowed for DevVarLongArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarLongArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1560,8 +1560,8 @@ bool TangoTest::is_DevVarLongArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarLongStringArray_allowed()
- *	Description : Execution allowed for DevVarLongStringArray attribute
+ *	Method     : TangoTest::is_DevVarLongStringArray_allowed()
+ *	Description: Execution allowed for DevVarLongStringArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarLongStringArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1575,8 +1575,8 @@ bool TangoTest::is_DevVarLongStringArray_allowed(TANGO_UNUSED(const CORBA::Any &
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarShortArray_allowed()
- *	Description : Execution allowed for DevVarShortArray attribute
+ *	Method     : TangoTest::is_DevVarShortArray_allowed()
+ *	Description: Execution allowed for DevVarShortArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarShortArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1590,8 +1590,8 @@ bool TangoTest::is_DevVarShortArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarStringArray_allowed()
- *	Description : Execution allowed for DevVarStringArray attribute
+ *	Method     : TangoTest::is_DevVarStringArray_allowed()
+ *	Description: Execution allowed for DevVarStringArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarStringArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1605,8 +1605,8 @@ bool TangoTest::is_DevVarStringArray_allowed(TANGO_UNUSED(const CORBA::Any &any)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarULong64Array_allowed()
- *	Description : Execution allowed for DevVarULong64Array attribute
+ *	Method     : TangoTest::is_DevVarULong64Array_allowed()
+ *	Description: Execution allowed for DevVarULong64Array attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarULong64Array_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1620,8 +1620,8 @@ bool TangoTest::is_DevVarULong64Array_allowed(TANGO_UNUSED(const CORBA::Any &any
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarULongArray_allowed()
- *	Description : Execution allowed for DevVarULongArray attribute
+ *	Method     : TangoTest::is_DevVarULongArray_allowed()
+ *	Description: Execution allowed for DevVarULongArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarULongArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1635,8 +1635,8 @@ bool TangoTest::is_DevVarULongArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVarUShortArray_allowed()
- *	Description : Execution allowed for DevVarUShortArray attribute
+ *	Method     : TangoTest::is_DevVarUShortArray_allowed()
+ *	Description: Execution allowed for DevVarUShortArray attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVarUShortArray_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1650,8 +1650,8 @@ bool TangoTest::is_DevVarUShortArray_allowed(TANGO_UNUSED(const CORBA::Any &any)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DevVoid_allowed()
- *	Description : Execution allowed for DevVoid attribute
+ *	Method     : TangoTest::is_DevVoid_allowed()
+ *	Description: Execution allowed for DevVoid attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DevVoid_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1665,8 +1665,8 @@ bool TangoTest::is_DevVoid_allowed(TANGO_UNUSED(const CORBA::Any &any))
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_DumpExecutionState_allowed()
- *	Description : Execution allowed for DumpExecutionState attribute
+ *	Method     : TangoTest::is_DumpExecutionState_allowed()
+ *	Description: Execution allowed for DumpExecutionState attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_DumpExecutionState_allowed(TANGO_UNUSED(const CORBA::Any &any))
@@ -1680,8 +1680,8 @@ bool TangoTest::is_DumpExecutionState_allowed(TANGO_UNUSED(const CORBA::Any &any
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTest::is_SwitchStates_allowed()
- *	Description : Execution allowed for SwitchStates attribute
+ *	Method     : TangoTest::is_SwitchStates_allowed()
+ *	Description: Execution allowed for SwitchStates attribute
  */
 //--------------------------------------------------------
 bool TangoTest::is_SwitchStates_allowed(TANGO_UNUSED(const CORBA::Any &any))

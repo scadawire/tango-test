@@ -63,6 +63,73 @@ namespace TangoTest_ns
 //===================================================================
 TangoTestClass *TangoTestClass::_instance = NULL;
 
+//===================================================================
+//	Class constants
+//===================================================================
+constexpr long boolean_spectrumAttrib::X_DATA_SIZE;
+constexpr long boolean_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long double_spectrumAttrib::X_DATA_SIZE;
+constexpr long double_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long float_spectrumAttrib::X_DATA_SIZE;
+constexpr long float_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long long64_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long long_spectrumAttrib::X_DATA_SIZE;
+constexpr long long_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long short_spectrumAttrib::X_DATA_SIZE;
+constexpr long short_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long string_spectrumAttrib::X_DATA_SIZE;
+constexpr long string_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long uchar_spectrumAttrib::X_DATA_SIZE;
+constexpr long uchar_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long ulong64_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long ulong_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long ushort_spectrumAttrib::X_DATA_SIZE;
+constexpr long ushort_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long waveAttrib::X_DATA_SIZE;
+constexpr long enum_spectrumAttrib::X_DATA_SIZE;
+constexpr long enum_spectrum_roAttrib::X_DATA_SIZE;
+constexpr long boolean_imageAttrib::X_DATA_SIZE;
+constexpr long boolean_imageAttrib::Y_DATA_SIZE;
+constexpr long boolean_image_roAttrib::X_DATA_SIZE;
+constexpr long boolean_image_roAttrib::Y_DATA_SIZE;
+constexpr long double_imageAttrib::X_DATA_SIZE;
+constexpr long double_imageAttrib::Y_DATA_SIZE;
+constexpr long double_image_roAttrib::X_DATA_SIZE;
+constexpr long double_image_roAttrib::Y_DATA_SIZE;
+constexpr long float_imageAttrib::X_DATA_SIZE;
+constexpr long float_imageAttrib::Y_DATA_SIZE;
+constexpr long float_image_roAttrib::X_DATA_SIZE;
+constexpr long float_image_roAttrib::Y_DATA_SIZE;
+constexpr long long64_image_roAttrib::X_DATA_SIZE;
+constexpr long long64_image_roAttrib::Y_DATA_SIZE;
+constexpr long long_imageAttrib::X_DATA_SIZE;
+constexpr long long_imageAttrib::Y_DATA_SIZE;
+constexpr long long_image_roAttrib::X_DATA_SIZE;
+constexpr long long_image_roAttrib::Y_DATA_SIZE;
+constexpr long short_imageAttrib::X_DATA_SIZE;
+constexpr long short_imageAttrib::Y_DATA_SIZE;
+constexpr long short_image_roAttrib::X_DATA_SIZE;
+constexpr long short_image_roAttrib::Y_DATA_SIZE;
+constexpr long string_imageAttrib::X_DATA_SIZE;
+constexpr long string_imageAttrib::Y_DATA_SIZE;
+constexpr long string_image_roAttrib::X_DATA_SIZE;
+constexpr long string_image_roAttrib::Y_DATA_SIZE;
+constexpr long uchar_imageAttrib::X_DATA_SIZE;
+constexpr long uchar_imageAttrib::Y_DATA_SIZE;
+constexpr long uchar_image_roAttrib::X_DATA_SIZE;
+constexpr long uchar_image_roAttrib::Y_DATA_SIZE;
+constexpr long ulong64_image_roAttrib::X_DATA_SIZE;
+constexpr long ulong64_image_roAttrib::Y_DATA_SIZE;
+constexpr long ulong_image_roAttrib::X_DATA_SIZE;
+constexpr long ulong_image_roAttrib::Y_DATA_SIZE;
+constexpr long ushort_imageAttrib::X_DATA_SIZE;
+constexpr long ushort_imageAttrib::Y_DATA_SIZE;
+constexpr long ushort_image_roAttrib::X_DATA_SIZE;
+constexpr long ushort_image_roAttrib::Y_DATA_SIZE;
+constexpr long enum_image_roAttrib::X_DATA_SIZE;
+constexpr long enum_image_roAttrib::Y_DATA_SIZE;
+constexpr long enum_imageAttrib::X_DATA_SIZE;
+constexpr long enum_imageAttrib::Y_DATA_SIZE;
 //--------------------------------------------------------
 /**
  * method : 		TangoTestClass::TangoTestClass(std::string &s)
@@ -137,7 +204,7 @@ TangoTestClass *TangoTestClass::instance()
 {
 	if (_instance == NULL)
 	{
-		std::cerr << "Class is not initialised !!" << std::endl;
+		std::cerr << "Class is not initialized !!" << std::endl;
 		exit(-1);
 	}
 	return _instance;
@@ -662,8 +729,8 @@ CORBA::Any *SwitchStatesClass::execute(Tango::DeviceImpl *device, TANGO_UNUSED(c
 //===================================================================
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::get_class_property()
- *	Description : Get the class property for specified name.
+ *	Method     : TangoTestClass::get_class_property()
+ *	Description: Get the class property for specified name.
  */
 //--------------------------------------------------------
 Tango::DbDatum TangoTestClass::get_class_property(std::string &prop_name)
@@ -677,8 +744,8 @@ Tango::DbDatum TangoTestClass::get_class_property(std::string &prop_name)
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::get_default_device_property()
- *	Description : Return the default value for device property.
+ *	Method     : TangoTestClass::get_default_device_property()
+ *	Description: Return the default value for device property.
  */
 //--------------------------------------------------------
 Tango::DbDatum TangoTestClass::get_default_device_property(std::string &prop_name)
@@ -692,8 +759,8 @@ Tango::DbDatum TangoTestClass::get_default_device_property(std::string &prop_nam
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::get_default_class_property()
- *	Description : Return the default value for class property.
+ *	Method     : TangoTestClass::get_default_class_property()
+ *	Description: Return the default value for class property.
  */
 //--------------------------------------------------------
 Tango::DbDatum TangoTestClass::get_default_class_property(std::string &prop_name)
@@ -708,8 +775,8 @@ Tango::DbDatum TangoTestClass::get_default_class_property(std::string &prop_name
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::set_default_property()
- *	Description : Set default property (class and device) for wizard.
+ *	Method     : TangoTestClass::set_default_property()
+ *	Description: Set default property (class and device) for wizard.
  *                For each property, add to wizard property name and description.
  *                If default value has been set, add it to wizard property and
  *                store it in a DbDatum.
@@ -769,8 +836,8 @@ void TangoTestClass::set_default_property()
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::write_class_property()
- *	Description : Set class description fields as property in database
+ *	Method     : TangoTestClass::write_class_property()
+ *	Description: Set class description fields as property in database
  */
 //--------------------------------------------------------
 void TangoTestClass::write_class_property()
@@ -814,8 +881,8 @@ void TangoTestClass::write_class_property()
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::device_factory()
- *	Description : Create the device object(s)
+ *	Method     : TangoTestClass::device_factory()
+ *	Description: Create the device object(s)
  *                and store them in the device list
  */
 //--------------------------------------------------------
@@ -859,8 +926,8 @@ void TangoTestClass::device_factory(const Tango::DevVarStringArray *devlist_ptr)
 }
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::attribute_factory()
- *	Description : Create the attribute object(s)
+ *	Method     : TangoTestClass::attribute_factory()
+ *	Description: Create the attribute object(s)
  *                and store them in the attribute list
  */
 //--------------------------------------------------------
@@ -888,7 +955,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ampli
 	//	delta_t	not set for ampli
 	//	delta_val	not set for ampli
-	
 	ampli->set_default_properties(ampli_prop);
 	//	Not Polled
 	ampli->set_disp_level(Tango::OPERATOR);
@@ -912,7 +978,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for boolean_scalar
 	//	delta_t	not set for boolean_scalar
 	//	delta_val	not set for boolean_scalar
-	
 	boolean_scalar->set_default_properties(boolean_scalar_prop);
 	//	Not Polled
 	boolean_scalar->set_disp_level(Tango::OPERATOR);
@@ -936,7 +1001,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for double_scalar
 	//	delta_t	not set for double_scalar
 	//	delta_val	not set for double_scalar
-	
 	double_scalar->set_default_properties(double_scalar_prop);
 	//	Not Polled
 	double_scalar->set_disp_level(Tango::OPERATOR);
@@ -960,7 +1024,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for double_scalar_rww
 	//	delta_t	not set for double_scalar_rww
 	//	delta_val	not set for double_scalar_rww
-	
 	double_scalar_rww->set_default_properties(double_scalar_rww_prop);
 	//	Not Polled
 	double_scalar_rww->set_disp_level(Tango::OPERATOR);
@@ -984,7 +1047,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for double_scalar_w
 	//	delta_t	not set for double_scalar_w
 	//	delta_val	not set for double_scalar_w
-	
 	double_scalar_w->set_default_properties(double_scalar_w_prop);
 	//	Not Polled
 	double_scalar_w->set_disp_level(Tango::OPERATOR);
@@ -1008,7 +1070,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for float_scalar
 	//	delta_t	not set for float_scalar
 	//	delta_val	not set for float_scalar
-	
 	float_scalar->set_default_properties(float_scalar_prop);
 	//	Not Polled
 	float_scalar->set_disp_level(Tango::OPERATOR);
@@ -1032,7 +1093,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long64_scalar
 	//	delta_t	not set for long64_scalar
 	//	delta_val	not set for long64_scalar
-	
 	long64_scalar->set_default_properties(long64_scalar_prop);
 	//	Not Polled
 	long64_scalar->set_disp_level(Tango::OPERATOR);
@@ -1056,7 +1116,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long_scalar
 	//	delta_t	not set for long_scalar
 	//	delta_val	not set for long_scalar
-	
 	long_scalar->set_default_properties(long_scalar_prop);
 	//	Not Polled
 	long_scalar->set_disp_level(Tango::OPERATOR);
@@ -1080,7 +1139,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long_scalar_rww
 	//	delta_t	not set for long_scalar_rww
 	//	delta_val	not set for long_scalar_rww
-	
 	long_scalar_rww->set_default_properties(long_scalar_rww_prop);
 	//	Not Polled
 	long_scalar_rww->set_disp_level(Tango::OPERATOR);
@@ -1104,7 +1162,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long_scalar_w
 	//	delta_t	not set for long_scalar_w
 	//	delta_val	not set for long_scalar_w
-	
 	long_scalar_w->set_default_properties(long_scalar_w_prop);
 	//	Not Polled
 	long_scalar_w->set_disp_level(Tango::OPERATOR);
@@ -1128,7 +1185,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for no_value
 	//	delta_t	not set for no_value
 	//	delta_val	not set for no_value
-	
 	no_value->set_default_properties(no_value_prop);
 	//	Not Polled
 	no_value->set_disp_level(Tango::OPERATOR);
@@ -1152,7 +1208,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for short_scalar
 	//	delta_t	not set for short_scalar
 	//	delta_val	not set for short_scalar
-	
 	short_scalar->set_default_properties(short_scalar_prop);
 	//	Not Polled
 	short_scalar->set_disp_level(Tango::OPERATOR);
@@ -1176,7 +1231,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for short_scalar_ro
 	//	delta_t	not set for short_scalar_ro
 	//	delta_val	not set for short_scalar_ro
-	
 	short_scalar_ro->set_default_properties(short_scalar_ro_prop);
 	//	Not Polled
 	short_scalar_ro->set_disp_level(Tango::OPERATOR);
@@ -1200,7 +1254,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for short_scalar_rww
 	//	delta_t	not set for short_scalar_rww
 	//	delta_val	not set for short_scalar_rww
-	
 	short_scalar_rww->set_default_properties(short_scalar_rww_prop);
 	//	Not Polled
 	short_scalar_rww->set_disp_level(Tango::OPERATOR);
@@ -1224,7 +1277,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for short_scalar_w
 	//	delta_t	not set for short_scalar_w
 	//	delta_val	not set for short_scalar_w
-	
 	short_scalar_w->set_default_properties(short_scalar_w_prop);
 	//	Not Polled
 	short_scalar_w->set_disp_level(Tango::OPERATOR);
@@ -1248,7 +1300,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for string_scalar
 	//	delta_t	not set for string_scalar
 	//	delta_val	not set for string_scalar
-	
 	string_scalar->set_default_properties(string_scalar_prop);
 	//	Not Polled
 	string_scalar->set_disp_level(Tango::OPERATOR);
@@ -1272,7 +1323,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for throw_exception
 	//	delta_t	not set for throw_exception
 	//	delta_val	not set for throw_exception
-	
 	throw_exception->set_default_properties(throw_exception_prop);
 	//	Not Polled
 	throw_exception->set_disp_level(Tango::OPERATOR);
@@ -1296,7 +1346,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for uchar_scalar
 	//	delta_t	not set for uchar_scalar
 	//	delta_val	not set for uchar_scalar
-	
 	uchar_scalar->set_default_properties(uchar_scalar_prop);
 	//	Not Polled
 	uchar_scalar->set_disp_level(Tango::OPERATOR);
@@ -1320,7 +1369,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ulong64_scalar
 	//	delta_t	not set for ulong64_scalar
 	//	delta_val	not set for ulong64_scalar
-	
 	ulong64_scalar->set_default_properties(ulong64_scalar_prop);
 	//	Not Polled
 	ulong64_scalar->set_disp_level(Tango::OPERATOR);
@@ -1344,7 +1392,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ushort_scalar
 	//	delta_t	not set for ushort_scalar
 	//	delta_val	not set for ushort_scalar
-	
 	ushort_scalar->set_default_properties(ushort_scalar_prop);
 	//	Not Polled
 	ushort_scalar->set_disp_level(Tango::OPERATOR);
@@ -1368,7 +1415,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ulong_scalar
 	//	delta_t	not set for ulong_scalar
 	//	delta_val	not set for ulong_scalar
-	
 	ulong_scalar->set_default_properties(ulong_scalar_prop);
 	//	Not Polled
 	ulong_scalar->set_disp_level(Tango::OPERATOR);
@@ -1392,7 +1438,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for enum_scalar
 	//	delta_t	not set for enum_scalar
 	//	delta_val	not set for enum_scalar
-	
 	{
 		std::vector<std::string> labels;
 		labels.push_back("LABEL0");
@@ -1423,7 +1468,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for freq
 	//	delta_t	not set for freq
 	//	delta_val	not set for freq
-	
 	freq->set_default_properties(freq_prop);
 	//	Not Polled
 	freq->set_disp_level(Tango::OPERATOR);
@@ -1447,7 +1491,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for enum_scalar_ro
 	//	delta_t	not set for enum_scalar_ro
 	//	delta_val	not set for enum_scalar_ro
-
 	{
 		std::vector<std::string> labels;
 		labels.push_back("LABEL3");
@@ -1478,7 +1521,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for boolean_spectrum
 	//	delta_t	not set for boolean_spectrum
 	//	delta_val	not set for boolean_spectrum
-	
 	boolean_spectrum->set_default_properties(boolean_spectrum_prop);
 	//	Not Polled
 	boolean_spectrum->set_disp_level(Tango::OPERATOR);
@@ -1502,7 +1544,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for boolean_spectrum_ro
 	//	delta_t	not set for boolean_spectrum_ro
 	//	delta_val	not set for boolean_spectrum_ro
-	
 	boolean_spectrum_ro->set_default_properties(boolean_spectrum_ro_prop);
 	//	Not Polled
 	boolean_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1526,7 +1567,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for double_spectrum
 	//	delta_t	not set for double_spectrum
 	//	delta_val	not set for double_spectrum
-	
 	double_spectrum->set_default_properties(double_spectrum_prop);
 	//	Not Polled
 	double_spectrum->set_disp_level(Tango::OPERATOR);
@@ -1550,7 +1590,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for double_spectrum_ro
 	//	delta_t	not set for double_spectrum_ro
 	//	delta_val	not set for double_spectrum_ro
-	
 	double_spectrum_ro->set_default_properties(double_spectrum_ro_prop);
 	//	Not Polled
 	double_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1574,7 +1613,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for float_spectrum
 	//	delta_t	not set for float_spectrum
 	//	delta_val	not set for float_spectrum
-	
 	float_spectrum->set_default_properties(float_spectrum_prop);
 	//	Not Polled
 	float_spectrum->set_disp_level(Tango::OPERATOR);
@@ -1598,7 +1636,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for float_spectrum_ro
 	//	delta_t	not set for float_spectrum_ro
 	//	delta_val	not set for float_spectrum_ro
-	
 	float_spectrum_ro->set_default_properties(float_spectrum_ro_prop);
 	//	Not Polled
 	float_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1622,7 +1659,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long64_spectrum_ro
 	//	delta_t	not set for long64_spectrum_ro
 	//	delta_val	not set for long64_spectrum_ro
-	
 	long64_spectrum_ro->set_default_properties(long64_spectrum_ro_prop);
 	//	Not Polled
 	long64_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1646,7 +1682,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long_spectrum
 	//	delta_t	not set for long_spectrum
 	//	delta_val	not set for long_spectrum
-	
 	long_spectrum->set_default_properties(long_spectrum_prop);
 	//	Not Polled
 	long_spectrum->set_disp_level(Tango::OPERATOR);
@@ -1670,7 +1705,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long_spectrum_ro
 	//	delta_t	not set for long_spectrum_ro
 	//	delta_val	not set for long_spectrum_ro
-	
 	long_spectrum_ro->set_default_properties(long_spectrum_ro_prop);
 	//	Not Polled
 	long_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1694,7 +1728,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for short_spectrum
 	//	delta_t	not set for short_spectrum
 	//	delta_val	not set for short_spectrum
-	
 	short_spectrum->set_default_properties(short_spectrum_prop);
 	//	Not Polled
 	short_spectrum->set_disp_level(Tango::OPERATOR);
@@ -1718,7 +1751,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for short_spectrum_ro
 	//	delta_t	not set for short_spectrum_ro
 	//	delta_val	not set for short_spectrum_ro
-	
 	short_spectrum_ro->set_default_properties(short_spectrum_ro_prop);
 	//	Not Polled
 	short_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1742,7 +1774,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for string_spectrum
 	//	delta_t	not set for string_spectrum
 	//	delta_val	not set for string_spectrum
-	
 	string_spectrum->set_default_properties(string_spectrum_prop);
 	//	Not Polled
 	string_spectrum->set_disp_level(Tango::OPERATOR);
@@ -1766,7 +1797,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for string_spectrum_ro
 	//	delta_t	not set for string_spectrum_ro
 	//	delta_val	not set for string_spectrum_ro
-	
 	string_spectrum_ro->set_default_properties(string_spectrum_ro_prop);
 	//	Not Polled
 	string_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1790,7 +1820,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for uchar_spectrum
 	//	delta_t	not set for uchar_spectrum
 	//	delta_val	not set for uchar_spectrum
-	
 	uchar_spectrum->set_default_properties(uchar_spectrum_prop);
 	//	Not Polled
 	uchar_spectrum->set_disp_level(Tango::OPERATOR);
@@ -1814,7 +1843,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for uchar_spectrum_ro
 	//	delta_t	not set for uchar_spectrum_ro
 	//	delta_val	not set for uchar_spectrum_ro
-	
 	uchar_spectrum_ro->set_default_properties(uchar_spectrum_ro_prop);
 	//	Not Polled
 	uchar_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1838,7 +1866,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ulong64_spectrum_ro
 	//	delta_t	not set for ulong64_spectrum_ro
 	//	delta_val	not set for ulong64_spectrum_ro
-	
 	ulong64_spectrum_ro->set_default_properties(ulong64_spectrum_ro_prop);
 	//	Not Polled
 	ulong64_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1862,7 +1889,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ulong_spectrum_ro
 	//	delta_t	not set for ulong_spectrum_ro
 	//	delta_val	not set for ulong_spectrum_ro
-	
 	ulong_spectrum_ro->set_default_properties(ulong_spectrum_ro_prop);
 	//	Not Polled
 	ulong_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1886,7 +1912,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ushort_spectrum
 	//	delta_t	not set for ushort_spectrum
 	//	delta_val	not set for ushort_spectrum
-	
 	ushort_spectrum->set_default_properties(ushort_spectrum_prop);
 	//	Not Polled
 	ushort_spectrum->set_disp_level(Tango::OPERATOR);
@@ -1910,7 +1935,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ushort_spectrum_ro
 	//	delta_t	not set for ushort_spectrum_ro
 	//	delta_val	not set for ushort_spectrum_ro
-	
 	ushort_spectrum_ro->set_default_properties(ushort_spectrum_ro_prop);
 	//	Not Polled
 	ushort_spectrum_ro->set_disp_level(Tango::OPERATOR);
@@ -1934,7 +1958,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for wave
 	//	delta_t	not set for wave
 	//	delta_val	not set for wave
-	
 	wave->set_default_properties(wave_prop);
 	//	Not Polled
 	wave->set_disp_level(Tango::OPERATOR);
@@ -1958,7 +1981,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for enum_spectrum
 	//	delta_t	not set for enum_spectrum
 	//	delta_val	not set for enum_spectrum
-
 	{
 		std::vector<std::string> labels;
 		labels.push_back("LABEL6");
@@ -1989,7 +2011,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for enum_spectrum_ro
 	//	delta_t	not set for enum_spectrum_ro
 	//	delta_val	not set for enum_spectrum_ro
-
 	{
 		std::vector<std::string> labels;
 		labels.push_back("LABEL9");
@@ -2020,7 +2041,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for boolean_image
 	//	delta_t	not set for boolean_image
 	//	delta_val	not set for boolean_image
-	
 	boolean_image->set_default_properties(boolean_image_prop);
 	//	Not Polled
 	boolean_image->set_disp_level(Tango::OPERATOR);
@@ -2044,7 +2064,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for boolean_image_ro
 	//	delta_t	not set for boolean_image_ro
 	//	delta_val	not set for boolean_image_ro
-	
 	boolean_image_ro->set_default_properties(boolean_image_ro_prop);
 	//	Not Polled
 	boolean_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2068,7 +2087,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for double_image
 	//	delta_t	not set for double_image
 	//	delta_val	not set for double_image
-	
 	double_image->set_default_properties(double_image_prop);
 	//	Not Polled
 	double_image->set_disp_level(Tango::OPERATOR);
@@ -2092,7 +2110,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for double_image_ro
 	//	delta_t	not set for double_image_ro
 	//	delta_val	not set for double_image_ro
-	
 	double_image_ro->set_default_properties(double_image_ro_prop);
 	//	Not Polled
 	double_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2116,7 +2133,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for float_image
 	//	delta_t	not set for float_image
 	//	delta_val	not set for float_image
-	
 	float_image->set_default_properties(float_image_prop);
 	//	Not Polled
 	float_image->set_disp_level(Tango::OPERATOR);
@@ -2140,7 +2156,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for float_image_ro
 	//	delta_t	not set for float_image_ro
 	//	delta_val	not set for float_image_ro
-	
 	float_image_ro->set_default_properties(float_image_ro_prop);
 	//	Not Polled
 	float_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2164,7 +2179,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long64_image_ro
 	//	delta_t	not set for long64_image_ro
 	//	delta_val	not set for long64_image_ro
-	
 	long64_image_ro->set_default_properties(long64_image_ro_prop);
 	//	Not Polled
 	long64_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2188,7 +2202,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long_image
 	//	delta_t	not set for long_image
 	//	delta_val	not set for long_image
-	
 	long_image->set_default_properties(long_image_prop);
 	//	Not Polled
 	long_image->set_disp_level(Tango::OPERATOR);
@@ -2212,7 +2225,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for long_image_ro
 	//	delta_t	not set for long_image_ro
 	//	delta_val	not set for long_image_ro
-	
 	long_image_ro->set_default_properties(long_image_ro_prop);
 	//	Not Polled
 	long_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2236,7 +2248,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for short_image
 	//	delta_t	not set for short_image
 	//	delta_val	not set for short_image
-	
 	short_image->set_default_properties(short_image_prop);
 	//	Not Polled
 	short_image->set_disp_level(Tango::OPERATOR);
@@ -2260,7 +2271,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for short_image_ro
 	//	delta_t	not set for short_image_ro
 	//	delta_val	not set for short_image_ro
-	
 	short_image_ro->set_default_properties(short_image_ro_prop);
 	//	Not Polled
 	short_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2284,7 +2294,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for string_image
 	//	delta_t	not set for string_image
 	//	delta_val	not set for string_image
-	
 	string_image->set_default_properties(string_image_prop);
 	//	Not Polled
 	string_image->set_disp_level(Tango::OPERATOR);
@@ -2308,7 +2317,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for string_image_ro
 	//	delta_t	not set for string_image_ro
 	//	delta_val	not set for string_image_ro
-	
 	string_image_ro->set_default_properties(string_image_ro_prop);
 	//	Not Polled
 	string_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2332,7 +2340,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for uchar_image
 	//	delta_t	not set for uchar_image
 	//	delta_val	not set for uchar_image
-	
 	uchar_image->set_default_properties(uchar_image_prop);
 	//	Not Polled
 	uchar_image->set_disp_level(Tango::OPERATOR);
@@ -2356,7 +2363,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for uchar_image_ro
 	//	delta_t	not set for uchar_image_ro
 	//	delta_val	not set for uchar_image_ro
-	
 	uchar_image_ro->set_default_properties(uchar_image_ro_prop);
 	//	Not Polled
 	uchar_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2380,7 +2386,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ulong64_image_ro
 	//	delta_t	not set for ulong64_image_ro
 	//	delta_val	not set for ulong64_image_ro
-	
 	ulong64_image_ro->set_default_properties(ulong64_image_ro_prop);
 	//	Not Polled
 	ulong64_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2404,7 +2409,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ulong_image_ro
 	//	delta_t	not set for ulong_image_ro
 	//	delta_val	not set for ulong_image_ro
-	
 	ulong_image_ro->set_default_properties(ulong_image_ro_prop);
 	//	Not Polled
 	ulong_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2428,7 +2432,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ushort_image
 	//	delta_t	not set for ushort_image
 	//	delta_val	not set for ushort_image
-	
 	ushort_image->set_default_properties(ushort_image_prop);
 	//	Not Polled
 	ushort_image->set_disp_level(Tango::OPERATOR);
@@ -2452,7 +2455,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for ushort_image_ro
 	//	delta_t	not set for ushort_image_ro
 	//	delta_val	not set for ushort_image_ro
-	
 	ushort_image_ro->set_default_properties(ushort_image_ro_prop);
 	//	Not Polled
 	ushort_image_ro->set_disp_level(Tango::OPERATOR);
@@ -2476,7 +2478,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for enum_image_ro
 	//	delta_t	not set for enum_image_ro
 	//	delta_val	not set for enum_image_ro
-
 	{
 		std::vector<std::string> labels;
 		labels.push_back("LABEL12");
@@ -2507,7 +2508,6 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	min_warning	not set for enum_image
 	//	delta_t	not set for enum_image
 	//	delta_val	not set for enum_image
-
 	{
 		std::vector<std::string> labels;
 		labels.push_back("LABEL15");
@@ -2532,8 +2532,8 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 }
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::pipe_factory()
- *	Description : Create the pipe object(s)
+ *	Method     : TangoTestClass::pipe_factory()
+ *	Description: Create the pipe object(s)
  *                and store them in the pipe list
  */
 //--------------------------------------------------------
@@ -2565,8 +2565,8 @@ void TangoTestClass::pipe_factory()
 }
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::command_factory()
- *	Description : Create the command object(s)
+ *	Method     : TangoTestClass::command_factory()
+ *	Description: Create the command object(s)
  *                and store them in the command list
  */
 //--------------------------------------------------------
@@ -2838,7 +2838,7 @@ void TangoTestClass::command_factory()
  * method : 		TangoTestClass::create_static_attribute_list
  * description : 	Create the a list of static attributes
  *
- * @param	att_list	the ceated attribute list
+ * @param	att_list	the created attribute list
  */
 //--------------------------------------------------------
 void TangoTestClass::create_static_attribute_list(std::vector<Tango::Attr *> &att_list)
@@ -2900,8 +2900,8 @@ void TangoTestClass::erase_dynamic_attributes(const Tango::DevVarStringArray *de
 
 //--------------------------------------------------------
 /**
- *	Method      : TangoTestClass::get_attr_object_by_name()
- *	Description : returns Tango::Attr * object found by name
+ *	Method     : TangoTestClass::get_attr_object_by_name()
+ *	Description: returns Tango::Attr * object found by name
  */
 //--------------------------------------------------------
 Tango::Attr *TangoTestClass::get_attr_object_by_name(std::vector<Tango::Attr *> &att_list, std::string attname)
