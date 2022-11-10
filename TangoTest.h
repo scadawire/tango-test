@@ -59,50 +59,61 @@
 
 /*----- PROTECTED REGION END -----*/	//	TangoTest.h
 
+#ifdef TANGO_LOG
+	// cppTango after c934adea (Merge branch 'remove-cout-definition' into 'main', 2022-05-23)
+	// nothing to do
+#else
+	// cppTango 9.3-backports and older
+	#define TANGO_LOG       cout
+	#define TANGO_LOG_INFO  cout2
+	#define TANGO_LOG_DEBUG cout3
+#endif // TANGO_LOG
+
 /**
  *  TangoTest class description:
  *    A device to test generic clients. It offers a \"echo\" like command for
  *    each TANGO data type (i.e. each command returns an exact copy of <argin>).
  */
 
+
 namespace TangoTest_ns
 {
-enum _enum_scalarEnum {
+enum class _enum_scalarEnum : short {
 	_LABEL0,
 	_LABEL1,
 	_LABEL2,
 } ;
 typedef _enum_scalarEnum enum_scalarEnum;
 
-enum _enum_scalar_roEnum {
+enum class _enum_scalar_roEnum : short {
 	_LABEL3,
 	_LABEL4,
 	_LABEL5,
 } ;
 typedef _enum_scalar_roEnum enum_scalar_roEnum;
 
-enum _enum_spectrumEnum {
+enum class _enum_spectrumEnum : short {
 	_LABEL6,
 	_LABEL7,
 	_LABEL8,
 } ;
 typedef _enum_spectrumEnum enum_spectrumEnum;
 
-enum _enum_spectrum_roEnum {
+enum class _enum_spectrum_roEnum : short {
 	_LABEL9,
 	_LABEL10,
 	_LABEL11,
 } ;
 typedef _enum_spectrum_roEnum enum_spectrum_roEnum;
 
-enum _enum_image_roEnum {
+enum class _enum_image_roEnum : short {
 	_LABEL12,
 	_LABEL13,
 	_LABEL14,
 } ;
 typedef _enum_image_roEnum enum_image_roEnum;
 
-enum _enum_imageEnum {
+enum class _enum_imageEnum : short {
 	_LABEL15,
 	_LABEL16,
 	_LABEL17,
@@ -264,7 +275,7 @@ public:
 	/**
 	 * The device object destructor.
 	 */
-	~TangoTest() {delete_device();};
+	~TangoTest();
 
 
 //	Miscellaneous methods
@@ -291,22 +302,22 @@ public:
 public:
 	//--------------------------------------------------------
 	/*
-	 *	Method      : TangoTest::read_attr_hardware()
-	 *	Description : Hardware acquisition for attributes.
+	 *	Method     : TangoTest::read_attr_hardware()
+	 *	Description: Hardware acquisition for attributes.
 	 */
 	//--------------------------------------------------------
 	virtual void read_attr_hardware(std::vector<long> &attr_list);
 	//--------------------------------------------------------
 	/*
-	 *	Method      : TangoTest::write_attr_hardware()
-	 *	Description : Hardware writing for attributes.
+	 *	Method     : TangoTest::write_attr_hardware()
+	 *	Description: Hardware writing for attributes.
 	 */
 	//--------------------------------------------------------
 	virtual void write_attr_hardware(std::vector<long> &attr_list);
 
 /**
  *	Attribute ampli related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Scalar
@@ -325,7 +336,7 @@ public:
 	virtual bool is_boolean_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute double_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Scalar
@@ -335,7 +346,7 @@ public:
 	virtual bool is_double_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute double_scalar_rww related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Scalar
@@ -345,7 +356,7 @@ public:
 	virtual bool is_double_scalar_rww_allowed(Tango::AttReqType type);
 /**
  *	Attribute double_scalar_w related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Scalar
@@ -364,7 +375,7 @@ public:
 	virtual bool is_float_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute long64_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong64
  *	Attr type:	Scalar
@@ -374,7 +385,7 @@ public:
 	virtual bool is_long64_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute long_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Scalar
@@ -384,7 +395,7 @@ public:
 	virtual bool is_long_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute long_scalar_rww related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Scalar
@@ -394,7 +405,7 @@ public:
 	virtual bool is_long_scalar_rww_allowed(Tango::AttReqType type);
 /**
  *	Attribute long_scalar_w related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Scalar
@@ -403,7 +414,7 @@ public:
 	virtual bool is_long_scalar_w_allowed(Tango::AttReqType type);
 /**
  *	Attribute no_value related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Scalar
@@ -412,7 +423,7 @@ public:
 	virtual bool is_no_value_allowed(Tango::AttReqType type);
 /**
  *	Attribute short_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevShort
  *	Attr type:	Scalar
@@ -422,7 +433,7 @@ public:
 	virtual bool is_short_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute short_scalar_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevShort
  *	Attr type:	Scalar
@@ -431,7 +442,7 @@ public:
 	virtual bool is_short_scalar_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute short_scalar_rww related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevShort
  *	Attr type:	Scalar
@@ -441,7 +452,7 @@ public:
 	virtual bool is_short_scalar_rww_allowed(Tango::AttReqType type);
 /**
  *	Attribute short_scalar_w related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevShort
  *	Attr type:	Scalar
@@ -450,7 +461,7 @@ public:
 	virtual bool is_short_scalar_w_allowed(Tango::AttReqType type);
 /**
  *	Attribute string_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevString
  *	Attr type:	Scalar
@@ -460,7 +471,7 @@ public:
 	virtual bool is_string_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute throw_exception related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Scalar
@@ -469,7 +480,7 @@ public:
 	virtual bool is_throw_exception_allowed(Tango::AttReqType type);
 /**
  *	Attribute uchar_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevUChar
  *	Attr type:	Scalar
@@ -479,7 +490,7 @@ public:
 	virtual bool is_uchar_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute ulong64_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevULong64
  *	Attr type:	Scalar
@@ -489,7 +500,7 @@ public:
 	virtual bool is_ulong64_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute ushort_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevUShort
  *	Attr type:	Scalar
@@ -499,7 +510,7 @@ public:
 	virtual bool is_ushort_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute ulong_scalar related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevULong
  *	Attr type:	Scalar
@@ -509,7 +520,7 @@ public:
 	virtual bool is_ulong_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute enum_scalar related methods
- *	Description:
+ *
  *
  *	Data type:	Tango::DevEnum
  *	Attr type:	Scalar
@@ -519,7 +530,7 @@ public:
 	virtual bool is_enum_scalar_allowed(Tango::AttReqType type);
 /**
  *	Attribute freq related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Scalar
@@ -528,7 +539,7 @@ public:
 	virtual bool is_freq_allowed(Tango::AttReqType type);
 /**
  *	Attribute enum_scalar_ro related methods
- *	Description:
+ *
  *
  *	Data type:	Tango::DevEnum
  *	Attr type:	Scalar
@@ -537,7 +548,7 @@ public:
 	virtual bool is_enum_scalar_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute boolean_spectrum related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevBoolean
  *	Attr type:	Spectrum max = 4096
@@ -547,7 +558,7 @@ public:
 	virtual bool is_boolean_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute boolean_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevBoolean
  *	Attr type:	Spectrum max = 4096
@@ -556,7 +567,7 @@ public:
 	virtual bool is_boolean_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute double_spectrum related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Spectrum max = 4096
@@ -566,7 +577,7 @@ public:
 	virtual bool is_double_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute double_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Spectrum max = 4096
@@ -585,7 +596,7 @@ public:
 	virtual bool is_float_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute float_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevFloat
  *	Attr type:	Spectrum max = 4096
@@ -594,7 +605,7 @@ public:
 	virtual bool is_float_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute long64_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong64
  *	Attr type:	Spectrum max = 4096
@@ -603,7 +614,7 @@ public:
 	virtual bool is_long64_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute long_spectrum related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Spectrum max = 4096
@@ -613,7 +624,7 @@ public:
 	virtual bool is_long_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute long_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Spectrum max = 4096
@@ -622,7 +633,7 @@ public:
 	virtual bool is_long_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute short_spectrum related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevShort
  *	Attr type:	Spectrum max = 4096
@@ -632,7 +643,7 @@ public:
 	virtual bool is_short_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute short_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevShort
  *	Attr type:	Spectrum max = 4096
@@ -641,7 +652,7 @@ public:
 	virtual bool is_short_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute string_spectrum related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevString
  *	Attr type:	Spectrum max = 256
@@ -651,7 +662,7 @@ public:
 	virtual bool is_string_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute string_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevString
  *	Attr type:	Spectrum max = 256
@@ -670,7 +681,7 @@ public:
 	virtual bool is_uchar_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute uchar_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevUChar
  *	Attr type:	Spectrum max = 4096
@@ -679,7 +690,7 @@ public:
 	virtual bool is_uchar_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute ulong64_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevULong64
  *	Attr type:	Spectrum max = 4096
@@ -688,7 +699,7 @@ public:
 	virtual bool is_ulong64_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute ulong_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevULong
  *	Attr type:	Spectrum max = 4096
@@ -707,7 +718,7 @@ public:
 	virtual bool is_ushort_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute ushort_spectrum_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevUShort
  *	Attr type:	Spectrum max = 4096
@@ -716,7 +727,7 @@ public:
 	virtual bool is_ushort_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute wave related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Spectrum max = 4096
@@ -725,7 +736,7 @@ public:
 	virtual bool is_wave_allowed(Tango::AttReqType type);
 /**
  *	Attribute enum_spectrum related methods
- *	Description:
+ *
  *
  *	Data type:	Tango::DevEnum
  *	Attr type:	Spectrum max = 4096
@@ -735,7 +746,7 @@ public:
 	virtual bool is_enum_spectrum_allowed(Tango::AttReqType type);
 /**
  *	Attribute enum_spectrum_ro related methods
- *	Description:
+ *
  *
  *	Data type:	Tango::DevEnum
  *	Attr type:	Spectrum max = 4096
@@ -744,7 +755,7 @@ public:
 	virtual bool is_enum_spectrum_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute boolean_image related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevBoolean
  *	Attr type:	Image max = 251 x 251
@@ -754,7 +765,7 @@ public:
 	virtual bool is_boolean_image_allowed(Tango::AttReqType type);
 /**
  *	Attribute boolean_image_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevBoolean
  *	Attr type:	Image max = 251 x 251
@@ -763,7 +774,7 @@ public:
 	virtual bool is_boolean_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute double_image related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Image max = 251 x 251
@@ -773,7 +784,7 @@ public:
 	virtual bool is_double_image_allowed(Tango::AttReqType type);
 /**
  *	Attribute double_image_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevDouble
  *	Attr type:	Image max = 251 x 251
@@ -782,7 +793,7 @@ public:
 	virtual bool is_double_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute float_image related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevFloat
  *	Attr type:	Image max = 251 x 251
@@ -801,7 +812,7 @@ public:
 	virtual bool is_float_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute long64_image_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong64
  *	Attr type:	Image max = 251 x 251
@@ -810,7 +821,7 @@ public:
 	virtual bool is_long64_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute long_image related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Image max = 251 x 251
@@ -820,7 +831,7 @@ public:
 	virtual bool is_long_image_allowed(Tango::AttReqType type);
 /**
  *	Attribute long_image_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevLong
  *	Attr type:	Image max = 251 x 251
@@ -829,7 +840,7 @@ public:
 	virtual bool is_long_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute short_image related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevShort
  *	Attr type:	Image max = 251 x 251
@@ -839,7 +850,7 @@ public:
 	virtual bool is_short_image_allowed(Tango::AttReqType type);
 /**
  *	Attribute short_image_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevShort
  *	Attr type:	Image max = 251 x 251
@@ -848,7 +859,7 @@ public:
 	virtual bool is_short_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute string_image related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevString
  *	Attr type:	Image max = 256 x 256
@@ -858,7 +869,7 @@ public:
 	virtual bool is_string_image_allowed(Tango::AttReqType type);
 /**
  *	Attribute string_image_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevString
  *	Attr type:	Image max = 256 x 256
@@ -867,7 +878,7 @@ public:
 	virtual bool is_string_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute uchar_image related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevUChar
  *	Attr type:	Image max = 251 x 251
@@ -886,7 +897,7 @@ public:
 	virtual bool is_uchar_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute ulong64_image_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevULong64
  *	Attr type:	Image max = 251 x 251
@@ -895,7 +906,7 @@ public:
 	virtual bool is_ulong64_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute ulong_image_ro related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevULong
  *	Attr type:	Image max = 251 x 251
@@ -904,7 +915,7 @@ public:
 	virtual bool is_ulong_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute ushort_image related methods
- *	Description: 
+ *
  *
  *	Data type:	Tango::DevUShort
  *	Attr type:	Image max = 251 x 251
@@ -923,7 +934,7 @@ public:
 	virtual bool is_ushort_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute enum_image_ro related methods
- *	Description:
+ *
  *
  *	Data type:	Tango::DevEnum
  *	Attr type:	Image max = 251 x 251
@@ -932,7 +943,7 @@ public:
 	virtual bool is_enum_image_ro_allowed(Tango::AttReqType type);
 /**
  *	Attribute enum_image related methods
- *	Description:
+ *
  *
  *	Data type:	Tango::DevEnum
  *	Attr type:	Image max = 251 x 251
@@ -944,8 +955,8 @@ public:
 
 	//--------------------------------------------------------
 	/**
-	 *	Method      : TangoTest::add_dynamic_attributes()
-	 *	Description : Add dynamic attributes if any.
+	 *	Method     : TangoTest::add_dynamic_attributes()
+	 *	Description: Add dynamic attributes if any.
 	 */
 	//--------------------------------------------------------
 	void add_dynamic_attributes();
@@ -1106,10 +1117,10 @@ public:
 	virtual bool is_DevVarFloatArray_allowed(const CORBA::Any &any);
 	/**
 	 *	Command DevVarLong64Array related method
-	 *	Description: 
 	 *
-	 *	@param argin 
-	 *	@returns 
+	 *
+	 *	@param argin
+	 *	@returns
 	 */
 	virtual Tango::DevVarLong64Array *dev_var_long64_array(const Tango::DevVarLong64Array *argin);
 	virtual bool is_DevVarLong64Array_allowed(const CORBA::Any &any);
@@ -1151,10 +1162,10 @@ public:
 	virtual bool is_DevVarStringArray_allowed(const CORBA::Any &any);
 	/**
 	 *	Command DevVarULong64Array related method
-	 *	Description: 
 	 *
-	 *	@param argin 
-	 *	@returns 
+	 *
+	 *	@param argin
+	 *	@returns
 	 */
 	virtual Tango::DevVarULong64Array *dev_var_ulong64_array(const Tango::DevVarULong64Array *argin);
 	virtual bool is_DevVarULong64Array_allowed(const CORBA::Any &any);
@@ -1201,8 +1212,8 @@ public:
 
 	//--------------------------------------------------------
 	/**
-	 *	Method      : TangoTest::add_dynamic_commands()
-	 *	Description : Add dynamic commands if any.
+	 *	Method     : TangoTest::add_dynamic_commands()
+	 *	Description: Add dynamic commands if any.
 	 */
 	//--------------------------------------------------------
 	void add_dynamic_commands();
