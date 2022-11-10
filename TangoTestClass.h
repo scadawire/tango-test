@@ -44,7 +44,6 @@
 
 #include <tango/tango.h>
 #include "TangoTest.h"
-#include "Logging.h"
 
 /*----- PROTECTED REGION END -----*/	//	TangoTestClass.h
 
