@@ -84,7 +84,7 @@ build-cppTango-9.3-backports:
   script:
     - New-Item build -ItemType Directory
     - cd build
-    - cmake -G"${GENERATOR_VERSION}" -A"${PLATFORM}" .. -DTANGO_PKG_LIBRARY_DIRS="${TANGO_PATH}\lib" -DTANGO_PKG_INCLUDE_DIRS="${TANGO_PATH}\include" -DTANGO_PKG_LIBRARIES="comctl32;libtango;omniORB4;omniDynamic4;COS4;omnithread;libzmq-${MSVC_VERSION}-mt-s-4_0_5" -DTANGO_PKG_CFLAGS_OTHER="/MT" -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"
+    - cmake -G"${GENERATOR_VERSION}" -A"${PLATFORM}" .. -DTango_ROOT="${TANGO_PATH}" -DTango_FORCE_STATIC=ON
     - cmake --build . --config Release
     - cmake --install .
   after_script:
