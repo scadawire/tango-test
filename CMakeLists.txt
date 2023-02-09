@@ -33,6 +33,12 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 target_link_libraries(${PROJECT_NAME} PRIVATE Tango::Tango)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 
+if (WIN32 AND (Tango_IS_STATIC OR Tango_FORCE_STATIC))
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+    )
+endif()
+
 option(TANGO_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
 
 if(TANGO_WARNINGS_AS_ERRORS)
