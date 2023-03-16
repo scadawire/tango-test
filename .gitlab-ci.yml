@@ -13,6 +13,8 @@ variables:
 # Not possible with parallel, see https://gitlab.com/gitlab-org/gitlab/-/issues/254821
 .build-cppTango:
   image: debian:bullseye
+  tags:
+    - docker, linux, amd64
   before_script:
     - apt-get update
     - >
@@ -112,6 +114,8 @@ build-tangotest-win-32bit:
 
 .build-tangotest-linux:
   image: debian:bullseye
+  tags:
+    - docker, linux, amd64
   before_script:
     - apt-get update
     - >
@@ -155,6 +159,8 @@ build-tangotest-linux-stock:
 
 release-builds:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  tags:
+    - docker, linux, amd64
   needs:
     - build-tangotest-linux-stock
     - build-tangotest-linux-9.3-backports
