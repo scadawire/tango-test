@@ -74,14 +74,14 @@ build-cppTango-9.3-backports:
       variables:
         DOWNLOAD_URL: "https://gitlab.com/tango-controls/cppTango/-/package_files/67361143/download"
   before_script:
-    - choco install cmake -y
+    - choco install cmake curl -y
     - $env:Path += ";C:\Program Files\CMake\bin"
     - $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
     - msbuild /version
     - if (Test-Path "${DEPS_PATH}") { Remove-Item "${DEPS_PATH}" -Recurse -Force; }
     - New-Item "${DEPS_PATH}" -ItemType Directory
       # See LIBTANGO constant at the top for the exact name
-    - wget.exe "${DOWNLOAD_URL}" -P "${DEPS_PATH}"
+    - curl.exe -qLS "${DOWNLOAD_URL}" -o "${DEPS_PATH}/download"
     - 7z x "${DEPS_PATH}/download" -o"${DEPS_PATH}"
   script:
     - New-Item build -ItemType Directory
