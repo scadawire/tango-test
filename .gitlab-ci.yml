@@ -10,6 +10,13 @@ variables:
   CMAKE_BUILD_TYPE: Debug
   DEBIAN_FRONTEND: noninteractive
 
+# See: https://docs.gitlab.com/ce/ci/yaml/README.html#workflowrules-templates
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 # Not possible with parallel, see https://gitlab.com/gitlab-org/gitlab/-/issues/254821
 .build-cppTango:
   image: debian:bullseye
