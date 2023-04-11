@@ -4333,7 +4333,7 @@ void TangoTest::add_dynamic_commands()
 
         for (i = 0; i < kSpecLen; i++)
             ::snprintf(attr_string_spectrum_ro_read[i],
-                       sizeof(attr_string_spectrum_ro_read[i]),
+                       kSpecLen,
                        "[%.2d]::hello-world-%.4d",
                        i,
                        randomize(int_generation_max_value));
@@ -4341,7 +4341,7 @@ void TangoTest::add_dynamic_commands()
         for (j = 0; j < kImagLen; j++)
             for (i = 0; i < kImagLen; i++)
                 ::snprintf(attr_string_image_ro_read[i + j * kImagLen],
-                           sizeof(attr_string_image_ro_read[i + j * kImagLen]),
+                           kSpecLen,
                            "[%.2d][%.2d]::hello world::%.4d",
                            i,
                            j,
