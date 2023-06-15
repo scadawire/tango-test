@@ -163,6 +163,43 @@ build-tangotest-linux-stock:
     - cmake -B build .
     - make -C build install
 
+build-tangotest-linux-main-newest-supported-cmake:
+  extends: .build-tangotest-linux
+  needs:
+    - build-cppTango-main
+  script:
+    # Extract tango
+    - tar xf usr-local.tar -C /
+    # Install custom cmake
+    - apt-get install curl
+    - apt-get remove -y cmake
+    - curl -L https://cmake.org/files/v3.26/cmake-3.26.4-linux-x86_64.sh -o /tmp/cmake-install.sh
+    - chmod +x /tmp/cmake-install.sh
+    - cd /usr/local
+    - /tmp/cmake-install.sh --skip-license --exclude-subdir
+    # Build DS
+    - cd ${CI_PROJECT_DIR}
+    - cmake -Werror=dev -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
+    - make -C build install
+
+build-tangotest-linux-main-oldest-supported-cmake:
+  extends: .build-tangotest-linux
+  needs:
+    - build-cppTango-main
+  script:
+    # Extract tango
+    - tar xf usr-local.tar -C /
+    # Install custom cmake
+    - apt-get install curl
+    - apt-get remove -y cmake
+    - curl -L https://cmake.org/files/v3.18/cmake-3.18.6-Linux-x86_64.sh -o /tmp/cmake-install.sh
+    - chmod +x /tmp/cmake-install.sh
+    - cd /usr/local
+    - /tmp/cmake-install.sh --skip-license --exclude-subdir
+    # Build DS
+    - cd ${CI_PROJECT_DIR}
+    - cmake -Werror=dev -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
+    - make -C build install
 
 release-builds:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
