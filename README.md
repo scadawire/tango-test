@@ -2,6 +2,18 @@
 
 Tango test device server
 
+## Keeping Up-to-date
+
+This repository uses git submodules.
+
+- Ensure that you use `--recurse-submodules` when cloning:
+
+`git clone --recurse-submodules ...`
+
+- Ensure that updates to git submodules are pulled:
+
+`git pull --recurse-submodules`
+
 ## Building
 
 To build:
