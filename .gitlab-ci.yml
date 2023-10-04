@@ -9,6 +9,7 @@ variables:
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
   CMAKE_BUILD_TYPE: Debug
   DEBIAN_FRONTEND: noninteractive
+  GIT_SUBMODULE_STRATEGY: recursive
 
 # See: https://docs.gitlab.com/ce/ci/yaml/README.html#workflowrules-templates
 workflow:
