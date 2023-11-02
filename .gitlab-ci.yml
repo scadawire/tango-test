@@ -98,7 +98,7 @@ build-cppTango-main:
       cmake -B /cppTango/build
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
       -DBUILD_TESTING=OFF
-      -DTANGO_IDL_BASE=/usr/local/tango-idl
+      -Dtangoidl_ROOT=/usr/local/tango-idl
       -DTANGO_USE_JPEG=OFF
       /cppTango
   script:
