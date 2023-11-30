@@ -1,4 +1,8 @@
 ---
+include:
+  - project: 'tango-controls/gitlab-ci-templates'
+    file: 'ArchiveWithSubmodules.gitlab-ci.yml'
+
 variables:
   TANGO_VERSION: 9.4.1
   MSVC_VERSION: v141
