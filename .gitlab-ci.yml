@@ -97,7 +97,7 @@ build-cppTango-main:
     - cmake -B /cppzmq/build -DCPPZMQ_BUILD_TESTS=OFF /cppzmq
     - make -j$(nproc) -C /cppzmq/build install
     # Clone cppTango
-    - git clone -b main --depth 1 https://gitlab.com/tango-controls/cppTango.git /cppTango
+    - git clone -b main --recurse-submodules --depth 1 https://gitlab.com/tango-controls/cppTango.git /cppTango
     - >
       cmake -B /cppTango/build
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
