@@ -10,7 +10,6 @@ variables:
   DEPS_PATH: C:/dependencies
   LIBTANGO: libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}_static_release
   TANGO_PATH: ${DEPS_PATH}/${LIBTANGO}
-  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
   CMAKE_BUILD_TYPE: Debug
   DEBIAN_FRONTEND: noninteractive
   GIT_SUBMODULE_STRATEGY: recursive
@@ -252,6 +251,9 @@ release-builds:
     - build-tangotest-linux-main
     - build-tangotest-win-32bit
     - build-tangotest-win-64bit
+  variables:
+    # WARNING! This variable name is used in ArchiveWithSubmodules.gitlab-ci.yml template
+    PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
   before_script:
     - apk update
     - apk add curl
