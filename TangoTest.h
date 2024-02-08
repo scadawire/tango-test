@@ -204,6 +204,7 @@ public:
 	Tango::DevULong	*attr_ulong_scalar_read;
 	enum_scalarEnum	*attr_enum_scalar_read;
 	enum_scalar_roEnum	*attr_enum_scalar_ro_read;
+    Tango::DevBoolean	*attr_echo_mode_read;
 	Tango::DevBoolean	*attr_boolean_spectrum_read;
 	Tango::DevBoolean	*attr_boolean_spectrum_ro_read;
 	Tango::DevDouble	*attr_double_spectrum_read;
@@ -546,6 +547,16 @@ public:
  */
 	virtual void read_enum_scalar_ro(Tango::Attribute &attr);
 	virtual bool is_enum_scalar_ro_allowed(Tango::AttReqType type);
+/**
+ *	Attribute echo_mode related methods
+ *	Description:
+ *
+ *	Data type:	Tango::DevBoolean
+ *	Attr type:	Scalar
+ */
+        virtual void read_echo_mode(Tango::Attribute &attr);
+        virtual void write_echo_mode(Tango::WAttribute &attr);
+        virtual bool is_echo_mode_allowed(Tango::AttReqType type);
 /**
  *	Attribute boolean_spectrum related methods
  *

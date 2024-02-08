@@ -1504,7 +1504,31 @@ void TangoTestClass::attribute_factory(std::vector<Tango::Attr *> &att_list)
 	//	Not Memorized
 	att_list.push_back(enum_scalar_ro);
 
-	//	Attribute : boolean_spectrum
+    //	Attribute : echo_mode
+    echo_modeAttrib	*echo_mode = new echo_modeAttrib();
+    Tango::UserDefaultAttrProp	echo_mode_prop;
+    //	description	not set for echo_mode
+    //	label	not set for echo_mode
+    //	unit	not set for echo_mode
+    //	standard_unit	not set for echo_mode
+    //	display_unit	not set for echo_mode
+    //	format	not set for echo_mode
+    //	max_value	not set for echo_mode
+    //	min_value	not set for echo_mode
+    //	max_alarm	not set for echo_mode
+    //	min_alarm	not set for echo_mode
+    //	max_warning	not set for echo_mode
+    //	min_warning	not set for echo_mode
+    //	delta_t	not set for echo_mode
+    //	delta_val	not set for echo_mode
+
+    echo_mode->set_default_properties(echo_mode_prop);
+    //	Not Polled
+    echo_mode->set_disp_level(Tango::OPERATOR);
+    //	Not Memorized
+    att_list.push_back(echo_mode);
+
+    //	Attribute : boolean_spectrum
 	boolean_spectrumAttrib	*boolean_spectrum = new boolean_spectrumAttrib();
 	Tango::UserDefaultAttrProp	boolean_spectrum_prop;
 	//	description	not set for boolean_spectrum
