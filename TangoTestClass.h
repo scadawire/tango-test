@@ -404,7 +404,22 @@ public:
 	virtual std::string get_enum_type() {return std::string("enum_scalar_roEnum");}
 };
 
-//	Attribute boolean_spectrum class definition
+//	Attribute echo_mode class definition
+    class echo_modeAttrib: public Tango::Attr
+    {
+    public:
+        echo_modeAttrib():Attr("echo_mode",
+                               Tango::DEV_BOOLEAN, Tango::READ_WRITE) {};
+        ~echo_modeAttrib() {};
+        virtual void read(Tango::DeviceImpl *dev,Tango::Attribute &att)
+        {(static_cast<TangoTest *>(dev))->read_echo_mode(att);}
+        virtual void write(Tango::DeviceImpl *dev,Tango::WAttribute &att)
+        {(static_cast<TangoTest *>(dev))->write_echo_mode(att);}
+        virtual bool is_allowed(Tango::DeviceImpl *dev,Tango::AttReqType ty)
+        {return (static_cast<TangoTest *>(dev))->is_echo_mode_allowed(ty);}
+    };
+
+    //	Attribute boolean_spectrum class definition
 class boolean_spectrumAttrib: public Tango::SpectrumAttr
 {
 public:

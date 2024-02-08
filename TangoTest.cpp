@@ -117,6 +117,7 @@ static const long kImagLen = 251;
 //  enum_scalar          |  Tango::DevEnum	Scalar
 //  freq                 |  Tango::DevDouble	Scalar
 //  enum_scalar_ro       |  Tango::DevEnum	Scalar
+//  echo_mode            |  Tango::DevBoolean	Scalar
 //  boolean_spectrum     |  Tango::DevBoolean	Spectrum  ( max = 4096)
 //  boolean_spectrum_ro  |  Tango::DevBoolean	Spectrum  ( max = 4096)
 //  double_spectrum      |  Tango::DevDouble	Spectrum  ( max = 4096)
@@ -179,8 +180,13 @@ namespace TangoTest_ns
                   go_on_(1),
                   dev_(dev),
                   sleep_time_(sleep_time),
-                  generate_crash_(false) {
+                  generate_crash_(false),
+                  is_paused(false) {
             // noop ctor
+        }
+
+        void pause(bool pause_it){
+            is_paused = pause_it;
         }
 
         void go(void) {
@@ -202,10 +208,12 @@ namespace TangoTest_ns
                     *__invalid_ptr__ = 0;
 
                 { //- enter critical section
-                    omni_mutex_lock guard(dev_.lock);
-                    if (!go_on_) break;
-                    DEBUG_STREAM << "DataGenerator::generating data" << std::endl;
-                    dev_.gen_data();
+                    if (!is_paused){
+                        omni_mutex_lock guard(dev_.lock);
+                        if (!go_on_) break;
+                        DEBUG_STREAM << "DataGenerator::generating data" << std::endl;
+                        dev_.gen_data();
+                    }
                 } //- leave critical section
                 sleep(0, sleep_time_ * 1000000);
             } while (go_on_);
@@ -227,6 +235,7 @@ namespace TangoTest_ns
         TangoTest &dev_;
         long sleep_time_;
         bool generate_crash_;
+        bool is_paused;
     };
 
 /*----- PROTECTED REGION END -----*/	//	TangoTest::namespace_starting
@@ -370,7 +379,12 @@ void TangoTest::delete_device()
             attr_ushort_scalar_read = 0;
         }
 
-        //- spectrum
+        if (attr_echo_mode_read) {
+            delete attr_echo_mode_read;
+            attr_echo_mode_read = 0;
+        }
+
+    //- spectrum
         if (attr_short_spectrum_read) {
             delete[] attr_short_spectrum_read;
             attr_short_spectrum_read = 0;
@@ -695,6 +709,9 @@ void TangoTest::init_device()
 
         attr_enum_scalar_ro_read = new enum_scalar_roEnum;
         *attr_enum_scalar_ro_read = enum_scalar_roEnum::_LABEL3;
+
+        attr_echo_mode_read = new Tango::DevBoolean;
+        *attr_echo_mode_read = false;
 
         //- Spectrum
         attr_short_spectrum_ro_read = new Tango::DevShort[kSpecLen];
@@ -1111,8 +1128,12 @@ void TangoTest::read_boolean_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_boolean_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_boolean_scalar) ENABLED START -----*/
-        attr.set_value(attr_boolean_scalar_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_boolean_scalar_write);
+        } else{
+            attr.set_value(attr_boolean_scalar_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_boolean_scalar
 }
 //--------------------------------------------------------
@@ -1152,8 +1173,12 @@ void TangoTest::read_double_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_double_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_double_scalar) ENABLED START -----*/
-        attr.set_value(attr_double_scalar_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_double_scalar_write);
+        } else{
+            attr.set_value(attr_double_scalar_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_scalar
 }
 //--------------------------------------------------------
@@ -1190,8 +1215,12 @@ void TangoTest::read_double_scalar_rww(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_double_scalar_rww(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_double_scalar_rww) ENABLED START -----*/
-        attr.set_value(attr_double_scalar_rww_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_double_scalar_write);
+        } else{
+            attr.set_value(attr_double_scalar_rww_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_double_scalar_rww
 }
 //--------------------------------------------------------
@@ -1247,8 +1276,12 @@ void TangoTest::read_float_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_float_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_float_scalar) ENABLED START -----*/
-        attr.set_value(attr_float_scalar_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_float_scalar_write);
+        } else{
+            attr.set_value(attr_float_scalar_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_float_scalar
 }
 //--------------------------------------------------------
@@ -1285,8 +1318,12 @@ void TangoTest::read_long64_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long64_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long64_scalar) ENABLED START -----*/
+    if (*attr_echo_mode_read) {
+        DEBUG_STREAM << "echo mode" << std::endl;
+        attr.set_value(&attr_long64_scalar_write);
+    } else{
         attr.set_value(attr_long64_scalar_read);
-
+    }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long64_scalar
 }
 //--------------------------------------------------------
@@ -1323,8 +1360,12 @@ void TangoTest::read_long_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long_scalar) ENABLED START -----*/
-        attr.set_value(attr_long_scalar_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_long_scalar_write);
+        } else{
+            attr.set_value(attr_long_scalar_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_scalar
 }
 //--------------------------------------------------------
@@ -1361,8 +1402,12 @@ void TangoTest::read_long_scalar_rww(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_long_scalar_rww(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_long_scalar_rww) ENABLED START -----*/
-        attr.set_value(attr_long_scalar_rww_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_long_scalar_write);
+        } else{
+            attr.set_value(attr_long_scalar_rww_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_long_scalar_rww
 }
 //--------------------------------------------------------
@@ -1435,8 +1480,12 @@ void TangoTest::read_short_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_scalar) ENABLED START -----*/
+    if (*attr_echo_mode_read) {
+        DEBUG_STREAM << "echo mode" << std::endl;
+        attr.set_value(&attr_short_scalar_write);
+    } else{
         attr.set_value(attr_short_scalar_read);
-
+    }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_scalar
 }
 //--------------------------------------------------------
@@ -1490,8 +1539,12 @@ void TangoTest::read_short_scalar_rww(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_short_scalar_rww(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_short_scalar_rww) ENABLED START -----*/
-        attr.set_value(attr_short_scalar_rww_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_short_scalar_write);
+        } else{
+            attr.set_value(attr_short_scalar_rww_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_short_scalar_rww
 }
 //--------------------------------------------------------
@@ -1613,8 +1666,12 @@ void TangoTest::read_uchar_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_uchar_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_uchar_scalar) ENABLED START -----*/
-        attr.set_value(attr_uchar_scalar_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_uchar_scalar_write);
+        } else{
+            attr.set_value(attr_uchar_scalar_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_uchar_scalar
 }
 //--------------------------------------------------------
@@ -1651,8 +1708,12 @@ void TangoTest::read_ulong64_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ulong64_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ulong64_scalar) ENABLED START -----*/
-        attr.set_value(attr_ulong64_scalar_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_ulong64_scalar_write);
+        } else{
+            attr.set_value(attr_ulong64_scalar_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ulong64_scalar
 }
 //--------------------------------------------------------
@@ -1689,8 +1750,12 @@ void TangoTest::read_ushort_scalar(Tango::Attribute &attr)
 {
 	DEBUG_STREAM << "TangoTest::read_ushort_scalar(Tango::Attribute &attr) entering... " << std::endl;
 	/*----- PROTECTED REGION ID(TangoTest::read_ushort_scalar) ENABLED START -----*/
-        attr.set_value(attr_ushort_scalar_read);
-
+        if (*attr_echo_mode_read) {
+            DEBUG_STREAM << "echo mode" << std::endl;
+            attr.set_value(&attr_ushort_scalar_write);
+        } else{
+            attr.set_value(attr_ushort_scalar_read);
+        }
         /*----- PROTECTED REGION END -----*/	//	TangoTest::read_ushort_scalar
 }
 //--------------------------------------------------------
@@ -1829,6 +1894,43 @@ void TangoTest::read_enum_scalar_ro(Tango::Attribute &attr)
 
 	/*----- PROTECTED REGION END -----*/	//	TangoTest::read_enum_scalar_ro
 }
+//--------------------------------------------------------
+/**
+ *	Read attribute echo_mode related method
+ *	Description:
+ *
+ *	Data type:	Tango::DevBoolean
+ *	Attr type:	Scalar
+ */
+//--------------------------------------------------------
+    void TangoTest::read_echo_mode(Tango::Attribute &attr)
+    {
+        DEBUG_STREAM << "TangoTest::read_echo_mode(Tango::Attribute &attr) entering... " << std::endl;
+        /*----- PROTECTED REGION ID(TangoTest::read_echo_mode) ENABLED START -----*/
+        //	Set the attribute value
+        attr.set_value(attr_echo_mode_read);
+
+        /*----- PROTECTED REGION END -----*/	//	TangoTest::read_echo_mode
+    }
+//--------------------------------------------------------
+/**
+ *	Write attribute echo_mode related method
+ *	Description:
+ *
+ *	Data type:	Tango::DevBoolean
+ *	Attr type:	Scalar
+ */
+//--------------------------------------------------------
+    void TangoTest::write_echo_mode(Tango::WAttribute &attr) {
+        DEBUG_STREAM << "TangoTest::write_echo_mode(Tango::WAttribute &attr) entering... " << std::endl;
+        //	Retrieve write value
+        Tango::DevBoolean w_val;
+        attr.get_write_value(w_val);
+        /*----- PROTECTED REGION ID(TangoTest::write_echo_mode) ENABLED START -----*/
+        data_gen->pause(w_val);
+        *attr_echo_mode_read = w_val;
+        /*----- PROTECTED REGION END -----*/	//	TangoTest::write_echo_mode
+    }
 //--------------------------------------------------------
 /**
  *	Read attribute boolean_spectrum related method

@@ -490,6 +490,26 @@ bool TangoTest::is_enum_scalar_ro_allowed(TANGO_UNUSED(Tango::AttReqType type))
 
 //--------------------------------------------------------
 /**
+ *	Method      : TangoTest::is_echo_mode_allowed()
+ *	Description : Execution allowed for echo_mode attribute
+ */
+//--------------------------------------------------------
+    bool TangoTest::is_echo_mode_allowed(TANGO_UNUSED(Tango::AttReqType type))
+    {
+        //	Not any excluded states for echo_mode attribute in Write access.
+        /*----- PROTECTED REGION ID(TangoTest::echo_modeStateAllowed_WRITE) ENABLED START -----*/
+
+        /*----- PROTECTED REGION END -----*/	//	TangoTest::echo_modeStateAllowed_WRITE
+
+        //	Not any excluded states for echo_mode attribute in read access.
+        /*----- PROTECTED REGION ID(TangoTest::echo_modeStateAllowed_READ) ENABLED START -----*/
+
+        /*----- PROTECTED REGION END -----*/	//	TangoTest::echo_modeStateAllowed_READ
+        return true;
+    }
+
+//--------------------------------------------------------
+/**
  *	Method     : TangoTest::is_boolean_spectrum_allowed()
  *	Description: Execution allowed for boolean_spectrum attribute
  */
