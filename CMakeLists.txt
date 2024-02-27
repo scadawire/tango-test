@@ -24,13 +24,23 @@ set(HEADERS
         TangoTest.h
         TangoTestClass.h)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+add_library(TangoTestObjects OBJECT ${SOURCES} ${HEADERS})
+target_link_libraries(TangoTestObjects PRIVATE Tango::Tango)
+
+add_executable(${PROJECT_NAME} $<TARGET_OBJECTS:TangoTestObjects>)
 target_link_libraries(${PROJECT_NAME} PRIVATE Tango::Tango)
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+
+add_library("${PROJECT_NAME}Shared" SHARED $<TARGET_OBJECTS:TangoTestObjects>)
+target_link_libraries("${PROJECT_NAME}Shared" PRIVATE Tango::Tango)
+set_target_properties("${PROJECT_NAME}Shared" PROPERTIES OUTPUT_NAME ${PROJECT_NAME} PREFIX "")
+
+install(TARGETS ${PROJECT_NAME} "${PROJECT_NAME}Shared" RUNTIME DESTINATION bin)
 
 if (WIN32 AND (Tango_IS_STATIC OR Tango_FORCE_STATIC))
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+    set_target_properties(${PROJECT_NAME} "${PROJECT_NAME}Shared" TangoTestObjects
+      PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
     )
 endif()
 
