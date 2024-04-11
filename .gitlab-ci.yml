@@ -6,7 +6,7 @@ include:
 variables:
   TANGO_VERSION: 9.4.1
   MSVC_VERSION: v141
-  GENERATOR_VERSION: Visual Studio 16 2019
+  GENERATOR_VERSION: Visual Studio 17 2022
   DEPS_PATH: C:/dependencies
   LIBTANGO: libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}_static_release
   TANGO_PATH: ${DEPS_PATH}/${LIBTANGO}
@@ -145,7 +145,7 @@ build-cppTango-main:
       - artifacts
     expire_in: 1 day
   tags:
-    - shared-windows
+    - saas-windows-medium-amd64
 
 build-tangotest-win-64bit:
   extends: .build-tangotest-win
