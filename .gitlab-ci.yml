@@ -2,6 +2,8 @@
 include:
   - project: 'tango-controls/gitlab-ci-templates'
     file: 'ArchiveWithSubmodules.gitlab-ci.yml'
+  - project: 'tango-controls/gitlab-ci-templates'
+    file: 'cpp.gitlab-ci.yml'
 
 variables:
   TANGO_VERSION: 9.4.1
@@ -10,7 +12,6 @@ variables:
   DEPS_PATH: C:/dependencies
   LIBTANGO: libtango_${TANGO_VERSION}_${MSVC_VERSION}_${ARCH}_static_release
   TANGO_PATH: ${DEPS_PATH}/${LIBTANGO}
-  CMAKE_BUILD_TYPE: Debug
   DEBIAN_FRONTEND: noninteractive
   GIT_SUBMODULE_STRATEGY: recursive
 
@@ -20,97 +21,6 @@ workflow:
     - if: $CI_MERGE_REQUEST_IID
     - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
-build-cppTango-9.3-backports:
-  image: debian:bullseye
-  tags:
-    - docker, linux, amd64
-  before_script:
-    - apt-get update
-    - >
-      apt-get install -y
-      build-essential
-      cmake
-      git
-      libcos4-dev
-      libomniorb4-dev
-      libomnithread4-dev
-      libzmq3-dev
-      omniidl
-      pkg-config
-    # Install tango-idl
-    - git clone -b 5.1.2 --depth 1 https://gitlab.com/tango-controls/tango-idl.git /idl
-    - cmake -B /idl/build -DCMAKE_INSTALL_PREFIX=/usr/local/tango-idl /idl
-    - make -C /idl/build install
-    # Install cppzmq
-    - git clone -b v4.7.1 --depth 1 https://github.com/zeromq/cppzmq.git /cppzmq
-    - cmake -B /cppzmq/build -DCPPZMQ_BUILD_TESTS=OFF /cppzmq
-    - make -C /cppzmq/build install
-    # Clone cppTango
-    - git clone -b 9.3-backports --depth 1 https://gitlab.com/tango-controls/cppTango.git /cppTango
-    - >
-      cmake -B /cppTango/build
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBUILD_TESTING=OFF
-      -DIDL_BASE=/usr/local/tango-idl
-      /cppTango
-  script:
-    - make -C /cppTango/build install
-    - tar cf usr-local.tar /usr/local
-  artifacts:
-    when: on_success
-    paths:
-      - usr-local.tar
-
-build-cppTango-main:
-  image: debian:bullseye
-  tags:
-    - docker, linux, amd64
-  before_script:
-    - apt-get update
-    - >
-      apt-get install -y
-      build-essential
-      curl
-      cmake
-      git
-      python3-dev
-      libssl-dev
-      libzmq3-dev
-      pkg-config
-    # Install omniORB 4.3.1
-    - curl -L -o omniORB.tar.bz2 https://sourceforge.net/projects/omniorb/files/omniORB/omniORB-4.3.1/omniORB-4.3.1.tar.bz2/download
-    - mkdir -p /omniorb/build
-    - tar xaf omniORB.tar.bz2 --directory=/omniorb --strip-components=1
-    - cd /omniorb/build
-    - ../configure --prefix=/usr/local --with-openssl
-    - make -j$(nproc) all
-    - make install
-    - cd ${CI_PROJECT_DIR}
-    # Install tango-idl
-    - git clone -b 6.0-alpha2 --depth 1 https://gitlab.com/tango-controls/tango-idl.git /idl
-    - cmake -B /idl/build -DCMAKE_INSTALL_PREFIX=/usr/local/tango-idl /idl
-    - make -j$(nproc) -C /idl/build install
-    # Install cppzmq
-    - git clone -b v4.7.1 --depth 1 https://github.com/zeromq/cppzmq.git /cppzmq
-    - cmake -B /cppzmq/build -DCPPZMQ_BUILD_TESTS=OFF /cppzmq
-    - make -j$(nproc) -C /cppzmq/build install
-    # Clone cppTango
-    - git clone -b main --recurse-submodules --depth 1 https://gitlab.com/tango-controls/cppTango.git /cppTango
-    - >
-      cmake -B /cppTango/build
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBUILD_TESTING=OFF
-      -Dtangoidl_ROOT=/usr/local/tango-idl
-      -DTANGO_USE_JPEG=OFF
-      /cppTango
-  script:
-    - make -j$(nproc) -C /cppTango/build install
-    - tar cf usr-local.tar /usr/local
-  artifacts:
-    when: on_success
-    paths:
-      - usr-local.tar
 
 .build-tangotest-win:
   rules:
@@ -156,98 +66,67 @@ build-tangotest-win-32bit:
     ARCH: x86
     PLATFORM: Win32
 
-.build-tangotest-linux:
-  image: debian:bullseye
-  tags:
-    - docker, linux, amd64
-  before_script:
-    - apt-get update
-    - >
-      apt-get install -y
-      build-essential
-      cmake
-      git
-      libcos4-dev
-      libomniorb4-dev
-      libomnithread4-dev
-      libzmq3-dev
-      omniidl
-      pkg-config
-    - mkdir build
-
-build-tangotest-linux-main:
-  extends: .build-tangotest-linux
-  needs:
-    - build-cppTango-main
-  script:
-    - tar xf usr-local.tar -C /
-    - cmake -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
-    - make -C build install
-
-build-tangotest-linux-9.3-backports:
-  extends: .build-tangotest-linux
-  needs:
-    - build-cppTango-9.3-backports
-  script:
-    - tar xf usr-local.tar -C /
-    - cmake -B build .
-    - make -C build install
-
-build-tangotest-linux-stock:
-  extends: .build-tangotest-linux
-  script:
-    - apt-get install -y libtango-dev
-    - cmake -B build .
-    - make -C build install
-
-build-tangotest-linux-main-newest-supported-cmake:
-  extends: .build-tangotest-linux
-  needs:
-    - build-cppTango-main
-  script:
-    # Extract tango
-    - tar xf usr-local.tar -C /
-    # Install custom cmake
-    - apt-get install curl
-    - apt-get remove -y cmake
-    - curl -L https://cmake.org/files/v3.26/cmake-3.26.4-linux-x86_64.sh -o /tmp/cmake-install.sh
-    - chmod +x /tmp/cmake-install.sh
-    - cd /usr/local
-    - /tmp/cmake-install.sh --skip-license --exclude-subdir
-    # Build DS
-    - cd ${CI_PROJECT_DIR}
-    - cmake -Werror=dev -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
-    - make -C build install
-
-build-tangotest-linux-main-oldest-supported-cmake:
-  extends: .build-tangotest-linux
-  needs:
-    - build-cppTango-main
-  script:
-    # Extract tango
-    - tar xf usr-local.tar -C /
-    # Install custom cmake
-    - apt-get install curl
-    - apt-get remove -y cmake
-    - curl -L https://cmake.org/files/v3.18/cmake-3.18.6-Linux-x86_64.sh -o /tmp/cmake-install.sh
-    - chmod +x /tmp/cmake-install.sh
-    - cd /usr/local
-    - /tmp/cmake-install.sh --skip-license --exclude-subdir
-    # Build DS
-    - cd ${CI_PROJECT_DIR}
-    - cmake -Werror=dev -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
-    - make -C build install
+# .build-tangotest-linux:
+#   image: debian:bullseye
+#   tags:
+#     - docker, linux, amd64
+#   before_script:
+#     - apt-get update
+#     - >
+#       apt-get install -y
+#       build-essential
+#       cmake
+#       git
+#       libcos4-dev
+#       libomniorb4-dev
+#       libomnithread4-dev
+#       libzmq3-dev
+#       omniidl
+#       pkg-config
+#     - mkdir build
+#
+# build-tangotest-linux-main-newest-supported-cmake:
+#   extends: .build-tangotest-linux
+#   script:
+#     # Extract tango
+#     - tar xf usr-local.tar -C /
+#     # Install custom cmake
+#     - apt-get install curl
+#     - apt-get remove -y cmake
+#     - curl -L https://cmake.org/files/v3.26/cmake-3.26.4-linux-x86_64.sh -o /tmp/cmake-install.sh
+#     - chmod +x /tmp/cmake-install.sh
+#     - cd /usr/local
+#     - /tmp/cmake-install.sh --skip-license --exclude-subdir
+#     # Build DS
+#     - cd ${CI_PROJECT_DIR}
+#     - cmake -Werror=dev -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
+#     - make -C build install
+#
+# build-tangotest-linux-main-oldest-supported-cmake:
+#   extends: .build-tangotest-linux
+#   script:
+#     # Extract tango
+#     - tar xf usr-local.tar -C /
+#     # Install custom cmake
+#     - apt-get install curl
+#     - apt-get remove -y cmake
+#     - curl -L https://cmake.org/files/v3.18/cmake-3.18.6-Linux-x86_64.sh -o /tmp/cmake-install.sh
+#     - chmod +x /tmp/cmake-install.sh
+#     - cd /usr/local
+#     - /tmp/cmake-install.sh --skip-license --exclude-subdir
+#     # Build DS
+#     - cd ${CI_PROJECT_DIR}
+#     - cmake -Werror=dev -DTANGO_WARNINGS_AS_ERRORS=ON -B build .
+#     - make -C build install
 
 release-builds:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   tags:
     - docker, linux, amd64
   needs:
-    - build-tangotest-linux-stock
-    - build-tangotest-linux-9.3-backports
-    - build-tangotest-linux-main
     - build-tangotest-win-32bit
     - build-tangotest-win-64bit
+    - build-linux
   variables:
     # WARNING! This variable name is used in ArchiveWithSubmodules.gitlab-ci.yml template
     PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}"
