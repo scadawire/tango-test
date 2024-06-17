@@ -103,6 +103,7 @@ build-cppTango-main:
       -DBUILD_TESTING=OFF
       -Dtangoidl_ROOT=/usr/local/tango-idl
       -DTANGO_USE_JPEG=OFF
+      -DTANGO_USE_TELEMETRY=OFF
       /cppTango
   script:
     - make -j$(nproc) -C /cppTango/build install
